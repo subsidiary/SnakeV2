@@ -58,8 +58,8 @@ public class GameActivity extends Activity {
         score.setTextSize(Values.BoBaHeight / Values.dens - 4);
 
         Bitmaps bit = new Bitmaps(this);
-        sn.add(1,new Snake(10,10,2,7,Color.BLACK));
-        sn.add(2,new Snake(17,11,4,7,Color.BLUE));
+        sn.add(0,new Snake(10,10,2,7,Color.BLACK));
+        sn.add(1,new Snake(17,11,4,7,Color.BLUE));
         //sn.PaintSnake();Is not Working due to the "Attempt to invoke virtual method 'boolean android.graphics.Bitmap.isRecycled()' on a null object reference"
     }
 }

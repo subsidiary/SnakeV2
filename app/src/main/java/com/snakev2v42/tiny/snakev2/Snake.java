@@ -2,6 +2,8 @@ package com.snakev2v42.tiny.snakev2;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -34,6 +36,10 @@ public class Snake {
         if (sP.get(0).vec != vector) sP.get(1).vec = sP.get(1).vec  * 10 + vector;
         sP.get(0).vec=vector;
         preVector=vector;
+        if(sP.get(0).vec%10==1){--sP.get(0).y;if(sP.get(0).y<0) sP.get(0).y=Values.CellHeight-1;}
+        if(sP.get(0).vec%10==3){++sP.get(0).y;if(sP.get(0).y>Values.CellHeight-1) sP.get(0).y=0;}
+        if(sP.get(0).vec%10==2){++sP.get(0).x;if(sP.get(0).x>Values.CellWidth-1) sP.get(0).x=0;}
+        if(sP.get(0).vec%10==4){--sP.get(0).x;if(sP.get(0).x<0) sP.get(0).x=Values.CellWidth-1;}
     }
     
     public void Grow(int AddWidth){
@@ -54,35 +60,37 @@ public class Snake {
 
 
     //GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS
-    public Bitmap chooseTheRightPart(int id) {
-        Bitmap b= Bitmaps.RedParts[1];
-        if(id == 0)
-            switch (sP.get(id).vec) {
-                case 1:b=Bitmaps.RedParts[1];break;
-                case 2:b=Bitmaps.RedParts[2];break;
-                case 3:b=Bitmaps.RedParts[3];break;
-                case 4:b=Bitmaps.RedParts[4];break;
-            }else
-        if(id == length){
-            if(sP.get(id).vec%10==1)b=Bitmaps.RedParts[5];
-            if(sP.get(id).vec%10==3)b=Bitmaps.RedParts[7];
-            if(sP.get(id).vec%10==2)b=Bitmaps.RedParts[6];
-            if(sP.get(id).vec%10==4)b=Bitmaps.RedParts[8];
-        }else{
-            if(sP.get(id).vec==2|| sP.get(id).vec==4)b=Bitmaps.RedParts[10];
-            if(sP.get(id).vec==1|| sP.get(id).vec==3)b=Bitmaps.RedParts[9];
-            if(sP.get(id).vec==12|| sP.get(id).vec==43)b=Bitmaps.RedParts[11];
-            if(sP.get(id).vec==14|| sP.get(id).vec==23)b=Bitmaps.RedParts[12];
-            if(sP.get(id).vec==34|| sP.get(id).vec==21)b=Bitmaps.RedParts[13];
-            if(sP.get(id).vec==41|| sP.get(id).vec==32)b=Bitmaps.RedParts[14];
-        }
-        //if(ui == length+1) b=Bitmaps.emptyBit;
-        return b;
-    }
-
     public void PaintSnake() {
-        for (int i = length; i >= 1; i--) {
-            Bitmaps.DrawToMainB(chooseTheRightPart(i), Values.SnakeSize * sP.get(i).x, Values.SnakeSize * sP.get(i).y);
+        Bitmap b=null;
+        for (int i = length; i >= 0; i--) {
+            if(i == 0)
+                switch (sP.get(i).vec) {
+                    case 1:b=Bitmap.createBitmap(Bitmaps.SnakeParts[0]);break;
+                    case 2:b=Bitmap.createBitmap(Bitmaps.SnakeParts[1]);break;
+                    case 3:b=Bitmap.createBitmap(Bitmaps.SnakeParts[2]);break;
+                    case 4:b=Bitmap.createBitmap(Bitmaps.SnakeParts[3]);break;
+                }else
+            if(i == length)
+                switch (sP.get(i).vec%10){
+                    case 1:b=Bitmap.createBitmap(Bitmaps.SnakeParts[6]);break;
+                    case 3:b=Bitmap.createBitmap(Bitmaps.SnakeParts[4]);break;
+                    case 2:b=Bitmap.createBitmap(Bitmaps.SnakeParts[7]);break;
+                    case 4:b=Bitmap.createBitmap(Bitmaps.SnakeParts[5]);break;
+            }else {
+                if (sP.get(i).vec == 2 || sP.get(i).vec == 4)   b=Bitmap.createBitmap(Bitmaps.SnakeParts[ 8]);else
+                if (sP.get(i).vec == 1 || sP.get(i).vec == 3)   b=Bitmap.createBitmap(Bitmaps.SnakeParts[ 9]);else
+                if (sP.get(i).vec == 12 || sP.get(i).vec == 43) b=Bitmap.createBitmap(Bitmaps.SnakeParts[10]);else
+                if (sP.get(i).vec == 14 || sP.get(i).vec == 23) b=Bitmap.createBitmap(Bitmaps.SnakeParts[13]);else
+                if (sP.get(i).vec == 34 || sP.get(i).vec == 21) b=Bitmap.createBitmap(Bitmaps.SnakeParts[12]);else
+                if (sP.get(i).vec == 41 || sP.get(i).vec == 32) b=Bitmap.createBitmap(Bitmaps.SnakeParts[11]);
+            }
+            for(int ux=0;ux<b.getWidth();ux++)
+                for(int uy=0;uy<b.getHeight();uy++){
+                       if(b.getPixel(ux,uy)== Color.parseColor("#f5f5f5"))b.setPixel(ux,uy,color);
+                }
+
+            Bitmaps.DrawToMainB(b, Values.SnakeSize * sP.get(i).x, Values.SnakeSize * sP.get(i).y);
+            if(b != null){b.recycle();b = null;}
         }
     }
 }

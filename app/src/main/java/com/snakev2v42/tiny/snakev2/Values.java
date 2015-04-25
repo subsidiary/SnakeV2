@@ -8,7 +8,8 @@ public class Values {
     static float dens;
     static boolean FirstLoad=true;
     static int delayTime=230;
-    static int AMOUNT_OF_SNAKES;
+    static int AMOUNT_OF_SNAKES=4;
+    static int AMOUNT_OF_MEAL=4;
     static boolean game=true;
 
     public Values(int width,int height,float density){

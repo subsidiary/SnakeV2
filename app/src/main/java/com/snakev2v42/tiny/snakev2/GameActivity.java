@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,24 +47,9 @@ public class GameActivity extends Activity {
 
         Bitmaps bit = new Bitmaps(this);
         sn.add(0,new Snake(10,10, Vector.WEST,7,Color.BLUE));
+        currVector = Vector.WEST;
         //sn.add(1, new Snake(17, 11, 4, 7, Color.BLUE));
         ml.add(0, new Meal(1,Color.BLUE));
-
-        View.OnClickListener buttonListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch(v.getId()){
-                    case R.id.v2: currVector = Vector.EAST; break;
-                    case R.id.v3: currVector = Vector.SOUTH; break;
-                    case R.id.v1: currVector = Vector.NORTH; break;
-                    case R.id.v4: currVector = Vector.WEST; break;
-                }
-            }
-        };
-        findViewById(R.id.v1).setOnClickListener(buttonListener);
-        findViewById(R.id.v2).setOnClickListener(buttonListener);
-        findViewById(R.id.v3).setOnClickListener(buttonListener);
-        findViewById(R.id.v4).setOnClickListener(buttonListener);
     }
 
     @Override
@@ -77,15 +61,25 @@ public class GameActivity extends Activity {
         }
     }
 
+    public void clicked(View v) {
+        switch(v.getId()){
+            case R.id.v2: currVector = Vector.EAST;break;
+            case R.id.v3: currVector = Vector.SOUTH;break;
+            case R.id.v1: currVector = Vector.NORTH; break;
+            case R.id.v4: currVector = Vector.WEST;break;
+        }
+    }
+
     class LoadFrame extends Thread{
         @Override
         public void run() {
             super.run();
-            if (Vector.inverse(currVector) != sn.get(0).parts.get(0).vec)
-                sn.get(0).parts.get(0).vec = currVector;
+            Snake s = sn.get(0);
+            if (currVector != Vector.inverse(s.parts.get(0).vec))
+                s.parts.get(0).vec = currVector;
             //currVector = Vector.NORTH;
-            sn.get(0).move();
-            sn.get(0).PaintSnake();
+            s.move();
+            s.PaintSnake();
         }
     }
     class GraphicThread extends Thread{
@@ -98,6 +92,7 @@ public class GameActivity extends Activity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                Bitmaps.MainB.eraseColor(Color.parseColor("#212121"));
                 LoadFrame.run();
                 try {
                     sleep(15);

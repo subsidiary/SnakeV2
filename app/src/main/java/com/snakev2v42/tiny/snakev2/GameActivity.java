@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -49,6 +50,22 @@ public class GameActivity extends Activity {
         sn.add(0,new Snake(10,10, Vector.WEST,7,Color.BLUE));
         //sn.add(1, new Snake(17, 11, 4, 7, Color.BLUE));
         ml.add(0, new Meal(1,Color.BLUE));
+
+        View.OnClickListener buttonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch(v.getId()){
+                    case R.id.v2: currVector = Vector.EAST; break;
+                    case R.id.v3: currVector = Vector.SOUTH; break;
+                    case R.id.v1: currVector = Vector.NORTH; break;
+                    case R.id.v4: currVector = Vector.WEST; break;
+                }
+            }
+        };
+        findViewById(R.id.v1).setOnClickListener(buttonListener);
+        findViewById(R.id.v2).setOnClickListener(buttonListener);
+        findViewById(R.id.v3).setOnClickListener(buttonListener);
+        findViewById(R.id.v4).setOnClickListener(buttonListener);
     }
 
     @Override
@@ -59,19 +76,6 @@ public class GameActivity extends Activity {
             Values.FirstLoad=false;
         }
     }
-
-    public void clicked(View v) {
-        switch(v.getId()){
-            case R.id.v2: currVector = Vector.EAST;break;
-            case R.id.v3: currVector = Vector.SOUTH;break;
-            case R.id.v1: currVector = Vector.NORTH; break;
-            case R.id.v4: currVector = Vector.WEST;break;
-        }
-    }
-
-
-
-
 
     class LoadFrame extends Thread{
         @Override

@@ -5,12 +5,10 @@ package com.snakev2v42.tiny.snakev2;
  */
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -22,11 +20,12 @@ public class GameActivity extends Activity {
     static RelativeLayout ll;
     static ImageView BoBar,MainBsurf;
     static TextView score;
-    ArrayList<Snake> sn = new ArrayList<Snake>();
-    ArrayList<Meal> ml = new ArrayList<Meal>();
-    Thread GraphicThread = new GraphicThreed();
+    ArrayList<Snake> sn = new ArrayList<>();
+    ArrayList<Meal> ml = new ArrayList<>();
+    Thread GraphicThread = new GameActivity.GraphicThread();
     Thread LoadFrame = new LoadFrame();
     Handler HelpToDraw = new Handler();
+    private Vector currVector = Vector.NORTH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class GameActivity extends Activity {
         score.setTextSize(Values.BoBaHeight / Values.dens - 4);
 
         Bitmaps bit = new Bitmaps(this);
-        sn.add(0,new Snake(10,10,4,7,Color.BLUE));
+        sn.add(0,new Snake(10,10,Vector.WEST,7,Color.BLUE));
         //sn.add(1, new Snake(17, 11, 4, 7, Color.BLUE));
         ml.add(0, new Meal(-1, -1, 1, Color.BLUE, true));
     }
@@ -63,10 +62,10 @@ public class GameActivity extends Activity {
 
     public void clicked(View v) {
         switch(v.getId()){
-            case R.id.v2: if(sn.get(0).preVector!=4)sn.get(0).vector=2;break;
-            case R.id.v3: if(sn.get(0).preVector!=1)sn.get(0).vector=3;break;
-            case R.id.v1: if(sn.get(0).preVector!=3)sn.get(0).vector=1;break;
-            case R.id.v4: if(sn.get(0).preVector!=2)sn.get(0).vector=4;break;
+            case R.id.v2: currVector = Vector.EAST;break;
+            case R.id.v3: currVector = Vector.SOUTH;break;
+            case R.id.v1: currVector = Vector.NORTH; break;
+            case R.id.v4: currVector = Vector.WEST;break;
         }
     }
 
@@ -78,23 +77,26 @@ public class GameActivity extends Activity {
         @Override
         public void run() {
             super.run();
-            sn.get(0).moveSnake();
+            if (Vector.inverse(currVector) != sn.get(0).parts.get(0).vec)
+                sn.get(0).parts.get(0).vec = currVector;
+            //currVector = Vector.NORTH;
+            sn.get(0).move();
             sn.get(0).PaintSnake();
         }
     }
-    class GraphicThreed extends Thread{
+    class GraphicThread extends Thread{
         @Override
         public void run() {
             super.run();
             while(Values.game) {
                 try {
-                    GraphicThreed.sleep(Values.delayTime - 15);
+                    sleep(Values.delayTime - 15);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 LoadFrame.run();
                 try {
-                    GraphicThreed.sleep(15);
+                    sleep(15);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

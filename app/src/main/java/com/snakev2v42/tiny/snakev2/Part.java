@@ -15,7 +15,7 @@ public class Part {
     }
 
     public Part(int x, int y, Vector vec) {
-        new Part(new Point(x, y), vec);
+        this(new Point(x, y), vec);
     }
 
     public void move() {

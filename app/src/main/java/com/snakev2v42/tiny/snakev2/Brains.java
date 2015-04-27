@@ -3,58 +3,35 @@ package com.snakev2v42.tiny.snakev2;
 /**
  * Created by Yuriy475 on 4/9/2015.
  */
-public class Brains {
+abstract class Brains {
 
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //The class was imported from the SnakeV1 and was not optimized , so it has few errors
-/*
-    public void VectorPlease(Snake2 sII) {
-        //Havka
-        int min = Values.CellHeight + Values.CellWidth, minId = 1;
-        int prioVecX = 0, prioVecY = 0;
-        int[] MealPr = {1, 1, 1, 1, 1};
-        boolean[] UnwtPr = {true, true, true, true, true};
-
-        for (int ui = 1; ui <= Meals.AMOUNT_OF_MEAL; ui++)
-            if (min > Math.abs(sII.sn[1] - Meals.mealCO[ui * 2 - 1]) + Math.abs(sII.sn[2] - Meals.mealCO[ui * 2])) {
-                min = Math.abs(sII.sn[1] - Meals.mealCO[ui * 2 - 1]) + Math.abs(sII.sn[2] - Meals.mealCO[ui * 2]);
-                minId = ui;
+ /*   public static void NewVector(Snake currentSnake){
+        int min=Values.CellHeight+Values.CellWidth,minId=0;
+        int[] MealPriority = {0,0,0,0,0};
+        int[] AlivePriority = {0,0,0,0,0};
+        Part head =currentSnake.parts.get(0);
+        //MealPriority..
+        for(int i=0;i<Values.AMOUNT_OF_MEAL;++i)
+            if(Math.abs(head.p.x-GameActivity.ml.get(i).p.x)+Math.abs(head.p.y-GameActivity.ml.get(i).p.y)<=min){
+                min=Math.abs(head.p.x-GameActivity.ml.get(i).p.x)+Math.abs(head.p.y-GameActivity.ml.get(i).p.y);
+                minId=i;
             }
-        if (sII.sn[1] > Meals.mealCO[minId * 2 - 1]) prioVecX = 4;
-        if (sII.sn[1] < Meals.mealCO[minId * 2 - 1]) prioVecX = 2;
-        if (sII.sn[2] > Meals.mealCO[minId * 2]) prioVecY = 1;
-        if (sII.sn[2] < Meals.mealCO[minId * 2]) prioVecY = 3;
-        MealPr[prioVecY] = 2;
-        MealPr[prioVecX] = 2;
-        //UnWasted
-
+        if(head.p.x>GameActivity.ml.get(minId).p.x)MealPriority[4]=2;
+        if(head.p.x<GameActivity.ml.get(minId).p.x)MealPriority[2]=2;
+        if(head.p.y>GameActivity.ml.get(minId).p.y)MealPriority[1]=2;
+        if(head.p.y<GameActivity.ml.get(minId).p.y)MealPriority[3]=2;
+        //AlivePriority..
         for (int ui = 1; ui <= 4; ui++) {
             sII.vector = ui;
             int x=sII.GetXwithVectorNext(1,ui),y=sII.GetYwithVectorNext(1,ui);
-            if (CheckSnakeCoods(x,y))
+            if (CheckForAnotherPrts())
                 UnwtPr[ui] = false;
         }
-        // Summary
-        int mealVec = 1, max = 0;
-        for (int ui = 1; ui <= 4; ui++)
-            if (UnwtPr[ui] && MealPr[ui] > max) {
-                max = MealPr[ui];
-                mealVec = ui;
-            }
-        sII.vector = mealVec;
+
     }
 
-    static public boolean CheckSnakeCoods(int x,int y){
-        boolean Yes=false;
-        for(int ui=1;ui<=1600;ui++) {
-            if ((x == Snake1.sn[ui * 2 - 1] && y == Snake1.sn[ui * 2]) || (x == Snake2.sn[ui * 2 - 1] && y == Snake2.sn[ui * 2]) ||
-                    (x == Snake3.sn[ui * 2 - 1] && y == Snake3.sn[ui * 2]) || (x == Snake4.sn[ui * 2 - 1] && y == Snake4.sn[ui * 2])) {
-                Yes = true;
-            }
-        }
-        return Yes;
-    }
 
-*/
-
+    public boolean CheckForAnotherPrts(Point p){
+        return true;
+    }*/
 }

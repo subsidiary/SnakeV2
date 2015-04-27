@@ -20,8 +20,8 @@ public class GameActivity extends Activity {
     static RelativeLayout ll;
     static ImageView BoBar,MainBsurf;
     static TextView score;
-    ArrayList<Snake> sn = new ArrayList<>();
-    ArrayList<Meal> ml = new ArrayList<>();
+    static ArrayList<Snake> sn = new ArrayList<>();
+    static ArrayList<Meal> ml = new ArrayList<>();
     Thread GraphicThread = new GameActivity.GraphicThread();
     Thread LoadFrame = new LoadFrame();
     Handler HelpToDraw = new Handler();

@@ -22,6 +22,7 @@ public class Meal {
     public Meal(int size,int color){
         this.size=size;
         this.color=color;
+        this.p=new Point(0,0);
         generate();
     }
     public void eat(int x,int y){
@@ -29,6 +30,7 @@ public class Meal {
             enabled=false;
     }
     public void generate(){
+
         p.x=new Random().nextInt(Values.CellWidth-(size+1));
         p.y=new Random().nextInt(Values.CellHeight-(size+1));
         enabled=true;

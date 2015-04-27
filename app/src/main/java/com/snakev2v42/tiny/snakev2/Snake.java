@@ -26,7 +26,7 @@ public class Snake {
      * Moves every {@code Part} of this {@code Snake} into next cell
      */
     public void move() {
-        for (int i = length; i > 0; --i) {
+        for (int i = length - 1; i > 0; --i) {
             Part part = parts.get(i);
             part.move();
             part.vec = parts.get(i - 1).vec;

@@ -16,4 +16,15 @@ public enum Vector {
         }
         return null;
     }
+    public int VectorToInt(Vector vector){
+        int vecID;
+        switch (vector){
+            case NORTH:vecID=1;break;
+            case SOUTH:vecID=3;break;
+            case EAST :vecID=2;break;
+            case WEST :vecID=4;break;
+            default   :vecID=1;
+        }
+        return vecID;
+    }
 }

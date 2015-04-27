@@ -47,7 +47,7 @@ public class GameActivity extends Activity {
         score.setTextSize(Values.BoBaHeight / Values.dens - 4);
 
         Bitmaps bit = new Bitmaps(this);
-        sn.add(0,new Snake(10,10,4,7,Color.parseColor("#F5F5F5")));
+        sn.add(0,new Snake(10,10,4,7,Color.BLUE));
         //sn.add(1, new Snake(17, 11, 4, 7, Color.BLUE));
         ml.add(0, new Meal(-1, -1, 1, Color.BLUE, true));
     }

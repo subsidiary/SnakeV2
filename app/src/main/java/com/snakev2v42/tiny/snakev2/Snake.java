@@ -18,7 +18,12 @@ public class Snake {
 //      3
     public Snake(int StartX,int StartY,int vector,int length,int color) {
         for(int i=0;i<=length;i++)
-            sP.add(new Part(StartX+i,StartY,vector));
+            switch (vector){
+                case 1:sP.add(new Part(StartX,StartY+i,1));break;
+                case 2:sP.add(new Part(StartX-i,StartY,2));break;
+                case 3:sP.add(new Part(StartX,StartY-i,3));break;
+                case 4:sP.add(new Part(StartX+i,StartY,4));break;
+            }
         this.vector=vector;
         this.color=color;
         this.length=length;
@@ -41,7 +46,7 @@ public class Snake {
         if(sP.get(0).vec%10==2){++sP.get(0).x;if(sP.get(0).x>Values.CellWidth-1) sP.get(0).x=0;}
         if(sP.get(0).vec%10==4){--sP.get(0).x;if(sP.get(0).x<0) sP.get(0).x=Values.CellWidth-1;}
     }
-    
+
     public void Grow(int AddWidth){
         int x,y,vec;
         while (AddWidth!=0){

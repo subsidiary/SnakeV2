@@ -1,5 +1,7 @@
 package com.snakev2v42.tiny.snakev2;
 
+import android.util.DisplayMetrics;
+
 /**
  * Created by yuriy on 4/24/2015.
  */
@@ -11,7 +13,6 @@ public class Values {
     static int AMOUNT_OF_SNAKES=4;
     static int AMOUNT_OF_MEAL=4;
     static boolean game=true;
-
     public Values(int width,int height,float density){
         Width=width;Height=height;dens=density;
         CellWidth=40;CellHeight=(int)((Height-30*dens)/Width*CellWidth);

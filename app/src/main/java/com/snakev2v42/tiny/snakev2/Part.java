@@ -4,14 +4,9 @@ package com.snakev2v42.tiny.snakev2;
  * Created by yuriy on 4/24/2015.
  */
 public class Part {
-    /**
-     * Position of this part
-     */
+
     public Point p;
 
-    /**
-     * Direction of this part
-     */
     public Vector vec;
 
     public Part(Point p, Vector vec) {
@@ -23,18 +18,12 @@ public class Part {
         new Part(new Point(x, y), vec);
     }
 
-    /**
-     * Moves this part of snake
-     */
     public void move() {
         p.plus(vec);
         outOfBounds();
     }
 
-    /**
-     * Checks if part is out of game field bounds,
-     * and if it is so then returns it to game field
-     */
+
     public void outOfBounds() {
         if (p.x < 0){
             p.x += Values.CellWidth;

@@ -19,8 +19,6 @@ public class Snake {
         parts.add(new Part(startX, startY, vector));
         this.length = 1;
         grow(length - 1);
-        /*for (int i = 0; i <= length; i++)
-            parts.add(new Part(startX + vector.x * i, startY + vector.y * i, vector));*/
         this.color = color;
     }
 
@@ -49,10 +47,10 @@ public class Snake {
             //Update tail part
             tail = parts.get(parts.size() - 1);
             //Move tail part
-            tail.p.plus(Vector.inverse(tail.vec));
+            tail.p.plus((tail.vec));
             //Check if tail is out of bounds
             tail.outOfBounds();
-            //Increase length :)    (so informative)
+            //Increase length :) (so informative)
             ++length;
         }
     }

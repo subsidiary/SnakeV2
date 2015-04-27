@@ -1,7 +1,5 @@
 package com.snakev2v42.tiny.snakev2;
 
-import android.util.DisplayMetrics;
-
 /**
  * Created by yuriy on 4/24/2015.
  */

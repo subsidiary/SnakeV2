@@ -10,20 +10,16 @@ public class Point {
         this.x = x;
         this.y = y;
     }
-
-    /**
-     * Adds the specified vector to this point
-     * @param vector the vector to add
-     */
+    //That is more simple for me.Don't ask me to return everything :)
     public void plus(Vector vector) {
-        this.x += vector.x;
-        this.y += vector.y;
+        switch (vector){
+            case NORTH: --this.y;break;
+            case SOUTH: ++this.y;break;
+            case EAST : ++this.x;break;
+            case WEST : --this.y;break;
+        }
     }
 
-    /**
-     * Returns a new point which equals to sum of a specified point and vector
-     * @param vector the vector to add
-     */
     public static Point plus(Point point, Vector vector) {
         Point pt = new Point(point.x, point.y);
         pt.plus(vector);

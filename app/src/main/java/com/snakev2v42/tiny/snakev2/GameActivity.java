@@ -42,13 +42,13 @@ public class GameActivity extends Activity {
         DisplayMetrics display = this.getResources().getDisplayMetrics();
         Values val = new Values(display.widthPixels,display.heightPixels,getResources().getDisplayMetrics().density);
 
-        BoBar.getLayoutParams().height=Values.BoBaHeight;
+        BoBar.getLayoutParams().height= Values.BoBaHeight;
         score.setTextSize(Values.BoBaHeight / Values.dens - 4);
 
         Bitmaps bit = new Bitmaps(this);
-        sn.add(0,new Snake(10,10,Vector.WEST,7,Color.BLUE));
+        sn.add(0,new Snake(10,10, Vector.WEST,7,Color.BLUE));
         //sn.add(1, new Snake(17, 11, 4, 7, Color.BLUE));
-        ml.add(0, new Meal(-1, -1, 1, Color.BLUE, true));
+        ml.add(0, new Meal(1,Color.BLUE));
     }
 
     @Override

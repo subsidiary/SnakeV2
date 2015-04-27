@@ -41,17 +41,15 @@ public class Snake {
      */
     public void grow(int n) {
         while (n-- > 0) {
-            Part tail = parts.get(parts.size() - 1);
+            Part tail = parts.get(length - 1);
             //Add new part
-            parts.add(new Part(tail.p, tail.vec));
+            parts.add(new Part(tail.p.x, tail.p.y, tail.vec));
             //Update tail part
-            tail = parts.get(parts.size() - 1);
+            tail = parts.get(length++);
             //Move tail part
-            tail.p.plus((tail.vec));
+            tail.p.plus(Vector.inverse(tail.vec));
             //Check if tail is out of bounds
             tail.outOfBounds();
-            //Increase length :) (so informative)
-            ++length;
         }
     }
 
@@ -60,7 +58,7 @@ public class Snake {
     public void PaintSnake() {
         Bitmap b;
         int j;
-        for (int i = 0; i < parts.size(); ++i) {
+        for (int i = 0; i < length; ++i) {
             if (i == 0)
                 switch (parts.get(i).vec) {
                     case NORTH:

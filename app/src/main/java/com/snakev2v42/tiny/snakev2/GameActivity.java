@@ -9,7 +9,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,10 +25,11 @@ public class GameActivity extends Activity {
     static TextView score;
     static ArrayList<Snake> sn = new ArrayList<>();
     static ArrayList<Meal> ml = new ArrayList<>();
+    ImageButton v1,v2,v3,v4;
     Thread GraphicThread = new GameActivity.GraphicThread();
     Thread LoadFrame = new LoadFrame();
     Handler HelpToDraw = new Handler();
-    private Vector currVector = Vector.NORTH;
+    static Vector currVector = Vector.NORTH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,10 @@ public class GameActivity extends Activity {
         BoBar=(ImageView)findViewById(R.id.BottomBar);
         score=(TextView)findViewById(R.id.score);
         MainBsurf=(ImageView)findViewById(R.id.MainBitmapSurface);
+        v1=(ImageButton)findViewById(R.id.v1);
+        v2=(ImageButton)findViewById(R.id.v2);
+        v3=(ImageButton)findViewById(R.id.v3);
+        v4=(ImageButton)findViewById(R.id.v4);
 
         DisplayMetrics display = this.getResources().getDisplayMetrics();
         Values val = new Values(display.widthPixels,display.heightPixels,getResources().getDisplayMetrics().density);
@@ -45,11 +53,20 @@ public class GameActivity extends Activity {
         BoBar.getLayoutParams().height= Values.BoBaHeight;
         score.setTextSize(Values.BoBaHeight / Values.dens - 4);
 
+        //Working on Objects
         Bitmaps bit = new Bitmaps(this);
-        sn.add(0,new Snake(10,10, Vector.WEST,7,Color.BLUE));
-        currVector = Vector.WEST;
-        //sn.add(1, new Snake(17, 11, 4, 7, Color.BLUE));
-        ml.add(0, new Meal(1,Color.BLUE));
+        Values.AMOUNT_OF_SNAKES=7;
+        Values.AMOUNT_OF_MEAL=7;
+        for(int m=0;m<Values.AMOUNT_OF_MEAL;++m)
+            ml.add(m, new Meal(1,Color.parseColor("#3F51B5")));
+
+        sn.add(0,new Snake(10,10, Vector.WEST,7,Color.parseColor("#F5F5F5")));
+        sn.add(1,new Snake(10,11, Vector.WEST,7,Color.parseColor("#CDDC39")));
+        sn.add(0,new Snake(10,12, Vector.WEST,7,Color.parseColor("#4CAF50")));
+        sn.add(1,new Snake(10,13, Vector.WEST,7,Color.parseColor("#03A9F4")));
+        sn.add(0,new Snake(10,14, Vector.WEST,7,Color.parseColor("#FF9800")));
+        sn.add(1,new Snake(10,15, Vector.WEST,7,Color.parseColor("#607D8B")));
+        sn.add(1,new Snake(10,15, Vector.WEST,7,Color.parseColor("#E91E63")));
     }
 
     @Override
@@ -63,10 +80,14 @@ public class GameActivity extends Activity {
 
     public void clicked(View v) {
         switch(v.getId()){
-            case R.id.v2: currVector = Vector.EAST;break;
-            case R.id.v3: currVector = Vector.SOUTH;break;
-            case R.id.v1: currVector = Vector.NORTH; break;
-            case R.id.v4: currVector = Vector.WEST;break;
+            case R.id.v2:
+                currVector = Vector.EAST;break;
+            case R.id.v3:
+                currVector = Vector.SOUTH;break;
+            case R.id.v1:
+                currVector = Vector.NORTH;break;
+            case R.id.v4:
+                currVector = Vector.WEST;break;
         }
     }
 
@@ -74,12 +95,24 @@ public class GameActivity extends Activity {
         @Override
         public void run() {
             super.run();
-            Snake s = sn.get(0);
-            if (currVector != Vector.inverse(s.parts.get(0).vec))
-                s.parts.get(0).vec = currVector;
-            //currVector = Vector.NORTH;
-            s.move();
-            s.PaintSnake();
+            if (currVector != Vector.inverse(sn.get(0).head().vec))
+                sn.get(0).head().vec = currVector;
+
+            for(int s=0;s<Values.AMOUNT_OF_SNAKES;++s){
+                Snake snake=sn.get(s);
+                if(s!=0)
+                    snake.head().vec=Brains.NewVector(snake);
+                snake.move();
+                for(int m=0;m<Values.AMOUNT_OF_MEAL;++m)
+                    if(ml.get(m).eat(snake.head().p)){
+                        ml.get(m).generate();
+                        snake.grow(1);
+                    }
+                snake.PaintSnake();
+            }
+            for(int m=0;m<Values.AMOUNT_OF_MEAL;++m)
+                ml.get(m).PaintMeal();
+
         }
     }
     class GraphicThread extends Thread{
@@ -88,14 +121,14 @@ public class GameActivity extends Activity {
             super.run();
             while(Values.game) {
                 try {
-                    sleep(Values.delayTime - 15);
+                    sleep(Values.delayTime - 30);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 Bitmaps.MainB.eraseColor(Color.parseColor("#212121"));
                 LoadFrame.run();
                 try {
-                    sleep(15);
+                    sleep(30);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

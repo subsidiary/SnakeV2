@@ -11,12 +11,10 @@ import java.util.Random;
 public class Meal {
     public Point p;
     int color,size,type;
-    boolean enabled=true;
 
-    public Meal(Point p,int size,int color,boolean enabled){
+    public Meal(Point p,int size,int color){
         this.color=color;
         this.size=size;
-        this.enabled=enabled;
         this.p=p;
     }
     public Meal(int size,int color){
@@ -25,17 +23,17 @@ public class Meal {
         this.p=new Point(0,0);
         generate();
     }
-    public void eat(int x,int y){
-        if((x>=p.x&&x<=p.x+size) && (y>=p.y&&y<=p.y+size))
-            enabled=false;
+    public boolean eat(Point p){
+        if((p.x>=this.p.x&&p.x<=this.p.x+(size-1)) && (p.y>=this.p.y&&p.y<=this.p.y+(size-1)))
+            return true;
+        else
+            return false;
     }
     public void generate(){
-
         p.x=new Random().nextInt(Values.CellWidth-(size+1));
         p.y=new Random().nextInt(Values.CellHeight-(size+1));
-        enabled=true;
     }
-    public void paintMeal(){
+    public void PaintMeal(){
         Bitmap b;
         int j;
         switch (size){
@@ -44,9 +42,9 @@ public class Meal {
         }
 
         b=Bitmap.createBitmap(Bitmaps.MealParts[j]);
-        for(int ux=0;ux< Values.SnakeSize;ux++)
-            for(int uy=0;uy< Values.SnakeSize;uy++)
-                if(b.getPixel(ux,uy)== Color.parseColor("#F44336"))b.setPixel(ux,uy,color);
+        for(int ux=0;ux< b.getWidth();ux++)
+            for(int uy=0;uy< b.getHeight();uy++)
+                if(b.getPixel(ux,uy)== Color.parseColor("#3F51B5"))b.setPixel(ux,uy,color);
         Bitmaps.DrawToMainB(b, Values.SnakeSize * p.x, Values.SnakeSize * p.y);
         if(b != null)
             b.recycle();

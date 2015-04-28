@@ -49,4 +49,15 @@ abstract class Brains {
         }
         return Yes;
     }
+    public static int AmountOfPartsInTheCurrentPoint(Point p){
+        int count=0;
+        for(int s=0;s<Values.AMOUNT_OF_SNAKES;++s){
+            for(int prt=0;prt<GameActivity.sn.get(s).length-1;++prt){
+                if(GameActivity.sn.get(s).parts.get(prt).p.x==p.x && GameActivity.sn.get(s).parts.get(prt).p.y==p.y){
+                    ++count;
+                }
+            }
+        }
+        return count;
+    }
 }

@@ -12,6 +12,7 @@ public class Snake {
     public int length;
     private int color;
     public ArrayList<Part> parts;
+    public boolean broken=false;
 
     public Snake(int startX, int startY, Vector vector, int length, int color) {
         parts = new ArrayList<>();
@@ -160,12 +161,12 @@ public class Snake {
 
             b = Bitmap.createBitmap(Bitmaps.SnakeParts[j]);
             //NEEDS TOO MUCH PERFORMANCE, WE MUST TO FIND NEW WAY OF COLORING SNAKES
-            for (int ux = 0; ux < b.getWidth(); ux++)
+            /*for (int ux = 0; ux < b.getWidth(); ux++)
                 for (int uy = 0; uy < b.getHeight(); uy++) {
                     if (b.getPixel(ux, uy) == Color.parseColor("#f5f5f5"))
                         b.setPixel(ux, uy, color);
                 }
-
+*/
             Bitmaps.DrawToMainB(b, Values.SnakeSize * parts.get(i).p.x, Values.SnakeSize * parts.get(i).p.y);
             b.recycle();
         }

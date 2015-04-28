@@ -7,7 +7,7 @@ public class Values {
     static int CellWidth,CellHeight,Width,Height,SnakeSize,BoBaHeight;
     static float dens;
     static boolean FirstLoad=true;
-    static int delayTime=230;
+    static int delayTime=430;
     static int AMOUNT_OF_SNAKES=1;
     static int AMOUNT_OF_MEAL=1;
     static boolean game=true;

@@ -29,7 +29,7 @@ public class GameActivity extends Activity {
     Thread GraphicThread = new GameActivity.GraphicThread();
     Thread LoadFrame = new LoadFrame();
     Handler HelpToDraw = new Handler();
-    static Vector currVector = Vector.NORTH;
+    static Vector currVector = Vector.WEST;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,18 +97,22 @@ public class GameActivity extends Activity {
             super.run();
             if (currVector != Vector.inverse(sn.get(0).head().vec))
                 sn.get(0).head().vec = currVector;
-
+            //Counts Vector ,moves and checks the snakes that ate meal;
             for(int s=0;s<Values.AMOUNT_OF_SNAKES;++s){
                 Snake snake=sn.get(s);
                 if(s!=0)
                     snake.head().vec=Brains.NewVector(snake);
-                snake.move();
+                if(!snake.broken)
+                    snake.move();
                 for(int m=0;m<Values.AMOUNT_OF_MEAL;++m)
                     if(ml.get(m).eat(snake.head().p)){
                         ml.get(m).generate();
                         snake.grow(1);
                     }
-                snake.PaintSnake();
+                if(Brains.AmountOfPartsInTheCurrentPoint(snake.head().p)>1)
+                    snake.broken=true;
+                    snake.PaintSnake();
+
             }
             for(int m=0;m<Values.AMOUNT_OF_MEAL;++m)
                 ml.get(m).PaintMeal();

@@ -53,7 +53,6 @@ public class Snake {
         }
     }
 
-
     //GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS
     public void PaintSnake() {
         Bitmap b;
@@ -160,6 +159,7 @@ public class Snake {
                 }
 
             b = Bitmap.createBitmap(Bitmaps.SnakeParts[j]);
+            //NEEDS TOO MUCH PERFORMANCE, WE MUST TO FIND NEW WAY OF COLORING SNAKES
             for (int ux = 0; ux < b.getWidth(); ux++)
                 for (int uy = 0; uy < b.getHeight(); uy++) {
                     if (b.getPixel(ux, uy) == Color.parseColor("#f5f5f5"))
@@ -169,5 +169,9 @@ public class Snake {
             Bitmaps.DrawToMainB(b, Values.SnakeSize * parts.get(i).p.x, Values.SnakeSize * parts.get(i).p.y);
             b.recycle();
         }
+    }
+
+    public Part head(){
+        return parts.get(0);
     }
 }

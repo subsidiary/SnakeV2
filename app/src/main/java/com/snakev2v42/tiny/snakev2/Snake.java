@@ -79,24 +79,24 @@ public class Snake {
             else if (i == length - 1)
                 switch (parts.get(i).vec) {
                     case NORTH:
-                        j = 4;
-                        break;
-                    case EAST:
-                        j = 5;
-                        break;
-                    case SOUTH:
                         j = 6;
                         break;
-                    case WEST:
+                    case EAST:
                         j = 7;
                         break;
-                    default:
+                    case SOUTH:
                         j = 4;
+                        break;
+                    case WEST:
+                        j = 5;
+                        break;
+                    default:
+                        j = 6;
                 }
             else
                 switch (parts.get(i).vec) {
                     case NORTH:
-                        switch (parts.get(i - 1).vec) {
+                        switch (parts.get(i + 1).vec) {
                             case NORTH:
                                 j = 9;
                                 break;
@@ -111,7 +111,7 @@ public class Snake {
                         }
                         break;
                     case EAST:
-                        switch (parts.get(i - 1).vec) {
+                        switch (parts.get(i + 1).vec) {
                             case NORTH:
                                 j = 11;
                                 break;
@@ -126,7 +126,7 @@ public class Snake {
                         }
                         break;
                     case SOUTH:
-                        switch (parts.get(i - 1).vec) {
+                        switch (parts.get(i + 1).vec) {
                             case EAST:
                                 j = 12;
                                 break;
@@ -141,7 +141,7 @@ public class Snake {
                         }
                         break;
                     case WEST:
-                        switch (parts.get(i - 1).vec) {
+                        switch (parts.get(i + 1).vec) {
                             case NORTH:
                                 j = 12;
                                 break;

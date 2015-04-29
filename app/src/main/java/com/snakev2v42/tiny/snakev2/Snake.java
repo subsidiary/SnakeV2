@@ -21,7 +21,7 @@ public class Snake {
         this.broken = false;
         this.length = 1;
         grow(length);
-        
+
         bitmaps = new Bitmap[15];
         for (int i = 0; i < bitmaps.length; ++i) {
             bitmaps[i] = Bitmap.createBitmap(Bitmaps.SnakeParts[i]);
@@ -33,11 +33,12 @@ public class Snake {
         }
         //PaintSnake(false);
     }
+
     /**
      * Moves every {@code Part} of this {@code Snake} into next cell
      */
     public void move() {
-        for (int i = length-1; i > 0; --i) {
+        for (int i = length - 1; i > 0; --i) {
             Part part = parts.get(i);
             part.move();
             part.vec = parts.get(i - 1).vec;
@@ -63,118 +64,117 @@ public class Snake {
     }
 
     //GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS
-    public void PaintSnake(boolean fast) {
+//    public void PaintSnake(boolean fast) {
+    public void PaintSnake() {
         int j;
-        for(int i=length;i>=0;--i){
-            if((fast && (i==0 || i==1 || i==length-1 || i==length)) || !fast) {
-                if (i == 0)
-                    switch (parts.get(i).vec) {
-                        case NORTH:
-                            j = 0;
-                            break;
-                        case EAST:
-                            j = 1;
-                            break;
-                        case SOUTH:
-                            j = 2;
-                            break;
-                        case WEST:
-                            j = 3;
-                            break;
-                        default:
-                            j = 0;
-                    }
-                else if (i == length - 1)
-                    switch (parts.get(i).vec) {
-                        case NORTH:
-                            j = 6;
-                            break;
-                        case EAST:
-                            j = 7;
-                            break;
-                        case SOUTH:
-                            j = 4;
-                            break;
-                        case WEST:
-                            j = 5;
-                            break;
-                        default:
-                            j = 6;
-                    }
-                else if (i == length)//It is a black square
-                    j = 14;
-                else
-                    switch (parts.get(i).vec) {
-                        case NORTH:
-                            switch (parts.get(i + 1).vec) {
-                                case NORTH:
-                                    j = 9;
-                                    break;
-                                case EAST:
-                                    j = 13;
-                                    break;
-                                case WEST:
-                                    j = 10;
-                                    break;
-                                default:
-                                    j = 9;
-                            }
-                            break;
-                        case EAST:
-                            switch (parts.get(i + 1).vec) {
-                                case NORTH:
-                                    j = 11;
-                                    break;
-                                case EAST:
-                                    j = 8;
-                                    break;
-                                case SOUTH:
-                                    j = 10;
-                                    break;
-                                default:
-                                    j = 8;
-                            }
-                            break;
-                        case SOUTH:
-                            switch (parts.get(i + 1).vec) {
-                                case EAST:
-                                    j = 12;
-                                    break;
-                                case SOUTH:
-                                    j = 9;
-                                    break;
-                                case WEST:
-                                    j = 11;
-                                    break;
-                                default:
-                                    j = 9;
-                            }
-                            break;
-                        case WEST:
-                            switch (parts.get(i + 1).vec) {
-                                case NORTH:
-                                    j = 12;
-                                    break;
-                                case SOUTH:
-                                    j = 13;
-                                    break;
-                                case WEST:
-                                    j = 8;
-                                    break;
-                                default:
-                                    j = 8;
-                            }
-                            break;
-                        default:
-                            j = 10;
-                    }
-
-                Bitmaps.DrawToMainB(bitmaps[j], Values.SnakeSize * parts.get(i).p.x, Values.SnakeSize * parts.get(i).p.y);
-            }
+        for (int i = length - 1; i >= 0; --i) {
+            //if ((fast && (i == 0 || i == 1 || i == length - 1 || i == length)) || !fast) {
+            if (i == 0)
+                switch (parts.get(i).vec) {
+                    case NORTH:
+                        j = 0;
+                        break;
+                    case EAST:
+                        j = 1;
+                        break;
+                    case SOUTH:
+                        j = 2;
+                        break;
+                    case WEST:
+                        j = 3;
+                        break;
+                    default:
+                        j = 0;
+                }
+            else if (i == length - 1)
+                switch (parts.get(i).vec) {
+                    case NORTH:
+                        j = 6;
+                        break;
+                    case EAST:
+                        j = 7;
+                        break;
+                    case SOUTH:
+                        j = 4;
+                        break;
+                    case WEST:
+                        j = 5;
+                        break;
+                    default:
+                        j = 6;
+                }
+//            else if (i == length)//It is a black square
+//                j = 14;
+            else
+                switch (parts.get(i).vec) {
+                    case NORTH:
+                        switch (parts.get(i + 1).vec) {
+                            case NORTH:
+                                j = 9;
+                                break;
+                            case EAST:
+                                j = 13;
+                                break;
+                            case WEST:
+                                j = 10;
+                                break;
+                            default:
+                                j = 9;
+                        }
+                        break;
+                    case EAST:
+                        switch (parts.get(i + 1).vec) {
+                            case NORTH:
+                                j = 11;
+                                break;
+                            case EAST:
+                                j = 8;
+                                break;
+                            case SOUTH:
+                                j = 10;
+                                break;
+                            default:
+                                j = 8;
+                        }
+                        break;
+                    case SOUTH:
+                        switch (parts.get(i + 1).vec) {
+                            case EAST:
+                                j = 12;
+                                break;
+                            case SOUTH:
+                                j = 9;
+                                break;
+                            case WEST:
+                                j = 11;
+                                break;
+                            default:
+                                j = 9;
+                        }
+                        break;
+                    case WEST:
+                        switch (parts.get(i + 1).vec) {
+                            case NORTH:
+                                j = 12;
+                                break;
+                            case SOUTH:
+                                j = 13;
+                                break;
+                            case WEST:
+                                j = 8;
+                                break;
+                            default:
+                                j = 8;
+                        }
+                        break;
+                    default:
+                        j = 10;
+                }
+            Bitmaps.DrawToMainB(bitmaps[j], Values.SnakeSize * parts.get(i).p.x, Values.SnakeSize * parts.get(i).p.y);
         }
     }
 
-    public Part head(){
+    public Part head() {
         return parts.get(0);
     }
 }

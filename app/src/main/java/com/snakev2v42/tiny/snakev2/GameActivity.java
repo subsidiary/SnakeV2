@@ -9,9 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -21,7 +19,7 @@ import java.util.ArrayList;
 
 public class GameActivity extends Activity {
     static RelativeLayout ll;
-    static ImageView BoBar,MainBsurf;
+    static ImageView BoBar,Surface;
     static TextView score;
     static ArrayList<Snake> sn = new ArrayList<>();
     static ArrayList<Meal> ml = new ArrayList<>();
@@ -41,14 +39,14 @@ public class GameActivity extends Activity {
         ll=(RelativeLayout)findViewById(R.id.gamelay);
         BoBar=(ImageView)findViewById(R.id.BottomBar);
         score=(TextView)findViewById(R.id.score);
-        MainBsurf=(ImageView)findViewById(R.id.MainBitmapSurface);
+        Surface =(ImageView)findViewById(R.id.MainBitmapSurface);
         v1=(ImageButton)findViewById(R.id.v1);
         v2=(ImageButton)findViewById(R.id.v2);
         v3=(ImageButton)findViewById(R.id.v3);
         v4=(ImageButton)findViewById(R.id.v4);
 
         DisplayMetrics display = this.getResources().getDisplayMetrics();
-        Values val = new Values(display.widthPixels,display.heightPixels,getResources().getDisplayMetrics().density);
+        Values.init(display.widthPixels,display.heightPixels,getResources().getDisplayMetrics().density);
 
         BoBar.getLayoutParams().height= Values.BoBaHeight;
         score.setTextSize(Values.BoBaHeight / Values.dens - 4);
@@ -60,13 +58,13 @@ public class GameActivity extends Activity {
         for(int m=0;m<Values.AMOUNT_OF_MEAL;++m)
             ml.add(m, new Meal(1,Color.parseColor("#3F51B5")));
 
-        sn.add(0,new Snake(10,10, Vector.WEST,7,Color.parseColor("#F5F5F5")));
-        sn.add(1,new Snake(10,11, Vector.WEST,7,Color.parseColor("#CDDC39")));
-        sn.add(0,new Snake(10,12, Vector.WEST,7,Color.parseColor("#4CAF50")));
-        sn.add(1,new Snake(10,13, Vector.WEST,7,Color.parseColor("#03A9F4")));
-        sn.add(0,new Snake(10,14, Vector.WEST,7,Color.parseColor("#FF9800")));
-        sn.add(1,new Snake(10,15, Vector.WEST,7,Color.parseColor("#607D8B")));
-        sn.add(1,new Snake(10,15, Vector.WEST,7,Color.parseColor("#E91E63")));
+        sn.add(0,new Snake(10,2, Vector.WEST,7,Color.parseColor("#F5F5F5")));
+        sn.add(1,new Snake(10,4, Vector.WEST,7,Color.parseColor("#CDDC39")));
+        sn.add(0,new Snake(10,6, Vector.WEST,7,Color.parseColor("#4CAF50")));
+        sn.add(1,new Snake(10,8, Vector.WEST,7,Color.parseColor("#03A9F4")));
+        sn.add(0,new Snake(10,10, Vector.WEST,7,Color.parseColor("#FF9800")));
+        sn.add(1,new Snake(10,12, Vector.WEST,7,Color.parseColor("#607D8B")));
+        sn.add(1,new Snake(10,14, Vector.WEST,7,Color.parseColor("#E91E63")));
     }
 
     @Override
@@ -101,7 +99,7 @@ public class GameActivity extends Activity {
             for(int s=0;s<Values.AMOUNT_OF_SNAKES;++s){
                 Snake snake=sn.get(s);
                 if(s!=0)
-                    snake.head().vec=Brains.NewVector(snake);
+                    snake.head().vec=Brains.StupidBot(snake);
                 if(!snake.broken)
                     snake.move();
                 for(int m=0;m<Values.AMOUNT_OF_MEAL;++m)
@@ -109,16 +107,16 @@ public class GameActivity extends Activity {
                         ml.get(m).generate();
                         snake.grow(1);
                     }
-                if(Brains.AmountOfPartsInTheCurrentPoint(snake.head().p)>1)
+                if(Map.IfBroken(snake.head().p))
                     snake.broken=true;
-                    snake.PaintSnake();
-
+                    snake.PaintSnake(true);
             }
             for(int m=0;m<Values.AMOUNT_OF_MEAL;++m)
                 ml.get(m).PaintMeal();
 
         }
     }
+
     class GraphicThread extends Thread{
         @Override
         public void run() {
@@ -139,7 +137,7 @@ public class GameActivity extends Activity {
                 HelpToDraw.post(new Runnable() {
                     @Override
                     public void run() {
-                        MainBsurf.setImageBitmap(Bitmaps.MainB);
+                        Surface.setImageBitmap(Bitmaps.MainB);
                     }
                 });
             }

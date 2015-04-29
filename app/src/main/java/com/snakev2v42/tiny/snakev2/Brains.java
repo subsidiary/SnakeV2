@@ -5,7 +5,8 @@ package com.snakev2v42.tiny.snakev2;
  */
 abstract class Brains {
 
-    public static Vector NewVector(Snake currentSnake){
+    public static Vector StupidBot(Snake currentSnake){
+        Map.MakeNewMap();
         int min=Values.CellHeight+Values.CellWidth,minId=0;
         int[] MealPriority = {0,0,0,0,0};
         int[] AlivePriority = {1,1,1,1,1};
@@ -22,7 +23,7 @@ abstract class Brains {
         if(head.p.y<GameActivity.ml.get(minId).p.y)MealPriority[3]=2;
         //AlivePriority..
         for (int i = 1; i <= 4; i++) {
-            if (CheckForAnotherPrts(Point.plus(head.p,Vector.IntToVector(i))))
+            if (Map.CheckMapCell(Point.plus(head.p,Vector.IntToVector(i)))==Cell.SNAKE)
                 AlivePriority[i]=0;
         }
         //Summary
@@ -34,30 +35,12 @@ abstract class Brains {
             }
         }
         return Vector.IntToVector(maxID);
-
+    }
+    public static Vector PeteBot(Snake currentSnake){
+        return Vector.NORTH;
+    }
+    public static Vector YuraBot(Snake currentSnake){
+        return Vector.NORTH;
     }
 
-
-    public static boolean CheckForAnotherPrts(Point p){
-        boolean Yes=false;
-        for(int s=0;s<Values.AMOUNT_OF_SNAKES;++s){
-            for(int prt=0;prt<GameActivity.sn.get(s).length-1;++prt){
-                if(GameActivity.sn.get(s).parts.get(prt).p.x==p.x && GameActivity.sn.get(s).parts.get(prt).p.y==p.y){
-                    Yes=true;
-                }
-            }
-        }
-        return Yes;
-    }
-    public static int AmountOfPartsInTheCurrentPoint(Point p){
-        int count=0;
-        for(int s=0;s<Values.AMOUNT_OF_SNAKES;++s){
-            for(int prt=0;prt<GameActivity.sn.get(s).length-1;++prt){
-                if(GameActivity.sn.get(s).parts.get(prt).p.x==p.x && GameActivity.sn.get(s).parts.get(prt).p.y==p.y){
-                    ++count;
-                }
-            }
-        }
-        return count;
-    }
 }

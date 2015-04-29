@@ -12,12 +12,13 @@ public class Snake {
     public int length;
     private int color;
     public ArrayList<Part> parts;
-    public boolean broken=false;
+    public boolean broken;
 
     public Snake(int startX, int startY, Vector vector, int length, int color) {
         parts = new ArrayList<>();
         //Add head
         parts.add(new Part(startX, startY, vector));
+        this.broken = false;
         this.length = 1;
         grow(length);
         this.color = color;
@@ -49,8 +50,6 @@ public class Snake {
             tail = parts.get(length++);
             //Move tail part
             tail.p.plus(Vector.inverse(tail.vec));
-            //Check if tail is out of bounds
-            tail.outOfBounds();
         }
     }
 

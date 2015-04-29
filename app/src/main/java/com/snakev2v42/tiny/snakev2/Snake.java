@@ -9,8 +9,8 @@ import java.util.ArrayList;
  * Created by yuriy on 4/24/2015.
  */
 public class Snake {
+    private final Bitmap bitmaps[];
     public int length;
-    private int color;
     public ArrayList<Part> parts;
     public boolean broken;
 
@@ -21,7 +21,16 @@ public class Snake {
         this.broken = false;
         this.length = 1;
         grow(length);
-        this.color = color;
+        
+        bitmaps = new Bitmap[15];
+        for (int i = 0; i < bitmaps.length; ++i) {
+            bitmaps[i] = Bitmap.createBitmap(Bitmaps.SnakeParts[i]);
+            for (int ux = 0; ux < bitmaps[i].getWidth(); ux++)
+                for (int uy = 0; uy < bitmaps[i].getHeight(); uy++) {
+                    if (bitmaps[i].getPixel(ux, uy) == Color.parseColor("#f5f5f5"))
+                        bitmaps[i].setPixel(ux, uy, color);
+                }
+        }
         //PaintSnake(false);
     }
     /**
@@ -55,7 +64,6 @@ public class Snake {
 
     //GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS
     public void PaintSnake(boolean fast) {
-        Bitmap b;
         int j;
         for(int i=length;i>=0;--i){
             if((fast && (i==0 || i==1 || i==length-1 || i==length)) || !fast) {
@@ -161,16 +169,7 @@ public class Snake {
                             j = 10;
                     }
 
-                b = Bitmap.createBitmap(Bitmaps.SnakeParts[j]);
-                //NEEDS TOO MUCH PERFORMANCE, WE MUST TO FIND NEW WAY OF COLORING SNAKES
-                for (int ux = 0; ux < b.getWidth(); ux++)
-                    for (int uy = 0; uy < b.getHeight(); uy++) {
-                        if (b.getPixel(ux, uy) == Color.parseColor("#f5f5f5"))
-                            b.setPixel(ux, uy, color);
-                    }
-
-                Bitmaps.DrawToMainB(b, Values.SnakeSize * parts.get(i).p.x, Values.SnakeSize * parts.get(i).p.y);
-                b.recycle();
+                Bitmaps.DrawToMainB(bitmaps[j], Values.SnakeSize * parts.get(i).p.x, Values.SnakeSize * parts.get(i).p.y);
             }
         }
     }

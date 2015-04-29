@@ -10,13 +10,14 @@ public class Point {
         this.x = x;
         this.y = y;
     }
+
     //That is more simple for me.Don't ask me to return everything :)
     public void plus(Vector vector) {
         switch (vector){
-            case NORTH: --this.y;break;
-            case SOUTH: ++this.y;break;
-            case EAST : ++this.x;break;
-            case WEST : --this.x;break;
+            case NORTH: --this.y; break;
+            case SOUTH: ++this.y; break;
+            case EAST : ++this.x; break;
+            case WEST : --this.x; break;
         }
         outOfBounds();
     }

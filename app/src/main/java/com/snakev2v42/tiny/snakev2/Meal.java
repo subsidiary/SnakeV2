@@ -11,16 +11,21 @@ import java.util.Random;
 public class Meal {
     public Point p;
     int color,size,type;
+    public Bitmap bitmap;
 
     public Meal(Point p,int size,int color){
         this.color=color;
         this.size=size;
         this.p=p;
+        bitmap=Bitmap.createBitmap(Bitmaps.MealParts[0]);
+        for (int ux = 0; ux < bitmap.getWidth(); ux++)
+            for (int uy = 0; uy < bitmap.getHeight(); uy++) {
+                if (bitmap.getPixel(ux, uy) == Color.parseColor("#3F51B5"))
+                    bitmap.setPixel(ux, uy, color);
+            }
     }
     public Meal(int size,int color){
-        this.size=size;
-        this.color=color;
-        this.p=new Point(0,0);
+        this(new Point(0,0),size,color);
         generate();
     }
     public boolean eat(Point p){
@@ -34,19 +39,12 @@ public class Meal {
         p.y=new Random().nextInt(Values.CellHeight-(size+1));
     }
     public void PaintMeal(){
-        Bitmap b;
         int j;
         switch (size){
             case 1 : j = 0; break;
             default: j = 0;
         }
 
-        b=Bitmap.createBitmap(Bitmaps.MealParts[j]);
-        for(int ux=0;ux< b.getWidth();ux++)
-            for(int uy=0;uy< b.getHeight();uy++)
-                if(b.getPixel(ux,uy)== Color.parseColor("#3F51B5"))b.setPixel(ux,uy,color);
-        Bitmaps.DrawToMainB(b, Values.SnakeSize * p.x, Values.SnakeSize * p.y);
-        if(b != null)
-            b.recycle();
+        Bitmaps.DrawToMainB(bitmap, Values.SnakeSize * p.x, Values.SnakeSize * p.y);
     }
 }

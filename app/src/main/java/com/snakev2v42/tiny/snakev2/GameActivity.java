@@ -24,7 +24,8 @@ public class GameActivity extends Activity {
     static TextView score;
     static ArrayList<Snake> sn = new ArrayList<>();
     static ArrayList<Meal> ml = new ArrayList<>();
-    ImageButton v1, v2, v3, v4;
+    ImageButton v1, v2, v3, v4 ,stop;
+    boolean stoped=false;
     Thread GraphicThread = new GameActivity.GraphicThread();
     Thread LoadFrame = new LoadFrame();
     Handler HelpToDraw = new Handler();
@@ -45,6 +46,7 @@ public class GameActivity extends Activity {
         v2 = (ImageButton) findViewById(R.id.v2);
         v3 = (ImageButton) findViewById(R.id.v3);
         v4 = (ImageButton) findViewById(R.id.v4);
+        stop = (ImageButton) findViewById(R.id.stop);
 
         DisplayMetrics display = this.getResources().getDisplayMetrics();
         Values.init(display.widthPixels, display.heightPixels, getResources().getDisplayMetrics().density);
@@ -54,18 +56,18 @@ public class GameActivity extends Activity {
 
         //Working on Objects
         Bitmaps bit = new Bitmaps(this);
-        Values.AMOUNT_OF_SNAKES = 7;
-        Values.AMOUNT_OF_MEAL = 7;
+        Values.AMOUNT_OF_SNAKES = 2;
+        Values.AMOUNT_OF_MEAL = 2;
         for (int m = 0; m < Values.AMOUNT_OF_MEAL; ++m)
             ml.add(m, new Meal(1, Color.parseColor("#3F51B5")));
 
-        sn.add(0, new Snake(10, 2, Vector.WEST, 7, Color.parseColor("#F5F5F5")));
-        sn.add(1, new Snake(10, 4, Vector.SOUTH, 7, Color.parseColor("#CDDC39")));
-        sn.add(0, new Snake(10, 6, Vector.WEST, 7, Color.parseColor("#4CAF50")));
-        sn.add(1, new Snake(10, 8, Vector.SOUTH, 7, Color.parseColor("#03A9F4")));
-        sn.add(0, new Snake(10, 10, Vector.WEST, 7, Color.parseColor("#FF9800")));
-        sn.add(1, new Snake(10, 12, Vector.SOUTH, 7, Color.parseColor("#607D8B")));
-        sn.add(1, new Snake(10, 14, Vector.WEST, 7, Color.parseColor("#E91E63")));
+        sn.add(0, new Snake(35, 10 , Vector.WEST , 3, Color.parseColor("#F5F5F5")));
+        sn.add(1, new Snake(4 , 10 , Vector.SOUTH , 3, Color.parseColor("#CDDC39")));
+        /*sn.add(2, new Snake(35, 6 , Vector.WEST , 3, Color.parseColor("#4CAF50")));
+        sn.add(3, new Snake(4, 9 , Vector.SOUTH , 3, Color.parseColor("#03A9F4")));
+        sn.add(4, new Snake(35, 12, Vector.WEST , 3, Color.parseColor("#FF9800")));
+        sn.add(5, new Snake(4, 15, Vector.SOUTH , 3, Color.parseColor("#607D8B")));
+        sn.add(6, new Snake(35, 18, Vector.WEST , 3, Color.parseColor("#E91E63")));*/
     }
 
     @Override
@@ -94,6 +96,11 @@ public class GameActivity extends Activity {
         }
     }
 
+    public void stopIt(View v){
+        if(stoped)stoped=false;
+        else
+            stoped=true;
+    }
     class LoadFrame extends Thread {
         @Override
         public void run() {
@@ -119,7 +126,6 @@ public class GameActivity extends Activity {
             }
             for (int m = 0; m < Values.AMOUNT_OF_MEAL; ++m)
                 ml.get(m).PaintMeal();
-
         }
     }
 
@@ -133,6 +139,7 @@ public class GameActivity extends Activity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                if(!stoped)
                 LoadFrame.run();
                 try {
                     sleep(30);

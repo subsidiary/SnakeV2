@@ -2,15 +2,18 @@ package com.snakev2v42.tiny.snakev2;
 
 import android.widget.Switch;
 
+import java.sql.Array;
+import java.util.Arrays;
+
 /**
  * Created by yuriy on 4/29/2015.
  */
 public class Map {
-    static Cell[][] map;
+    static Cell[][] map = new Cell[Values.CellWidth][Values.CellHeight];;
 
     public static void MakeNewMap() {
-        if (map == null)
-            map = new Cell[Values.CellWidth][Values.CellHeight];
+        for(int i = 0;i<Values.CellWidth;++i)
+            Arrays.fill(map[i],Cell.NOTHING);
         for (int s = 0; s < Values.AMOUNT_OF_SNAKES; ++s) {
             for (int prt = 0; prt < GameActivity.sn.get(s).length; ++prt) {
                 map[GameActivity.sn.get(s).parts.get(prt).p.x][GameActivity.sn.get(s).parts.get(prt).p.y] = Cell.SNAKE;
@@ -21,9 +24,7 @@ public class Map {
     }
 
     public static Cell CheckMapCell(Point p) {
-        if (p.x >= 0 && p.x < Values.CellWidth && p.y >= 0 && p.y < Values.CellHeight)
             return map[p.x][p.y];
-        else return null;
     }
 
     public static boolean IfBroken(Point p) {

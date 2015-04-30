@@ -94,4 +94,15 @@
         android:tint="#F5F5F5"
         android:tintMode="src_in" />
 
+    <ImageButton
+        android:layout_width="120dp"
+        android:layout_height="35dp"
+        android:text="stop/resume"
+        android:id="@+id/stop"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#F44336"
+        android:onClick="stopIt" />
+
 </RelativeLayout>

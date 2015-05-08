@@ -66,8 +66,8 @@ public class GameActivity extends Activity {
 
         //Working on Objects
         Bitmaps bit = new Bitmaps(this);
-        snakes.add(0, new Snake(30, 10, Vector.WEST, 5, Color.parseColor("#F5F5F5")));
-        snakes.add(1, new Snake(10, 10, Vector.EAST, 5, Color.parseColor("#CDDC39")));
+        snakes.add(new Snake(30, 10, Vector.WEST, 5, Color.parseColor("#F5F5F5"), Values.SnakeSize, Values.SnakeSize / 2));
+        snakes.add(new Snake(10, 10, Vector.EAST, 5, Color.parseColor("#CDDC39"), Values.SnakeSize, Values.SnakeSize / 2));
 
         Values.AMOUNT_OF_SNAKES = 2;
 
@@ -84,11 +84,11 @@ public class GameActivity extends Activity {
         snakes.add(6, new Snake(35, 18, Vector.WEST , 3, Color.parseColor("#E91E63")));*/
     }
 
-    @Override
+    /*@Override
     protected void onPause() {
         super.onPause();
         view.surfaceDestroyed(null);
-    }
+    }*/
 
     public void clicked(View v) {
         switch (v.getId()) {

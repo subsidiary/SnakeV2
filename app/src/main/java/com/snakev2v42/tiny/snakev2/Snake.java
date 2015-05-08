@@ -1,7 +1,10 @@
 package com.snakev2v42.tiny.snakev2;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
 
@@ -65,116 +68,61 @@ public class Snake {
 
     //GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS____GRAPHICS
 //    public void PaintSnake(boolean fast) {
-    public void PaintSnake() {
+    public void draw(Canvas canvas, int k) {
         int j;
-        for (int i = length - 1; i >= 0; --i) {
-            //if ((fast && (i == 0 || i == 1 || i == length - 1 || i == length)) || !fast) {
-            if (i == 0)
-                switch (parts.get(i).vec) {
-                    case NORTH:
-                        j = 0;
-                        break;
-                    case EAST:
-                        j = 1;
-                        break;
-                    case SOUTH:
-                        j = 2;
-                        break;
-                    case WEST:
-                        j = 3;
-                        break;
-                    default:
-                        j = 0;
-                }
-            else if (i == length - 1)
-                switch (parts.get(i).vec) {
-                    case NORTH:
-                        j = 6;
-                        break;
-                    case EAST:
-                        j = 7;
-                        break;
-                    case SOUTH:
-                        j = 4;
-                        break;
-                    case WEST:
-                        j = 5;
-                        break;
-                    default:
-                        j = 6;
-                }
-//            else if (i == length)//It is a black square
-//                j = 14;
-            else
-                switch (parts.get(i).vec) {
-                    case NORTH:
-                        switch (parts.get(i + 1).vec) {
-                            case NORTH:
-                                j = 9;
-                                break;
-                            case EAST:
-                                j = 13;
-                                break;
-                            case WEST:
-                                j = 10;
-                                break;
-                            default:
-                                j = 9;
-                        }
-                        break;
-                    case EAST:
-                        switch (parts.get(i + 1).vec) {
-                            case NORTH:
-                                j = 11;
-                                break;
-                            case EAST:
-                                j = 8;
-                                break;
-                            case SOUTH:
-                                j = 10;
-                                break;
-                            default:
-                                j = 8;
-                        }
-                        break;
-                    case SOUTH:
-                        switch (parts.get(i + 1).vec) {
-                            case EAST:
-                                j = 12;
-                                break;
-                            case SOUTH:
-                                j = 9;
-                                break;
-                            case WEST:
-                                j = 11;
-                                break;
-                            default:
-                                j = 9;
-                        }
-                        break;
-                    case WEST:
-                        switch (parts.get(i + 1).vec) {
-                            case NORTH:
-                                j = 12;
-                                break;
-                            case SOUTH:
-                                j = 13;
-                                break;
-                            case WEST:
-                                j = 8;
-                                break;
-                            default:
-                                j = 8;
-                        }
-                        break;
-                    default:
-                        j = 10;
-                }
-            Bitmaps.DrawToMainB(bitmaps[j], Values.SnakeSize * parts.get(i).p.x, Values.SnakeSize * parts.get(i).p.y);
+        for (int i = 1; i < length - 1; ++i) {
+            j = parts.get(i).body(parts.get(i + 1).vec);
+            canvas.drawBitmap(bitmaps[j], Values.SnakeSize * parts.get(i).p.x, Values.SnakeSize * parts.get(i).p.y, null);
         }
+        int x = 0, y = 0, i = 0;
+        switch (parts.get(i).vec) {
+            case NORTH:
+                y = -k + 10;
+                break;
+            case EAST:
+                x = k - 10;
+                break;
+            case SOUTH:
+                y = k - 10;
+                break;
+            case WEST:
+                x = -k + 10;
+                break;
+        }
+        j = parts.get(i).head();
+        //canvas.drawBitmap(bitmaps[9 - (j & 1)], Values.SnakeSize * parts.get(i).p.x, Values.SnakeSize * parts.get(i).p.y, null);
+        canvas.drawBitmap(bitmaps[j], Values.SnakeSize * parts.get(i).p.x + Values.SnakeSize * x / 10, Values.SnakeSize * parts.get(i).p.y + Values.SnakeSize  * y / 10, null);
+
+        x = 0; y = 0;
+        i = length - 1;
+        switch (parts.get(i).vec) {
+            case NORTH:
+                y = -k;
+                break;
+            case EAST:
+                x = k;
+                break;
+            case SOUTH:
+                y = k;
+                break;
+            case WEST:
+                x = -k;
+                break;
+        }
+        j = parts.get(i).tail();
+        //canvas.drawBitmap(bitmaps[9 - (j & 1)], Values.SnakeSize * parts.get(i).p.x, Values.SnakeSize * parts.get(i).p.y, null);
+        canvas.drawBitmap(bitmaps[j], Values.SnakeSize * parts.get(i).p.x + Values.SnakeSize * x / 10, Values.SnakeSize * parts.get(i).p.y + Values.SnakeSize * y / 10, null);
+                /*if (corner) {
+                    j = parts.get(i - 1).body(parts.get(i).vec);
+                    canvas.drawBitmap(bitmaps[j], Values.SnakeSize * parts.get(i - 1).p.x, Values.SnakeSize * parts.get(i - 1).p.y, null);
+                }*/
     }
 
     public Part head() {
         return parts.get(0);
+    }
+
+    public void turn(double direction) {
+        head().vec = head().vec.turn(direction);
     }
 }

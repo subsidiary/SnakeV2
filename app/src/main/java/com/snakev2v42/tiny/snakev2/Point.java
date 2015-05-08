@@ -41,7 +41,7 @@ public class Point {
 //            p.y -= Values.CellHeight;
     }
 
-    private int mod(int a, int b) {
+    public static int mod(int a, int b) {
         int c = a % b;
         return (c < 0) ? c + b : c;
     }

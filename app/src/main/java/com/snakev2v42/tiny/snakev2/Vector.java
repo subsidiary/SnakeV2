@@ -6,6 +6,14 @@ package com.snakev2v42.tiny.snakev2;
 public enum Vector {
     NORTH, EAST, SOUTH, WEST;
 
+    public Vector turn(double direction) {
+        if (direction > 0)
+            return IntToVector(VectorToInt(this) % 4 + 1);
+        else if (direction < 0)
+            return IntToVector(Point.mod(VectorToInt(this) - 2, 4) + 1);
+        else return this;
+    }
+
 
     public static Vector inverse(Vector vector) {
         switch (vector) {
@@ -16,6 +24,7 @@ public enum Vector {
         }
         return null;
     }
+
     public static Vector IntToVector(int vecID){
         Vector vector;
         switch (vecID){

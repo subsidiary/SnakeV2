@@ -14,13 +14,14 @@ public class Map {
     public static void MakeNewMap() {
         for(int i = 0;i<Values.CellWidth;++i)
             Arrays.fill(map[i],Cell.NOTHING);
+        int m=-1;
+        while(++m<Values.AMOUNT_OF_MEAL)
+            map[GameActivity.ml.get(m).p.x][GameActivity.ml.get(m).p.y] = Cell.MEAL;
         for (int s = 0; s < Values.AMOUNT_OF_SNAKES; ++s) {
             for (int prt = 0; prt < GameActivity.sn.get(s).length; ++prt) {
                 map[GameActivity.sn.get(s).parts.get(prt).p.x][GameActivity.sn.get(s).parts.get(prt).p.y] = Cell.SNAKE;
             }
         }
-        for (int m = 0; m < Values.AMOUNT_OF_MEAL; ++m)
-            map[GameActivity.ml.get(m).p.x][GameActivity.ml.get(m).p.y] = Cell.MEAL;
     }
 
     public static Cell CheckMapCell(Point p) {

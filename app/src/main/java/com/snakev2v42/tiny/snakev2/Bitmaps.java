@@ -12,6 +12,7 @@ public class Bitmaps {
     static Bitmap[] MealParts = new Bitmap[3];
     static Bitmap MainB;
     static Canvas canvas;
+    static Bitmap Pete,Yura;
 
     public Bitmaps(Context c) {
         context=c;
@@ -26,7 +27,10 @@ public class Bitmaps {
             SnakeParts[i] = Bitmap.createScaledBitmap(SnakeParts[i], Values.SnakeSize, Values.SnakeSize, false);
         }
         MealParts[0] = Bitmap.createScaledBitmap(((BitmapDrawable) (context.getResources().getDrawable(R.drawable.meal1))).getBitmap(), Values.SnakeSize, Values.SnakeSize, true);
-
+        Pete = ((BitmapDrawable) (context.getResources().getDrawable(R.drawable.inon_p))).getBitmap();
+        Yura = ((BitmapDrawable) (context.getResources().getDrawable(R.drawable.inon_y))).getBitmap();
+        Pete = Bitmap.createScaledBitmap(Pete, Values.SnakeSize*5, Values.SnakeSize*5, false);
+        Yura = Bitmap.createScaledBitmap(Yura, Values.SnakeSize*5, Values.SnakeSize*5, false);
     }
 
     public static void DrawToMainB(Bitmap bitmap, int x, int y) {

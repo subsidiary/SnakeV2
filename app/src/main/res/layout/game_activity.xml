@@ -44,7 +44,8 @@
         android:src="@drawable/control1"
         android:scaleType="fitCenter"
         android:tint="#F5F5F5"
-        android:tintMode="src_in" />
+        android:tintMode="src_in"
+        android:visibility="gone" />
 
     <ImageButton
         android:layout_width="70dp"
@@ -60,7 +61,8 @@
         android:src="@drawable/control2"
         android:scaleType="fitCenter"
         android:tintMode="src_in"
-        android:tint="#F5F5F5" />
+        android:tint="#F5F5F5"
+        android:visibility="gone" />
 
     <ImageButton
         android:layout_width="70dp"
@@ -76,7 +78,8 @@
         android:src="@drawable/control3"
         android:scaleType="fitCenter"
         android:tintMode="src_in"
-        android:tint="#F5F5F5" />
+        android:tint="#F5F5F5"
+        android:visibility="gone" />
 
     <ImageButton
         android:layout_width="70dp"
@@ -92,7 +95,8 @@
         android:src="@drawable/control4"
         android:scaleType="fitCenter"
         android:tint="#F5F5F5"
-        android:tintMode="src_in" />
+        android:tintMode="src_in"
+        android:visibility="gone" />
 
     <ImageButton
         android:layout_width="120dp"

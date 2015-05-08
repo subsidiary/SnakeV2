@@ -6,6 +6,7 @@ package com.snakev2v42.tiny.snakev2;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -56,13 +57,17 @@ public class GameActivity extends Activity {
 
         //Working on Objects
         Bitmaps bit = new Bitmaps(this);
-        Values.AMOUNT_OF_SNAKES = 2;
-        Values.AMOUNT_OF_MEAL = 2;
-        for (int m = 0; m < Values.AMOUNT_OF_MEAL; ++m)
-            ml.add(m, new Meal(1, Color.parseColor("#3F51B5")));
+        sn.add(0, new Snake(30, 10 , Vector.WEST , 3, Color.parseColor("#F5F5F5")));
+        sn.add(1, new Snake(10 , 10 , Vector.EAST , 3, Color.parseColor("#CDDC39")));
 
-        sn.add(0, new Snake(35, 10 , Vector.WEST , 3, Color.parseColor("#F5F5F5")));
-        sn.add(1, new Snake(4 , 10 , Vector.SOUTH , 3, Color.parseColor("#CDDC39")));
+        Values.AMOUNT_OF_SNAKES = 2;
+
+        //m=Amount of meal
+        for (int m = 0; m < 2; ++m){
+            ml.add(m, new Meal(1, Color.parseColor("#3F51B5")));
+            ++Values.AMOUNT_OF_MEAL;
+        }
+
         /*sn.add(2, new Snake(35, 6 , Vector.WEST , 3, Color.parseColor("#4CAF50")));
         sn.add(3, new Snake(4, 9 , Vector.SOUTH , 3, Color.parseColor("#03A9F4")));
         sn.add(4, new Snake(35, 12, Vector.WEST , 3, Color.parseColor("#FF9800")));
@@ -97,9 +102,7 @@ public class GameActivity extends Activity {
     }
 
     public void stopIt(View v){
-        if(stoped)stoped=false;
-        else
-            stoped=true;
+        stoped=!stoped;
     }
     class LoadFrame extends Thread {
         @Override
@@ -111,7 +114,9 @@ public class GameActivity extends Activity {
             //Counts Vector ,moves and checks the snakes that ate meal;
             for (int s = 0; s < Values.AMOUNT_OF_SNAKES; ++s) {
                 Snake snake = sn.get(s);
-                if (s != 0)
+                if (s == 0)
+                    snake.head().vec = Brains.YuraBot(snake);
+                else
                     snake.head().vec = Brains.StupidBot(snake);
                 if (!snake.broken)
                     snake.move();
@@ -126,6 +131,8 @@ public class GameActivity extends Activity {
             }
             for (int m = 0; m < Values.AMOUNT_OF_MEAL; ++m)
                 ml.get(m).PaintMeal();
+            Bitmaps.DrawToMainB(Bitmaps.Pete,GameActivity.sn.get(1).parts.get(0).p.x*Values.SnakeSize,GameActivity.sn.get(1).parts.get(0).p.y*Values.SnakeSize);
+            Bitmaps.DrawToMainB(Bitmaps.Yura,GameActivity.sn.get(0).parts.get(0).p.x*Values.SnakeSize,GameActivity.sn.get(0).parts.get(0).p.y*Values.SnakeSize);
         }
     }
 

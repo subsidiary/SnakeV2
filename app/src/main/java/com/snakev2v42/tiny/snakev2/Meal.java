@@ -25,7 +25,7 @@ public class Meal {
             }
     }
     public Meal(int size,int color){
-        this(new Point(0,0),size,color);
+        this(new Point(1,1),size,color);
         generate();
     }
     public boolean eat(Point p){
@@ -35,8 +35,11 @@ public class Meal {
             return false;
     }
     public void generate(){
-        p.x=new Random().nextInt(Values.CellWidth-(size+1));
-        p.y=new Random().nextInt(Values.CellHeight-(size+1));
+        Map.MakeNewMap();
+        while(Map.CheckMapCell(p)!=Cell.NOTHING) {
+            p.x = new Random().nextInt(Values.CellWidth - (size + 1));
+            p.y = new Random().nextInt(Values.CellHeight - (size + 1));
+        }
     }
     public void PaintMeal(){
         int j;

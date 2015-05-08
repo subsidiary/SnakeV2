@@ -1,9 +1,15 @@
 package com.snakev2v42.tiny.snakev2;
 
+import android.util.Log;
+
+import java.util.Arrays;
+
 /**
  * Created by Yuriy475 on 4/9/2015.
  */
 abstract class Brains {
+
+
 
     public static Vector StupidBot(Snake currentSnake){
         Map.MakeNewMap();
@@ -42,5 +48,8 @@ abstract class Brains {
     public static Vector YuraBot(Snake currentSnake){
         return Vector.NORTH;
     }
+
+
+
 
 }

@@ -39,7 +39,7 @@ public class GameActivity extends Activity {
     static Vector currVector = Vector.WEST;
     private int color = 0;
     static GameView view;
-    private static int snakeSpeed = 5;
+    private static int snakeSpeed = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +161,7 @@ public class GameActivity extends Activity {
                     }
                 }
 
-                if(++i >= 5)
+                if(++i >= snakeSpeed)
                     for (Snake snake : snakes) {
                         //snake.head().vec=Brains.YuraBot(snake);
                         snake.move();

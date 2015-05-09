@@ -70,8 +70,8 @@ public class GameActivity extends Activity {
 
         //Working on Objects
         Bitmaps bit = new Bitmaps(this);
-        snakes.add(new Snake(30, 10, Vector.WEST, 5, Color.parseColor("#F5F5F5"), Values.SnakeSize, Values.SnakeSize / 2, Values.SnakeSize / 3));
-        snakes.add(new Snake(10, 10, Vector.EAST, 5, Color.parseColor("#CDDC39"), Values.SnakeSize, Values.SnakeSize / 2, Values.SnakeSize / 3));
+        snakes.add(new Snake(30, 10, Vector.WEST, 5, Color.parseColor("#F5F5F5"), Color.BLACK, Color.BLACK, Values.SnakeSize));
+        snakes.add(new Snake(10, 10, Vector.EAST, 5, Color.parseColor("#CDDC39"), Color.BLACK, Color.BLACK, Values.SnakeSize));
 
         Values.AMOUNT_OF_SNAKES = 2;
 

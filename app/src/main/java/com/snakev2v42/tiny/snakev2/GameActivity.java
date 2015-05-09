@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -60,14 +61,17 @@ public class GameActivity extends Activity {
 
         DisplayMetrics display = this.getResources().getDisplayMetrics();
         Values.init(display.widthPixels, display.heightPixels, getResources().getDisplayMetrics().density);
+        Log.d("width", String.valueOf(display.widthPixels));
+        Log.d("height", String.valueOf(display.heightPixels));
+        System.out.printf("width = %d\nheight = %d", display.widthPixels, display.heightPixels);
 
         //BoBar.getLayoutParams().height = Values.BoBaHeight;
         //score.setTextSize(Values.BoBaHeight / Values.dens - 4);
 
         //Working on Objects
         Bitmaps bit = new Bitmaps(this);
-        snakes.add(new Snake(30, 10, Vector.WEST, 5, Color.parseColor("#F5F5F5"), Values.SnakeSize, Values.SnakeSize / 2));
-        snakes.add(new Snake(10, 10, Vector.EAST, 5, Color.parseColor("#CDDC39"), Values.SnakeSize, Values.SnakeSize / 2));
+        snakes.add(new Snake(30, 10, Vector.WEST, 5, Color.parseColor("#F5F5F5"), Values.SnakeSize, Values.SnakeSize / 2, Values.SnakeSize / 3));
+        snakes.add(new Snake(10, 10, Vector.EAST, 5, Color.parseColor("#CDDC39"), Values.SnakeSize, Values.SnakeSize / 2, Values.SnakeSize / 3));
 
         Values.AMOUNT_OF_SNAKES = 2;
 
@@ -159,8 +163,8 @@ public class GameActivity extends Activity {
                 if(++i >= 10)
                     for (Snake snake : snakes) {
                         //snake.head().vec=Brains.YuraBot(snake);
-                        snake.turn(((new Random()).nextInt(9) - 4) / 4);
                         snake.move();
+                        snake.turn(((new Random()).nextInt(9) - 4) / 4);
                         i = 0;
                     };
             }

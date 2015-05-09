@@ -4,7 +4,13 @@ package com.snakev2v42.tiny.snakev2;
  * Created by user on 27.04.2015.
  */
 public enum Vector {
-    NORTH, EAST, SOUTH, WEST;
+    NORTH(0), EAST(90), SOUTH(180), WEST(270);
+
+    public final int angle;
+
+    Vector(int angle) {
+        this.angle = angle;
+    }
 
     public Vector turn(double direction) {
         if (direction > 0)

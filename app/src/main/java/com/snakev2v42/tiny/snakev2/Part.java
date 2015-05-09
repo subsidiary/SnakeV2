@@ -4,21 +4,51 @@ package com.snakev2v42.tiny.snakev2;
  * Created by yuriy on 4/24/2015.
  */
 public class Part {
-    public Point p;
+    public enum Direction {
+        LEFT {
+            @Override
+            public Direction inverse() {
+                return RIGHT;
+            }
+        }, RIGHT {
+            @Override
+            public Direction inverse() {
+                return LEFT;
+            }
+        };
 
+        abstract public Direction inverse();
+    }
+
+    public Direction dir;
+    public Point p;
     public Vector vec;
+    public Vector oldVec;
+
+    public Part(Point p, Vector vec, Direction dir) {
+        this.p = p;
+        this.oldVec = this.vec = vec;
+        this.dir = dir;
+    }
 
     public Part(Point p, Vector vec) {
-        this.p = p;
-        this.vec = vec;
+        this(p, vec, Direction.LEFT);
     }
 
     public Part(int x, int y, Vector vec) {
         this(new Point(x, y), vec);
     }
 
+    public Part(int x, int y, Vector vec, Direction dir) {
+        this(new Point(x, y), vec, dir);
+    }
+
     public void move() {
         p.plus(vec);
+        if (vec != oldVec.turn(1) && vec != oldVec.turn(-1))
+            dir = dir.inverse();
+
+        oldVec = vec;
     }
 
     public int head() {

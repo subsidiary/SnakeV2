@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by yuriy on 4/24/2015.
  */
 public class Snake {
-    private final int color, bgColor, eyeColor;
+    private final int color, bgColor, eyeColor, speed;
     private final Bitmap bitmaps[];
     private Picture head, body, bigCorner, smallCorner;
     public int length;
@@ -23,11 +23,11 @@ public class Snake {
     private float eyeR, eyeDist, headR, l, w;
     private Path bodyPath, bigCornerPath, smallCornerPath;
 
-    public Snake(int startX, int startY, Vector vector, int length, int color, int bgColor, int eyeColor, float cellSize) {
-        this(startX, startY, vector, length, color, bgColor, eyeColor, cellSize, cellSize / 2, cellSize / 3, cellSize / 12, cellSize / 7);
+    public Snake(int startX, int startY, Vector vector, int length, int color, int bgColor, int eyeColor, float cellSize, int speed) {
+        this(startX, startY, vector, length, color, bgColor, eyeColor, cellSize, cellSize / 2, cellSize / 3, cellSize / 12, cellSize / 7, speed);
     }
 
-    public Snake(int startX, int startY, Vector vector, int length, int color, int bgColor, int eyeColor, float cellSize, float width, float headRadius, float eyeRadius, float eyeDist) {
+    public Snake(int startX, int startY, Vector vector, int length, int color, int bgColor, int eyeColor, float cellSize, float width, float headRadius, float eyeRadius, float eyeDist, int speed) {
         l = cellSize;
         headR = headRadius;
         eyeR = eyeRadius;
@@ -35,6 +35,7 @@ public class Snake {
         this.color = color;
         this.bgColor = bgColor;
         this.eyeColor = eyeColor;
+        this.speed = speed;
         w = width;
         initPics();
         parts = new ArrayList<>();
@@ -180,6 +181,7 @@ public class Snake {
 
 
     public void draw(Canvas canvas, int k) {
+        k %= speed;
         Paint p = new Paint();
         p.setColor(Color.RED);
         float x, y;
@@ -196,10 +198,10 @@ public class Snake {
             if (part.oldVec == part.vec) {
                 canvas.save();
                 if (part.equals(head())) {
-                    canvas.clipRect(0, l * (10 - k) / 10, l, l);
+                    canvas.clipRect(0, l * (speed - k) / speed, l, l);
                 }
                 if (part.equals(tail()))
-                    canvas.clipRect(0, 0, l, l * (10 - k) / 10);
+                    canvas.clipRect(0, 0, l, l * (speed - k) / speed);
                 //Log.d("k", String.valueOf(k));
                 canvas.drawPicture(body);
                 path = bodyPath;
@@ -209,14 +211,14 @@ public class Snake {
                 if (part.equals(head())) {
                     Path path1 = new Path();
                     path1.moveTo(l, 0);
-                    path1.arcTo(0, -l, 2 * l, l, 90, 9 * k, false);
+                    path1.arcTo(0, -l, 2 * l, l, 90, 90 * k / speed, false);
                     path1.close();
                     canvas.clipPath(path1);
                 }
                 if (part.equals(tail())) {
                     Path path1 = new Path();
                     path1.moveTo(l, 0);
-                    path1.arcTo(0, -l, 2 * l, l, 90 + 9 * k, 9 * (10 - k), false);
+                    path1.arcTo(0, -l, 2 * l, l, 90 + 90 * k / speed, 90 * (speed - k) / speed, false);
                     path1.close();
                     canvas.clipPath(path1);
                 }
@@ -233,7 +235,7 @@ public class Snake {
             if (part.equals(head())) {
                 PathMeasure pm = new PathMeasure(path, false);
                 float[] pos = {0f, 0f}, tan = {0f, 0f};
-                pm.getPosTan(pm.getLength() / 10 * k, pos, tan);
+                pm.getPosTan(pm.getLength() * k / speed, pos, tan);
                 canvas.save();
                 canvas.translate(pos[0] - headR, pos[1] - headR);
                 canvas.rotate((float) Math.toDegrees(Math.atan2(tan[1], tan[0])), headR, headR);

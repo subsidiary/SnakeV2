@@ -39,7 +39,8 @@ public class GameActivity extends Activity {
     static Vector currVector = Vector.WEST;
     private int color = 0;
     static GameView view;
-    private static int snakeSpeed = 2;
+    private static int snakeSpeed = 10;
+    public static Random random;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,9 @@ public class GameActivity extends Activity {
 
         //Working on Objects
         Bitmaps bit = new Bitmaps(this);
+
+        random = new Random();
+        random.setSeed(System.currentTimeMillis());
         snakes.add(new Snake(30, 10, Vector.WEST, 7, Color.parseColor("#F5F5F5"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
         snakes.add(new Snake(10, 10, Vector.EAST, 5, Color.parseColor("#CDDC39"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
 
@@ -147,7 +151,7 @@ public class GameActivity extends Activity {
                 c = null;
 
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(16);
                 } catch (InterruptedException e) {}
                 try {
                     c = surfaceHolder.lockCanvas(null);
@@ -165,7 +169,7 @@ public class GameActivity extends Activity {
                     for (Snake snake : snakes) {
                         //snake.head().vec=Brains.YuraBot(snake);
                         snake.move();
-                        snake.turn(((new Random()).nextInt(9) - 4) / 4);
+                        snake.turn((random.nextInt(9) - 4) / 4);
                         i = 0;
                     };
             }

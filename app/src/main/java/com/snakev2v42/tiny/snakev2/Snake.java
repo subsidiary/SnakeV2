@@ -1,12 +1,12 @@
 package com.snakev2v42.tiny.snakev2;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Picture;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -15,16 +15,16 @@ import java.util.ArrayList;
  */
 public class Snake {
     private final int color, bgColor, eyeColor, speed;
-    private final Bitmap bitmaps[];
-    private Picture head, body, bigCorner, smallCorner;
+    private Picture headPicture, bodyPicture, bigCornerPicture, smallCornerPicture;
     public int length;
     public ArrayList<Part> parts;
     public boolean broken;
     private float eyeR, eyeDist, headR, l, w;
     private Path bodyPath, bigCornerPath, smallCornerPath;
+    private boolean flag;
 
     public Snake(int startX, int startY, Vector vector, int length, int color, int bgColor, int eyeColor, float cellSize, int speed) {
-        this(startX, startY, vector, length, color, bgColor, eyeColor, cellSize, cellSize / 2, cellSize / 3, cellSize / 12, cellSize / 7, speed);
+        this(startX, startY, vector, length, color, bgColor, eyeColor, cellSize, cellSize * 0.375f, cellSize / 3, cellSize / 12, cellSize / 7, speed);
     }
 
     public Snake(int startX, int startY, Vector vector, int length, int color, int bgColor, int eyeColor, float cellSize, float width, float headRadius, float eyeRadius, float eyeDist, int speed) {
@@ -44,17 +44,6 @@ public class Snake {
         this.broken = false;
         this.length = 1;
         grow(length);
-
-        bitmaps = new Bitmap[15];
-        for (int i = 0; i < bitmaps.length; ++i) {
-            bitmaps[i] = Bitmap.createBitmap(Bitmaps.SnakeParts[i]);
-            for (int ux = 0; ux < bitmaps[i].getWidth(); ux++)
-                for (int uy = 0; uy < bitmaps[i].getHeight(); uy++) {
-                    if (bitmaps[i].getPixel(ux, uy) == Color.parseColor("#f5f5f5"))
-                        bitmaps[i].setPixel(ux, uy, color);
-                }
-        }
-        //PaintSnake(false);
     }
 
     /**
@@ -78,7 +67,7 @@ public class Snake {
         while (n-- > 0) {
             Part tail = parts.get(length - 1);
             //Add new part
-            parts.add(new Part(tail.p.x, tail.p.y, tail.vec, tail.dir.inverse()));
+            parts.add(new Part(tail.p.x, tail.p.y, tail.vec, tail.dir, tail.pointDir.inverse()));
             //Update tail part
             tail = parts.get(length++);
             //Move tail part
@@ -88,107 +77,106 @@ public class Snake {
 
     private void initPics() {
         float x, y;
-        Paint p = new Paint();
-        p.setStyle(Paint.Style.FILL);
-        p.setFlags(Paint.ANTI_ALIAS_FLAG);
+        Paint bodyPaint = new Paint();
+        bodyPaint.setStyle(Paint.Style.STROKE);
+        bodyPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        bodyPaint.setColor(Color.RED);
+        bodyPaint.setStrokeWidth(w);
+        Paint eyePaint = new Paint();
+        eyePaint.setStyle(Paint.Style.FILL);
+        eyePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        eyePaint.setColor(Color.BLACK);
         Canvas c;
 
-
-        body = new Picture();
-        c = body.beginRecording((int) l, (int) l);
-        c.clipRect(0, 0, l, l);
-        c.translate(-2 * l, -2 * l);
-
-        p.setColor(color);
-        x = (float) (((3 + Math.sqrt(3)) * l - w) / 2);
-        y = 2 * l;
-        c.drawArc(x, y, x + 2 * l, y + 2 * l, 180, 30, true, p);
-
-        x = (float) (((3 - Math.sqrt(3)) * l + w) / 2);
-        y = l;
-        c.drawArc(x, y, x + 2 * l, y + 2 * l, 0, 30, true, p);
-
-        x = (float) ((5 * l - w) / 2);
-        y = 2 * l;
-        c.drawRect(x, y, x + w, y + l, p);
-
-        p.setColor(bgColor);
-        x = (float) (((3 + Math.sqrt(3)) * l + w) / 2);
-        y = 2 * l;
-        c.drawArc(x, y, x + 2 * l, y + 2 * l, 180, 30, true, p);
-
-        x = (float) (((3 - Math.sqrt(3)) * l - w) / 2);
-        y = l;
-        c.drawArc(x, y, x + 2 * l, y + 2 * l, 0, 30, true, p);
-
-        body.endRecording();
-
-
         bodyPath = new Path();
-        x = (float) ((Math.sqrt(3) - 1) * l / 2);
+        x = l;
+        y = l;
+        bodyPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 180, 30, false);
+        x = (float) (1 - Math.sqrt(0.75)) * l;
+        y = l / 2;
+        bodyPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 30, -60, false);
+        x = l;
         y = 0;
-        bodyPath.arcTo(x, y, x + 2 * l, y + 2 * l, 180, 30, false);
-
-        x = (float) ((-1 - Math.sqrt(3)) * l / 2);
-        y = -l;
-        bodyPath.arcTo(x, y, x + 2 * l, y + 2 * l, 30, -30, false);
-
-
-        head = new Picture();
-        c = head.beginRecording((int) (2 * headR), (int) (2 * headR));
-
-        p.setColor(color);
-        c.drawCircle(headR, headR, headR, p);
-        p.setColor(eyeColor);
-        c.drawCircle(headR + eyeDist, headR + eyeDist, eyeR, p);
-        c.drawCircle(headR + eyeDist, headR - eyeDist, eyeR, p);
-
-        head.endRecording();
-
-
-        bigCorner = new Picture();
-        c = bigCorner.beginRecording((int) l, (int) l);
-        c.clipRect(0, 0, l, l);
-        c.rotate(-90, l * 0.5f, l * 0.5f);
-
-        float t = (float) (((3 - Math.sqrt(3)) * l + w) / 2);
-        p.setColor(color);
-        c.drawArc(l - t, l - t, l + t, l + t, 180, 90, true, p);
-        p.setColor(bgColor);
-        c.drawArc(l - t + w, l - t + w, l + t - w, l + t - w, 180, 90, true, p);
-        bigCorner.endRecording();
-
-
-        bigCornerPath = new Path();
-        bigCornerPath.arcTo(l - t + w * 0.5f, - t + w * 0.5f, l + t - w * 0.5f, t - w * 0.5f, 90, 90, false);
-
-
-        smallCorner = new Picture();
-        c = smallCorner.beginRecording((int) l, (int) l);
-        c.clipRect(0, 0, l, l);
-        c.rotate(-90, l * 0.5f, l * 0.5f);
-
-        p.setColor(color);
-        c.drawArc(t - w, t - w, 2 * l + w - t, 2 * l + w - t, 180, 90, true, p);
-        p.setColor(bgColor);
-        c.drawArc(t, t, 2 * l - t, 2 * l - t, 180, 90, true, p);
-        smallCorner.endRecording();
-
+        bodyPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 150, 30f, false);
 
         smallCornerPath = new Path();
-        smallCornerPath.arcTo(t - w * 0.5f, t - l - w * 0.5f , 2 * l - t + w * 0.5f, l - t + w * 0.5f, 90, 90, false);
+        x = l;
+        y = 0;
+        smallCornerPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 90, 90, false);
+
+        bigCornerPath = new Path();
+        x = l;
+        y = l;
+        bigCornerPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 270, -30, false);
+        x = (float) ((3 - Math.sqrt(3)) * l / 2);
+        y = (float) ((Math.sqrt(3) - 1) * l / 2);
+        float r = (float) ((Math.sqrt(3) - 1) * l - l / 2);
+        bigCornerPath.arcTo(x - r, y - r, x + r, y + r, 60, 150, false);
+        x = 0;
+        y = 0;
+        bigCornerPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 30, -30f, false);
+
+        /*for (int i = 0; i < speed; ++i) {
+            PathMeasure pm = new PathMeasure(smallCornerPath, false);
+            float[] pos = {0f, 0f}, tan = {0f, 0f};
+            pm.getPosTan(i * pm.getLength() / speed, pos, tan);
+            Log.d("angle1", String.valueOf(Math.toDegrees(Math.atan2(tan[1], tan[0]))));
+        }
+        Log.d("space", "space");
+
+        for (int i = 0; i < speed; ++i) {
+            PathMeasure pm = new PathMeasure(bigCornerPath, false);
+            float[] pos = {0f, 0f}, tan = {0f, 0f};
+            pm.getPosTan(i * pm.getLength() / speed, pos, tan);
+            Log.d("angle2", String.valueOf(Math.toDegrees(Math.atan2(tan[1], tan[0]))));
+        }
+        Log.d("space", "space");*/
+
+       /* bodyPicture = new Picture();
+        c = bodyPicture.beginRecording((int) l, (int) l);
+        c.clipRect(0, 0, l, l);
+        c.drawPath(bodyPath, bodyPaint);
+        bodyPicture.endRecording();
+
+        smallCornerPicture = new Picture();
+        c = smallCornerPicture.beginRecording((int) l, (int) l);
+        c.clipRect(0, 0, l, l);
+        c.drawPath(smallCornerPath, bodyPaint);
+        smallCornerPicture.endRecording();
+
+        bigCornerPicture = new Picture();
+        c = bigCornerPicture.beginRecording((int) l, (int) l);
+        c.clipRect(0, 0, l, l);
+        c.drawPath(bigCornerPath, bodyPaint);
+        bigCornerPicture.endRecording();*/
+
+
+        headPicture = new Picture();
+        c = headPicture.beginRecording((int) (2 * headR), (int) (2 * headR));
+        bodyPaint.setStyle(Paint.Style.FILL);
+        c.drawCircle(headR, headR, headR, bodyPaint);
+        c.drawCircle(headR + eyeDist, headR + eyeDist, eyeR, eyePaint);
+        c.drawCircle(headR + eyeDist, headR - eyeDist, eyeR, eyePaint);
+
+        headPicture.endRecording();
     }
 
 
     public void draw(Canvas canvas, int k) {
+        flag = true;
+        Paint bodyPaint = new Paint();
+        bodyPaint.setStyle(Paint.Style.STROKE);
+        bodyPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        bodyPaint.setColor(Color.RED);
+        bodyPaint.setStrokeWidth(w);
+
         k %= speed;
         Paint p = new Paint();
         p.setColor(Color.RED);
-        float x, y;
 
-        for (int h = length - 1; h >= 0; --h) {
+        for (int i = length - 1; i >= 0; --i) {
             Path path;
-            Part part = parts.get(h);
+            Part part = parts.get(i);
             canvas.save();
             canvas.translate(part.p.x * l, part.p.y * l);
             canvas.rotate(part.vec.angle, l * 0.5f, l * 0.5f);
@@ -196,65 +184,88 @@ public class Snake {
                 canvas.scale(-1, 1, l * 0.5f, l * 0.5f);
 
             if (part.oldVec == part.vec) {
-                canvas.save();
-                if (part.equals(head())) {
-                    canvas.clipRect(0, l * (speed - k) / speed, l, l);
-                }
-                if (part.equals(tail()))
-                    canvas.clipRect(0, 0, l, l * (speed - k) / speed);
-                //Log.d("k", String.valueOf(k));
-                canvas.drawPicture(body);
                 path = bodyPath;
-                canvas.restore();
             } else {
-                canvas.save();
-                if (part.equals(head())) {
-                    Path path1 = new Path();
-                    path1.moveTo(l, 0);
-                    path1.arcTo(0, -l, 2 * l, l, 90, 90 * k / speed, false);
-                    path1.close();
-                    canvas.clipPath(path1);
-                }
-                if (part.equals(tail())) {
-                    Path path1 = new Path();
-                    path1.moveTo(l, 0);
-                    path1.arcTo(0, -l, 2 * l, l, 90 + 90 * k / speed, 90 * (speed - k) / speed, false);
-                    path1.close();
-                    canvas.clipPath(path1);
-                }
                 if (part.vec.turn(1) == part.oldVec && part.dir == Part.Direction.LEFT || part.vec.turn(-1) == part.oldVec && part.dir == Part.Direction.RIGHT) {
-                    canvas.drawPicture(bigCorner);
-                    path = bigCornerPath;
+                    path = new Path(smallCornerPath);
                 } else {
-                    canvas.drawPicture(smallCorner);
-                    path = smallCornerPath;
+                    path = new Path(bigCornerPath);
                 }
+            }
+            if (part.equals(head())) {
+                Path path1 = new Path();
+                PathMeasure pm = new PathMeasure(path, false);
+                pm.getSegment(0, pm.getLength() * (k + 1) / speed, path1, true);
+                path = path1;
+            }
+            if (part.equals(tail())) {
+                Path path1 = new Path();
+                PathMeasure pm = new PathMeasure(path, false);
+                pm.getSegment(pm.getLength() * k / speed, pm.getLength(), path1, true);
+                path = path1;
+            }
+            canvas.save();
+            canvas.clipRect(0, 0, l, l);
+            canvas.drawPath(path, bodyPaint);
+            canvas.restore();
+
+            if (!part.equals(head()) && !part.equals(tail())) {
+                PathMeasure pm = new PathMeasure(path, false);
+                float[] pos = {0f, 0f}, tan = {0f, 0f};
+                pm.getPosTan(k * pm.getLength() / speed, pos, tan);
+                canvas.save();
+                canvas.rotate((float) Math.toDegrees(Math.atan2(tan[1], tan[0])) - 90, pos[0], pos[1]);
+                //canvas.translate(pos[0] - eyeR, pos[1] - eyeR);
+                p.setColor(Color.WHITE);
+                canvas.drawCircle(pos[0] + (w / 2 - eyeR * 1.5f) * (part.dir == Part.Direction.LEFT ? -1 : 1) * (part.pointDir == Part.Direction.LEFT ? 1 : -1), pos[1], eyeR, p);
                 canvas.restore();
             }
 
+            //Draw head
             if (part.equals(head())) {
                 PathMeasure pm = new PathMeasure(path, false);
                 float[] pos = {0f, 0f}, tan = {0f, 0f};
-                pm.getPosTan(pm.getLength() * k / speed, pos, tan);
+                pm.getPosTan(pm.getLength(), pos, tan);
                 canvas.save();
                 canvas.translate(pos[0] - headR, pos[1] - headR);
-                canvas.rotate((float) Math.toDegrees(Math.atan2(tan[1], tan[0])), headR, headR);
+                if (part.vec == part.oldVec)
+                    canvas.rotate(-90, headR, headR);
+                else
+                    canvas.rotate((float) Math.toDegrees(Math.atan2(tan[1], tan[0])), headR, headR);
                 p.setColor(Color.YELLOW);
-                canvas.drawPicture(head);
+                canvas.drawPicture(headPicture);
                 canvas.restore();
+            }
+
+            if (part.equals(tail())) {
+                bodyPaint.setStrokeCap(Paint.Cap.ROUND);
+                canvas.drawPath(path, bodyPaint);
             }
             canvas.restore();
         }
 
-        p.setColor(Color.YELLOW);
+       /* p.setColor(Color.YELLOW);
+        p.setStyle(Paint.Style.STROKE);
+        canvas.save();
+        canvas.scale(10, 10);
+        canvas.translate(0, 1);
+        //p.setStrokeWidth(w);
+        canvas.drawPicture(bodyPicture);
+        canvas.drawPath(bodyPath, p);
+        canvas.translate(l, 0);
+        canvas.drawPicture(smallCornerPicture);
         canvas.drawPath(smallCornerPath, p);
+        canvas.translate(l, 0);
+        canvas.drawPicture(bigCornerPicture);
+        canvas.drawPath(bigCornerPath, p);
+        canvas.restore();*/
 
 /*GRID*/
-//        p.setColor(Color.BLUE);
-//        for (int h = 0; h < Values.Width; h += l)
-//            canvas.drawLine(h, 0, h, Values.Height, p);
-//        for (int h = 0; h < Values.Height; h += l)
-//            canvas.drawLine(0, h, Values.Width, h, p);
+        p.setColor(Color.BLUE);
+        for (int h = 0; h < Values.Width; h += l)
+            canvas.drawLine(h, 0, h, Values.Height, p);
+        for (int h = 0; h < Values.Height; h += l)
+            canvas.drawLine(0, h, Values.Width, h, p);
 /*GRID*/
     }
 

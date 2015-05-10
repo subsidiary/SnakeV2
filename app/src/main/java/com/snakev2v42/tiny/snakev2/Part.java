@@ -1,5 +1,9 @@
 package com.snakev2v42.tiny.snakev2;
 
+import android.graphics.Path;
+
+import java.util.Random;
+
 /**
  * Created by yuriy on 4/24/2015.
  */
@@ -21,32 +25,35 @@ public class Part {
     }
 
     public Direction dir;
+    public Direction pointDir;
     public Point p;
     public Vector vec;
     public Vector oldVec;
 
-    public Part(Point p, Vector vec, Direction dir) {
+    public Part(Point p, Vector vec, Direction dir, Direction pointDir) {
         this.p = p;
         this.oldVec = this.vec = vec;
         this.dir = dir;
+        this.pointDir = pointDir;
+        //this.pointDir = GameActivity.random.nextInt(2) == 0 ? Direction.LEFT : Direction.RIGHT;
     }
 
     public Part(Point p, Vector vec) {
-        this(p, vec, Direction.LEFT);
+        this(p, vec, Direction.LEFT, Direction.LEFT);
     }
 
     public Part(int x, int y, Vector vec) {
         this(new Point(x, y), vec);
     }
 
-    public Part(int x, int y, Vector vec, Direction dir) {
-        this(new Point(x, y), vec, dir);
+    public Part(int x, int y, Vector vec, Direction dir, Direction pointDir) {
+        this(new Point(x, y), vec, dir, pointDir);
     }
 
     public void move() {
         p.plus(vec);
-        if (vec != oldVec.turn(1) && vec != oldVec.turn(-1))
-            dir = dir.inverse();
+        /*if (vec != oldVec.turn(1) && vec != oldVec.turn(-1))
+            dir = dir.inverse();*/
 
         oldVec = vec;
     }

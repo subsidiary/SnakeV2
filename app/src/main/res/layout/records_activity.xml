@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#0c1013"
+    android:id="@+id/RecId">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Records"
+        android:id="@+id/records"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="#ffffffff"
+        android:layout_margin="16dp"
+        android:textSize="25dp" />
+
+    <ImageButton
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/mode"
+        android:tint="#929fa6"
+        android:background="@drawable/shadow"
+        android:src="@drawable/circle"
+        android:tintMode="src_in"
+        android:scaleType="fitXY"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:onClick="onModeButtonClick"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_margin="24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="CLASSIC"
+        android:id="@+id/modeTxt"
+        android:layout_alignTop="@+id/mode"
+        android:layout_alignLeft="@+id/mode"
+        android:textColor="#ffffffff"
+        android:layout_alignBottom="@+id/mode"
+        android:layout_alignRight="@+id/mode"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:textSize="17dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/recs"
+        android:layout_below="@+id/records"
+        android:layout_alignLeft="@+id/records"
+        android:layout_alignStart="@+id/records"
+        android:textColor="#ffffffff"
+        android:maxLines="10"
+        android:minHeight="5dp"
+        android:lines="5" />
+
+</RelativeLayout>

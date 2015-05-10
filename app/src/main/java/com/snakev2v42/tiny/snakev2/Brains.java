@@ -45,9 +45,6 @@ abstract class Brains {
     public static Vector PeteBot(Snake currentSnake){
         return Vector.NORTH;
     }
-    public static Vector YuraBot(Snake currentSnake){
-        return Vector.NORTH;
-    }
 
 
 

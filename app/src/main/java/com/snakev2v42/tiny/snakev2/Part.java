@@ -40,7 +40,7 @@ public class Part {
         this.dir = dir;
         this.pointDir = pointDir;
         this.size = size;
-        calcPath();
+        //calcPath();
         //this.pointDir = GameActivity.random.nextInt(2) == 0 ? Direction.LEFT : Direction.RIGHT;
     }
 
@@ -60,7 +60,7 @@ public class Part {
         p.plus(this.vec);
         oldVec = this.vec;
         this.vec = vec;
-        calcPath();
+        //calcPath();
     }
 
     public void calcPath() {

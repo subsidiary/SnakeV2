@@ -73,11 +73,12 @@ public class GameActivity extends Activity {
 
         random = new Random();
         random.setSeed(System.currentTimeMillis());
-        for (int i = 0; i < 20; ++i)
-            snakes.add(new Snake(30, i, Vector.WEST, 1, Color.parseColor("#F5F5F5"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+//        for (int i = 0; i < 20; ++i)
+//            snakes.add(new Snake(30, i, Vector.WEST, 1, Color.parseColor("#F5F5F5"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+        snakes.add(new Snake(30, 10, Vector.WEST, 100, Color.parseColor("#F5F5F5"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
         //snakes.add(new Snake(10, 10, Vector.EAST, 1, Color.parseColor("#CDDC39"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
 
-        Values.AMOUNT_OF_SNAKES = 2;
+        Values.AMOUNT_OF_SNAKES = 1;
 
         //m=Amount of meal
         for (int m = 0; m < 2; ++m) {
@@ -164,6 +165,7 @@ public class GameActivity extends Activity {
                     synchronized (surfaceHolder) {
                         //call methods to draw and process next fame
                         render(c, i);
+                    }
                         Paint paint = new Paint();
                         paint.setColor(Color.WHITE);
                         paint.setTextAlign(Paint.Align.LEFT);
@@ -179,7 +181,6 @@ public class GameActivity extends Activity {
                             averageFps = sum / n;
                             fps = 0;
                         }
-                    }
                 } finally {
                     if (c != null) {
                         surfaceHolder.unlockCanvasAndPost(c);

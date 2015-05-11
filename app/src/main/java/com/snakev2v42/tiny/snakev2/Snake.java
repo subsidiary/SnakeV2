@@ -136,18 +136,24 @@ public class Snake {
         c = bodyPicture.beginRecording((int) l, (int) l);
         c.clipRect(0, 0, l, l);
         c.drawPath(bodyPath, bodyPaint);
+//        bodyPaint.setStyle(Paint.Style.FILL);
+//        c.drawRect(0, 0, l, l, bodyPaint);
         bodyPicture.endRecording();
 
         smallCornerPicture = new Picture();
         c = smallCornerPicture.beginRecording((int) l, (int) l);
         c.clipRect(0, 0, l, l);
         c.drawPath(smallCornerPath, bodyPaint);
+//        bodyPaint.setStyle(Paint.Style.FILL);
+//        c.drawRect(0, 0, l, l, bodyPaint);
         smallCornerPicture.endRecording();
 
         bigCornerPicture = new Picture();
         c = bigCornerPicture.beginRecording((int) l, (int) l);
         c.clipRect(0, 0, l, l);
         c.drawPath(bigCornerPath, bodyPaint);
+//        bodyPaint.setStyle(Paint.Style.FILL);
+//        c.drawRect(0, 0, l, l, bodyPaint);
         bigCornerPicture.endRecording();
 
 
@@ -222,7 +228,7 @@ public class Snake {
             }
             canvas.restore();
 
-            if (!part.equals(head()) && !part.equals(tail())) {
+            /*if (!part.equals(head()) && !part.equals(tail())) {
                 PathMeasure pm = new PathMeasure(path, false);
                 float[] pos = {0f, 0f}, tan = {0f, 0f};
                 pm.getPosTan(k * pm.getLength() / speed, pos, tan);
@@ -232,7 +238,7 @@ public class Snake {
                 p.setColor(Color.WHITE);
                 canvas.drawCircle(pos[0] + (w / 2 - eyeR * 1.5f) * (part.dir == Part.Direction.LEFT ? -1 : 1) * (part.pointDir == Part.Direction.LEFT ? 1 : -1), pos[1], eyeR, p);
                 canvas.restore();
-            }
+            }*/
 
             //Draw head
             if (part.equals(head())) {
@@ -256,30 +262,6 @@ public class Snake {
             }
             canvas.restore();
         }
-
-       /* p.setColor(Color.YELLOW);
-        p.setStyle(Paint.Style.STROKE);
-        canvas.save();
-        canvas.scale(10, 10);
-        canvas.translate(0, 1);
-        //p.setStrokeWidth(w);
-        canvas.drawPicture(bodyPicture);
-        canvas.drawPath(bodyPath, p);
-        canvas.translate(l, 0);
-        canvas.drawPicture(smallCornerPicture);
-        canvas.drawPath(smallCornerPath, p);
-        canvas.translate(l, 0);
-        canvas.drawPicture(bigCornerPicture);
-        canvas.drawPath(bigCornerPath, p);
-        canvas.restore();*/
-
-/*GRID*/
-        p.setColor(Color.BLUE);
-        for (int h = 0; h <= Values.Width; h += l)
-            canvas.drawLine(h, 0, h, Values.Height, p);
-        for (int h = 0; h <= Values.Height; h += l)
-            canvas.drawLine(0, h, Values.Width, h, p);
-/*GRID*/
     }
 
     public Part head() {

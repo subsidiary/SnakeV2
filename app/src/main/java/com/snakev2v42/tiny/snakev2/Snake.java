@@ -2,6 +2,7 @@ package com.snakev2v42.tiny.snakev2;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
@@ -20,7 +21,7 @@ public class Snake {
     public ArrayList<Part> parts;
     public boolean broken;
     private float eyeR, eyeDist, headR, l, w;
-    private Path bodyPath, bigCornerPath, smallCornerPath;
+    public static Path bodyPath, bigCornerPath, smallCornerPath;
     private boolean flag;
 
     public Snake(int startX, int startY, Vector vector, int length, int color, int bgColor, int eyeColor, float cellSize, int speed) {
@@ -40,7 +41,7 @@ public class Snake {
         initPics();
         parts = new ArrayList<>();
         //Add head
-        parts.add(new Part(startX, startY, vector));
+        parts.add(new Part(startX, startY, vector, l));
         this.broken = false;
         this.length = 1;
         grow(length);
@@ -52,10 +53,9 @@ public class Snake {
     public void move() {
         for (int i = length - 1; i > 0; --i) {
             Part part = parts.get(i);
-            part.move();
-            part.vec = parts.get(i - 1).vec;
+            part.move(parts.get(i - 1).vec);
         }
-        parts.get(0).move();
+        parts.get(0).move(parts.get(0).vec);
     }
 
     /**
@@ -67,7 +67,7 @@ public class Snake {
         while (n-- > 0) {
             Part tail = parts.get(length - 1);
             //Add new part
-            parts.add(new Part(tail.p.x, tail.p.y, tail.vec, tail.dir, tail.pointDir.inverse()));
+            parts.add(new Part(tail.p.x, tail.p.y, tail.vec, tail.dir, tail.pointDir.inverse(), l));
             //Update tail part
             tail = parts.get(length++);
             //Move tail part
@@ -132,7 +132,7 @@ public class Snake {
         }
         Log.d("space", "space");*/
 
-       /* bodyPicture = new Picture();
+        bodyPicture = new Picture();
         c = bodyPicture.beginRecording((int) l, (int) l);
         c.clipRect(0, 0, l, l);
         c.drawPath(bodyPath, bodyPaint);
@@ -148,7 +148,7 @@ public class Snake {
         c = bigCornerPicture.beginRecording((int) l, (int) l);
         c.clipRect(0, 0, l, l);
         c.drawPath(bigCornerPath, bodyPaint);
-        bigCornerPicture.endRecording();*/
+        bigCornerPicture.endRecording();
 
 
         headPicture = new Picture();
@@ -175,38 +175,51 @@ public class Snake {
         p.setColor(Color.RED);
 
         for (int i = length - 1; i >= 0; --i) {
-            Path path;
+            Path path = null;
             Part part = parts.get(i);
+            Picture picture;
             canvas.save();
             canvas.translate(part.p.x * l, part.p.y * l);
+
+            if (part.oldVec == part.vec) {
+                picture = bodyPicture;
+                path = new Path(Snake.bodyPath);
+            } else {
+                if (part.vec.turn(1) == part.oldVec && part.dir == Part.Direction.LEFT || part.vec.turn(-1) == part.oldVec && part.dir == Part.Direction.RIGHT) {
+                    picture = smallCornerPicture;
+                    path = new Path(Snake.smallCornerPath);
+                } else {
+                    picture = bigCornerPicture;
+                    path = new Path(Snake.bigCornerPath);
+                }
+            }
             canvas.rotate(part.vec.angle, l * 0.5f, l * 0.5f);
             if (part.oldVec == part.vec && part.dir == Part.Direction.LEFT || part.vec.turn(1) == part.oldVec)
                 canvas.scale(-1, 1, l * 0.5f, l * 0.5f);
 
-            if (part.oldVec == part.vec) {
-                path = bodyPath;
-            } else {
-                if (part.vec.turn(1) == part.oldVec && part.dir == Part.Direction.LEFT || part.vec.turn(-1) == part.oldVec && part.dir == Part.Direction.RIGHT) {
-                    path = new Path(smallCornerPath);
-                } else {
-                    path = new Path(bigCornerPath);
-                }
-            }
+            /*Matrix matrix = new Matrix();
+            if (part.oldVec == part.vec && part.dir == Part.Direction.LEFT || part.vec.turn(1) == part.oldVec)
+                matrix.preScale(-1, 1, l * 0.5f, l * 0.5f);
+            matrix.postRotate(part.vec.angle, l * 0.5f, l * 0.5f);
+            path.transform(matrix);*/
+
+            canvas.save();
+            canvas.clipRect(0, 0, l, l);
             if (part.equals(head())) {
                 Path path1 = new Path();
                 PathMeasure pm = new PathMeasure(path, false);
                 pm.getSegment(0, pm.getLength() * (k + 1) / speed, path1, true);
+                canvas.drawPath(path1, bodyPaint);
                 path = path1;
-            }
-            if (part.equals(tail())) {
+            } else if (part.equals(tail())) {
                 Path path1 = new Path();
                 PathMeasure pm = new PathMeasure(path, false);
                 pm.getSegment(pm.getLength() * k / speed, pm.getLength(), path1, true);
+                canvas.drawPath(path1, bodyPaint);
                 path = path1;
+            } else {
+                canvas.drawPicture(picture);
             }
-            canvas.save();
-            canvas.clipRect(0, 0, l, l);
-            canvas.drawPath(path, bodyPaint);
             canvas.restore();
 
             if (!part.equals(head()) && !part.equals(tail())) {
@@ -262,9 +275,9 @@ public class Snake {
 
 /*GRID*/
         p.setColor(Color.BLUE);
-        for (int h = 0; h < Values.Width; h += l)
+        for (int h = 0; h <= Values.Width; h += l)
             canvas.drawLine(h, 0, h, Values.Height, p);
-        for (int h = 0; h < Values.Height; h += l)
+        for (int h = 0; h <= Values.Height; h += l)
             canvas.drawLine(0, h, Values.Width, h, p);
 /*GRID*/
     }

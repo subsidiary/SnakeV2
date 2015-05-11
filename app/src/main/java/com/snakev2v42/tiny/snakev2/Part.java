@@ -1,5 +1,6 @@
 package com.snakev2v42.tiny.snakev2;
 
+import android.graphics.Matrix;
 import android.graphics.Path;
 
 import java.util.Random;
@@ -8,6 +9,8 @@ import java.util.Random;
  * Created by yuriy on 4/24/2015.
  */
 public class Part {
+    private final float size;
+
     public enum Direction {
         LEFT {
             @Override
@@ -29,33 +32,52 @@ public class Part {
     public Point p;
     public Vector vec;
     public Vector oldVec;
+    public Path path;
 
-    public Part(Point p, Vector vec, Direction dir, Direction pointDir) {
+    public Part(Point p, Vector vec, Direction dir, Direction pointDir, float size) {
         this.p = p;
         this.oldVec = this.vec = vec;
         this.dir = dir;
         this.pointDir = pointDir;
+        this.size = size;
+        calcPath();
         //this.pointDir = GameActivity.random.nextInt(2) == 0 ? Direction.LEFT : Direction.RIGHT;
     }
 
-    public Part(Point p, Vector vec) {
-        this(p, vec, Direction.LEFT, Direction.LEFT);
+    public Part(Point p, Vector vec, float size) {
+        this(p, vec, Direction.LEFT, Direction.LEFT, size);
     }
 
-    public Part(int x, int y, Vector vec) {
-        this(new Point(x, y), vec);
+    public Part(int x, int y, Vector vec, float size) {
+        this(new Point(x, y), vec, size);
     }
 
-    public Part(int x, int y, Vector vec, Direction dir, Direction pointDir) {
-        this(new Point(x, y), vec, dir, pointDir);
+    public Part(int x, int y, Vector vec, Direction dir, Direction pointDir, float size) {
+        this(new Point(x, y), vec, dir, pointDir, size);
     }
 
-    public void move() {
-        p.plus(vec);
-        /*if (vec != oldVec.turn(1) && vec != oldVec.turn(-1))
-            dir = dir.inverse();*/
+    public void move(Vector vec) {
+        p.plus(this.vec);
+        oldVec = this.vec;
+        this.vec = vec;
+        calcPath();
+    }
 
-        oldVec = vec;
+    public void calcPath() {
+        if (oldVec == vec) {
+            path = new Path(Snake.bodyPath);
+        } else {
+            if (vec.turn(1) == oldVec && dir == Part.Direction.LEFT || vec.turn(-1) == oldVec && dir == Part.Direction.RIGHT) {
+                path = new Path(Snake.smallCornerPath);
+            } else {
+                path = new Path(Snake.bigCornerPath);
+            }
+        }
+        Matrix matrix = new Matrix();
+        if (oldVec == vec && dir == Part.Direction.LEFT || vec.turn(1) == oldVec)
+            matrix.preScale(-1, 1, size * 0.5f, size * 0.5f);
+        matrix.postRotate(vec.angle, size * 0.5f, size * 0.5f);
+        path.transform(matrix);
     }
 
     public int head() {

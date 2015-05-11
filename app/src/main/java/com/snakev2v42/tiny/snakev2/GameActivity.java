@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -32,9 +33,9 @@ public class GameActivity extends Activity {
     static TextView score;
     static ArrayList<Snake> snakes = new ArrayList<>();
     static ArrayList<Meal> ml = new ArrayList<>();
-    ImageButton v1, v2, v3, v4 ,stop;
-    boolean stoped=false;
-//    Thread LoadFrame = new LoadFrame();
+    ImageButton v1, v2, v3, v4, stop;
+    boolean stoped = false;
+    //    Thread LoadFrame = new LoadFrame();
     Handler HelpToDraw = new Handler();
     static Vector currVector = Vector.WEST;
     private int color = 0;
@@ -75,13 +76,14 @@ public class GameActivity extends Activity {
 
         random = new Random();
         random.setSeed(System.currentTimeMillis());
-        snakes.add(new Snake(30, 10, Vector.WEST, 7, Color.parseColor("#F5F5F5"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-        snakes.add(new Snake(10, 10, Vector.EAST, 5, Color.parseColor("#CDDC39"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+        for (int i = 0; i < 20; ++i)
+            snakes.add(new Snake(30, i, Vector.WEST, 1, Color.parseColor("#F5F5F5"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+        //snakes.add(new Snake(10, 10, Vector.EAST, 1, Color.parseColor("#CDDC39"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
 
-        Values.AMOUNT_OF_SNAKES = 2;
+        Values.AMOUNT_OF_SNAKES = 1;
 
         //m=Amount of meal
-        for (int m = 0; m < 2; ++m){
+        for (int m = 0; m < 2; ++m) {
             ml.add(m, new Meal(1, Color.parseColor("#3F51B5")));
             ++Values.AMOUNT_OF_MEAL;
         }
@@ -116,8 +118,8 @@ public class GameActivity extends Activity {
         }
     }
 
-    public void stopIt(View v){
-        stoped=!stoped;
+    public void stopIt(View v) {
+        stoped = !stoped;
     }
 
     private void render(Canvas canvas, int k) {
@@ -146,18 +148,34 @@ public class GameActivity extends Activity {
         @Override
         public void run() {
             Canvas c;
-            int i = 0;
+            int i = 0, fps = 0, lastFps = 0, averageFps = 0, sum = 0, n = 0;
+            long lastTime = System.nanoTime();
             while (run) {
                 c = null;
 
                 try {
-                    Thread.sleep(16);
+                    Thread.sleep(0);
                 } catch (InterruptedException e) {}
                 try {
                     c = surfaceHolder.lockCanvas(null);
                     synchronized (surfaceHolder) {
                         //call methods to draw and process next fame
                         render(c, i);
+                        Paint paint = new Paint();
+                        paint.setColor(Color.WHITE);
+                        paint.setTextAlign(Paint.Align.LEFT);
+                        paint.setTextSize(20);
+                        c.drawText(String.format("FPS: %d; Average FPS: %d", lastFps, averageFps), 0, 14, paint);
+                        ++fps;
+                        long time = System.nanoTime();
+                        if (time - lastTime >= 1000000000) {
+                            lastTime = time;
+                            lastFps = fps;
+                            sum += fps;
+                            ++n;
+                            averageFps = sum / n;
+                            fps = 0;
+                        }
                     }
                 } finally {
                     if (c != null) {
@@ -165,13 +183,14 @@ public class GameActivity extends Activity {
                     }
                 }
 
-                if(++i >= snakeSpeed)
+                if (++i >= snakeSpeed)
                     for (Snake snake : snakes) {
                         //snake.head().vec=Brains.YuraBot(snake);
                         snake.move();
                         snake.turn((random.nextInt(9) - 4) / 4);
                         i = 0;
-                    };
+                    }
+
             }
         }
     }

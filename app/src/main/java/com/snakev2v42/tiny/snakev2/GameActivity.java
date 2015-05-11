@@ -62,12 +62,6 @@ public class GameActivity extends Activity {
         v4 = (ImageButton) findViewById(R.id.v4);
         stop = (ImageButton) findViewById(R.id.stop);
 
-        DisplayMetrics display = this.getResources().getDisplayMetrics();
-        Values.init(display.widthPixels, display.heightPixels, getResources().getDisplayMetrics().density);
-        Log.d("width", String.valueOf(display.widthPixels));
-        Log.d("height", String.valueOf(display.heightPixels));
-        System.out.printf("width = %d\nheight = %d", display.widthPixels, display.heightPixels);
-
         //BoBar.getLayoutParams().height = Values.BoBaHeight;
         //score.setTextSize(Values.BoBaHeight / Values.dens - 4);
 
@@ -174,7 +168,7 @@ public class GameActivity extends Activity {
                         paint.setColor(Color.WHITE);
                         paint.setTextAlign(Paint.Align.LEFT);
                         paint.setTextSize(20);
-                        c.drawText(String.format("FPS: %d; Average FPS: %d", lastFps, averageFps), 0, 14, paint);
+                        c.drawText(String.format("FPS: %d; Average FPS: %d", lastFps, averageFps), 0, 20, paint);
                         ++fps;
                         long time = System.nanoTime();
                         if (time - lastTime >= 1000000000) {

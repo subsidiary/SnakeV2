@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/re">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Results"
+        android:id="@+id/resultTxt"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="false"
+        android:textColor="#ffffffff"
+        android:layout_centerInParent="true"
+        android:textSize="80dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/record"
+        android:layout_above="@+id/resultTxt"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp"
+        android:textColor="#ffffffff"
+        android:layout_margin="24dp" />
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/GoMenu"
+        android:tint="#bb0a01"
+        android:background="@drawable/shadow"
+        android:src="@drawable/circle"
+        android:tintMode="src_in"
+        android:scaleType="fitXY"
+        android:onClick="onGoMenuClick"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:layout_margin="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="MENU"
+        android:id="@+id/GoMenuTxt"
+        android:textColor="#ffffffff"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_alignWithParentIfMissing="false"
+        android:textSize="16dp"
+        android:layout_alignParentRight="false"
+        android:layout_marginBottom="5dp"
+        android:layout_alignRight="@+id/GoMenu"
+        android:layout_alignBottom="@+id/GoMenu"
+        android:layout_alignLeft="@+id/GoMenu"
+        android:layout_alignTop="@+id/GoMenu" />
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/GoGame"
+        android:tint="#bb0a01"
+        android:background="@drawable/shadow"
+        android:src="@drawable/circle"
+        android:tintMode="src_in"
+        android:scaleType="fitXY"
+        android:onClick="onGoGameClick"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:layout_margin="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="RETURN"
+        android:id="@+id/GoGameTxt"
+        android:textColor="#ffffffff"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_alignWithParentIfMissing="false"
+        android:textSize="14dp"
+        android:layout_alignParentLeft="false"
+        android:layout_marginBottom="5dp"
+        android:layout_alignBottom="@+id/GoGame"
+        android:layout_alignLeft="@+id/GoGame"
+        android:layout_alignTop="@+id/GoGame"
+        android:layout_alignRight="@+id/GoGame" />
+</RelativeLayout>

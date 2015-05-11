@@ -6,7 +6,7 @@ import java.util.Random;
  * Created by yuriy on 5/10/2015.
  */
 public class Theme {
-    public static int[] snakeColors;
+    public int[] snakeColors;
     public int volume,info,mode,exit,continueb,levels,records,theme;
     public int TextColor;
 
@@ -31,9 +31,7 @@ public class Theme {
         snakeColors[7]=info;
     }
 
-    public static int getColor(){
+    public int getColor(){
         return snakeColors[new Random().nextInt(8)];
     }
-
-
 }

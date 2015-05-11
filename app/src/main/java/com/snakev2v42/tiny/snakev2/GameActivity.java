@@ -6,6 +6,7 @@ package com.snakev2v42.tiny.snakev2;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -22,6 +23,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.snakev2v42.tiny.snakev2.menusAndSettings.ResultActivity;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -95,15 +98,18 @@ public class GameActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        //Here I am writing a pause, just now...
+        //super.onBackPressed();
+        Intent GoResult = new Intent(this,ResultActivity.class);
+        GoResult.putExtra("Score",random.nextInt(2000));
+        startActivity(GoResult);
+        overridePendingTransition(R.anim.start_activity,R.anim.wait_anim);
     }
 
-    /*@Override
+    @Override
     protected void onPause() {
         super.onPause();
         view.surfaceDestroyed(null);
-    }*/
+    }
 
     public void clicked(View v) {
         switch (v.getId()) {

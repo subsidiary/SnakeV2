@@ -12,7 +12,7 @@
         <activity android:name="com.snakev2v42.tiny.snakev2.GameActivity"/>
         <activity android:name=".menusAndSettings.RecordsActivity"/>
         <activity android:name=".menusAndSettings.InfoActivity"/>
-        <activity android:name=".menusAndSettings.PauseActivity"/>
+        <activity android:name=".menusAndSettings.ResultActivity"/>
     </application>
 
 </manifest>

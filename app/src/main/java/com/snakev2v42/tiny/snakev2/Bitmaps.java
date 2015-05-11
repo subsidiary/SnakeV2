@@ -23,6 +23,7 @@ public class Bitmaps {
         Bitmap source;
         source = ((BitmapDrawable) (context.getResources().getDrawable(R.drawable.snake_parts))).getBitmap();
         for (int i = 0; i <= 14; i++) {
+            //Out Of Memory..............................................................................................................................................;
             SnakeParts[i] = Bitmap.createBitmap(source, source.getWidth() / 5 * (i % 5), source.getHeight() / 3 * (i / 5), source.getWidth() / 5, source.getHeight() / 3);
             SnakeParts[i] = Bitmap.createScaledBitmap(SnakeParts[i], Values.SnakeSize, Values.SnakeSize, false);
         }

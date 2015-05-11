@@ -22,6 +22,8 @@ import com.snakev2v42.tiny.snakev2.GameActivity;
 import com.snakev2v42.tiny.snakev2.R;
 import com.snakev2v42.tiny.snakev2.Values;
 
+import java.util.Random;
+
 /**
  * Created by yuriy on 5/8/2015.
  */
@@ -130,7 +132,6 @@ public class StartActivity extends Activity {
         super.onResume();
         returnDefaultButtonProperties();
         EnableButts(true);
-        Log.v("RestoreCompleted","YES");
         breathAllowed=true;
         setLables();
     }
@@ -198,11 +199,11 @@ public class StartActivity extends Activity {
         TextAnim.start();
         CircleAnim.start();
         final Intent GoGame = new Intent(this, GameActivity.class);
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 startActivity(GoGame);
+                overridePendingTransition(R.anim.start_activity, R.anim.wait_anim);
             }
         }, 900);
     }
@@ -291,6 +292,7 @@ public class StartActivity extends Activity {
             @Override
             public void run() {
                 startActivity(GoSetts);
+                overridePendingTransition(R.anim.start_activity,R.anim.wait_anim);
             }
         }, 650);
     }
@@ -382,6 +384,7 @@ public class StartActivity extends Activity {
             @Override
             public void run() {
                 startActivity(GoInfo);
+                overridePendingTransition(R.anim.start_activity, R.anim.wait_anim);
             }
         }, 1300);
     }
@@ -619,6 +622,7 @@ public class StartActivity extends Activity {
         infoImg.bringToFront();
         setLables();
     }
+
     public void EnableButts(boolean enable){
         level.setEnabled(enable);
         exit.setEnabled(enable);

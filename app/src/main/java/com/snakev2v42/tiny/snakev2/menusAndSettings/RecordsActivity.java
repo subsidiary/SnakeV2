@@ -47,19 +47,12 @@ public class RecordsActivity extends Activity {
         recordsTxt.setTextColor(Values.getTheme().TextColor);
         modeTxt.setTextColor(Values.getTheme().TextColor);
         modeB.setColorFilter(Values.getTheme().exit);
-    }
+        double factor = Values.IncreaceFactor, D = Values.dens;
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (!FocusCompleted) {
-            double factor = Values.IncreaceFactor, D = Values.dens;
-            recordsTxt.setTextSize((int) (recordsTxt.getTextSize() / D * factor));
-            recordList.setTextSize((int) (recordList.getTextSize() / D * factor));
-            modeTxt.setTextSize((int) (modeTxt.getTextSize() / D * factor));
-            StartActivity.setParams(modeB, (int) (modeB.getWidth() * factor), (int) (modeB.getHeight() * factor));
-            FocusCompleted=true;
-        }
+        recordsTxt.setTextSize((int) (25 * factor));
+        recordList.setTextSize((int) (21 * factor));
+        modeTxt.setTextSize((int) (17 * factor));
+        StartActivity.setParams(modeB, (int) (120 * D* factor), (int) (120 *D  * factor));
     }
 
     public void onModeButtonClick(View v){
@@ -108,6 +101,7 @@ public class RecordsActivity extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        overridePendingTransition(R.anim.wait_anim,R.anim.exit_activity);
         finish();
     }
 }

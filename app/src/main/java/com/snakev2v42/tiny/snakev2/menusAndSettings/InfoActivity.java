@@ -25,6 +25,7 @@ public class InfoActivity extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        overridePendingTransition(R.anim.wait_anim,R.anim.exit_activity);
         finish();
     }
 }

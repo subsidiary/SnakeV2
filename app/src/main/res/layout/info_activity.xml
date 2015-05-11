@@ -11,7 +11,6 @@
         android:id="@+id/textView2"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="false"
         android:textColor="#ffffffff"
         android:layout_margin="16dp" />
 
@@ -21,7 +20,6 @@
         android:id="@+id/imageView"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="false"
         android:src="@drawable/info_part"
         android:scaleType="centerCrop" />
 

@@ -22,7 +22,6 @@ public class RecordsActivity extends Activity {
     private TextView modeTxt, recordsTxt, recordList;
     private RelativeLayout re;
     Mode mode=Mode.CLASSIC;
-    boolean FocusCompleted=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +45,13 @@ public class RecordsActivity extends Activity {
         recordList.setTextColor(Values.getTheme().TextColor);
         recordsTxt.setTextColor(Values.getTheme().TextColor);
         modeTxt.setTextColor(Values.getTheme().TextColor);
-        modeB.setColorFilter(Values.getTheme().exit);
-        double factor = Values.IncreaceFactor, D = Values.dens;
 
-        recordsTxt.setTextSize((int) (25 * factor));
-        recordList.setTextSize((int) (21 * factor));
-        modeTxt.setTextSize((int) (17 * factor));
-        StartActivity.setParams(modeB, (int) (120 * D* factor), (int) (120 *D  * factor));
+        modeB.setColorFilter(Values.getTheme().exit);
+
+        recordsTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*25));
+        recordList.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*21));
+        modeTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*11));
+        StartActivity.setParamsByFactor(modeB,80,80);
     }
 
     public void onModeButtonClick(View v){
@@ -73,7 +72,7 @@ public class RecordsActivity extends Activity {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                    modeTxt.setTranslationX((Float) animation.getAnimatedValue());
-                recordList.setTranslationX((Float) animation.getAnimatedValue()*7*(float)Values.IncreaceFactor);
+                   recordList.setTranslationX((Float) animation.getAnimatedValue()*7*(float)Values.IncreaceFactor);
             }
         });
         TextAnim.start();

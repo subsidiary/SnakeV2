@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:id="@+id/gameplay">
+    android:id="@+id/GameLayout">
 
-    <com.snakev2v42.tiny.snakev2.GameActivity.GameView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/MainBitmapSurface"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:background="#ff212121" />
-
+    <com.snakev2v42.tiny.snakev2.GameView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -45,7 +40,7 @@
         android:scaleType="fitCenter"
         android:tint="#F5F5F5"
         android:tintMode="src_in"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <ImageButton
         android:layout_width="70dp"
@@ -62,7 +57,8 @@
         android:scaleType="fitCenter"
         android:tintMode="src_in"
         android:tint="#F5F5F5"
-        android:visibility="gone" />
+        android:visibility="visible"
+        android:layout_marginRight="8dp" />
 
     <ImageButton
         android:layout_width="70dp"
@@ -79,7 +75,8 @@
         android:scaleType="fitCenter"
         android:tintMode="src_in"
         android:tint="#F5F5F5"
-        android:visibility="gone" />
+        android:visibility="visible"
+        android:layout_marginBottom="8dp" />
 
     <ImageButton
         android:layout_width="70dp"
@@ -96,16 +93,6 @@
         android:scaleType="fitCenter"
         android:tint="#F5F5F5"
         android:tintMode="src_in"
-        android:visibility="gone" />
-
-    <ImageButton
-        android:layout_width="120dp"
-        android:layout_height="35dp"
-        android:text="stop/resume"
-        android:id="@+id/stop"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="#F44336"
-        android:onClick="stopIt" />
+        android:visibility="visible" />
 
 </RelativeLayout>

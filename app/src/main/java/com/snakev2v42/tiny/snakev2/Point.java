@@ -43,6 +43,7 @@ public class Point {
 
     public static int mod(int a, int b) {
         int c = a % b;
+        //Hacker cod?
         return (c < 0) ? c + b : c;
     }
 }

@@ -32,10 +32,10 @@ public class StartActivity extends Activity {
     private static TextView levelTxt,exitTxt,modeTxt, recordsTxt,themeTxt,continueTxt;
     private static ImageView volumeImg,infoImg;
     static Handler handler;
-    static Animation button_clicked;
+    public static Animation button_clicked;
     static Typeface DotTxt;
 
-    boolean breathAllowed = true,FocusCompleted=false,lockTheme=false;
+    boolean breathAllowed = true,lockTheme=false;
     Thread breath = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -87,44 +87,31 @@ public class StartActivity extends Activity {
         themeTxt.setTypeface(DotTxt);
         continueTxt.setTypeface(DotTxt);
 
-
         Values.init(this);
-
         button_clicked= AnimationUtils.loadAnimation(this,R.anim.button_anim);
         handler = new Handler();
 
+        double D = (double) Values.dens, factor = (Values.Width - 16 * D) / (524);
+        if (factor < (Values.Height - 16 * D) / (300))
+            factor = (Values.Height - 16 * D) / (300);
+        Values.IncreaceFactor=factor;
+        setParamsByFactor(continueb,200,200);setMarginsByFactor(continueb, 16, 16,0,0);
+        setParamsByFactor(level    ,150,150);setMarginsByFactor(level, 216, 16, 0, 0);
+        setParamsByFactor(mode     ,120,120);setMarginsByFactor(mode, 366, 16, 0, 0);
+        setParamsByFactor(records  ,130,130);setMarginsByFactor(records, 170, 170, 0, 0);
+        setParamsByFactor(info     , 60, 60);setMarginsByFactor(info, 456, 120, 0, 0);
+        setParamsByFactor(volume   , 60, 60);setMarginsByFactor(volume, 24, 220, 0, 0);
+        setParamsByFactor(exit     ,100,100);setMarginsByFactor(exit, 424, 200, 0, 0);
+        setParamsByFactor(theme    ,120,120);setMarginsByFactor(theme, 316, 136, 0, 0);
+        continueTxt.setTextSize(StartActivity.convertFromDp((float) Values.IncreaceFactor * 26));
+        levelTxt.setTextSize(StartActivity.convertFromDp((float) Values.IncreaceFactor * 21));
+        modeTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*17));
+        recordsTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*20));
+        themeTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*20));
+        exitTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*21));
+
         if(!breath.isAlive())
             breath.start();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean focus) {
-        super.onWindowFocusChanged(focus);
-        if (!FocusCompleted) {
-            double D=(double)Values.dens,factor=(Values.Width-16*D)/(exit.getWidth()+exit.getX());
-            if (factor < (Values.Height - 16 * D) / (exit.getHeight() + exit.getY()))
-                factor = (Values.Height - 16 * D) / (exit.getHeight() + exit.getY());
-            Values.IncreaceFactor=factor;
-            setParams(continueb, (int) (continueb.getWidth() * factor), (int) (continueb.getHeight() * factor));
-            setMargins(continueb, (int) (16 * D * factor), (int) (16 * D * factor), 0, 0);
-            setParams(level, (int) (level.getWidth() * factor), (int) (level.getHeight() * factor));
-            setMargins(level, (int) (216 * D * factor), (int) (16 * D * factor), 0, 0);
-            setParams(mode, (int) (mode.getWidth() * factor), (int) (mode.getHeight() * factor));
-            setMargins(mode, (int) (366 * D * factor), (int) (16 * D * factor), 0, 0);
-            setParams(theme, (int) (theme.getWidth() * factor), (int) (theme.getHeight() * factor));
-            setMargins(theme, (int) (316 * D * factor), (int) (136 * D * factor), 0, 0);
-            setParams(records, (int) (records.getWidth() * factor), (int) (records.getHeight() * factor));
-            setMargins(records, (int) (170 * D * factor), (int) (170 * D * factor), 0, 0);
-            setParams(exit, (int) (exit.getWidth() * factor), (int) (exit.getHeight() * factor));
-            setMargins(exit, (int) (424 * D * factor), (int) (200 * D * factor), 0, 0);
-            setParams(volume, (int) (volume.getWidth() * factor), (int) (volume.getHeight() * factor));
-            setMargins(volume, (int) (27 * D * factor), (int) (220 * D * factor), 0, 0);
-            setParams(info, (int) (info.getWidth() * factor), (int) (info.getHeight() * factor));
-            setMargins(info, (int) (456 * D * factor), (int) (120 * D * factor), 0, 0);
-            FocusCompleted = true;
-            continueTxt.setTextSize((int)(continueTxt.getTextSize()/D*factor));levelTxt.setTextSize((int)(levelTxt.getTextSize()/D*factor));modeTxt.setTextSize((int)(modeTxt.getTextSize()/D*factor));
-            recordsTxt.setTextSize((int)(recordsTxt.getTextSize()/D*factor));themeTxt.setTextSize((int)(themeTxt.getTextSize()/D*factor));exitTxt.setTextSize((int)(exitTxt.getTextSize()/D*factor));
-        }
     }
 
     @Override
@@ -152,13 +139,6 @@ public class StartActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Values.saveSettings();
     }
 
     public void onContinueClick(final View v){
@@ -588,6 +568,10 @@ public class StartActivity extends Activity {
         level.setColorFilter(Values.getTheme().levels);
         exit.setColorFilter(Values.getTheme().exit);
         mode.setColorFilter(Values.getTheme().mode);
+        if(Values.savedGame)
+            continueTxt.setText("CONTINUE");
+        else
+            continueTxt.setText("NEW GAME");
     }
     public static void returnDefaultButtonProperties(){
         levelTxt.setTranslationX(0);
@@ -599,7 +583,6 @@ public class StartActivity extends Activity {
         volume.setTranslationX(0);
         theme.setTranslationX(0);
 
-        levelTxt.setText("NEW GAME");
         level.setScaleX(1);
         level.setScaleY(1);
         exit.setScaleX(1);
@@ -607,7 +590,6 @@ public class StartActivity extends Activity {
         records.setScaleX(1);
         records.setScaleY(1);
         mode.setScaleX(1);
-        continueTxt.setText("CONTINUE");
         continueb.setScaleX(1);
         continueb.setScaleY(1);
         info.setScaleX(1);
@@ -634,13 +616,21 @@ public class StartActivity extends Activity {
         theme.setEnabled(enable);
         breathAllowed=enable;
     }
+    public static float convertFromDp(float input) {
+        return ((input - 0.5f) / Values.dens);
+    }
+    public static void setMarginsByFactor(View v,int l,int t,int r,int b){
+        setMargins(v,(int)(Values.IncreaceFactor*l),(int)(Values.IncreaceFactor*t),(int)(Values.IncreaceFactor*r),(int)(Values.IncreaceFactor*b));
+    }
+    public static void setParamsByFactor(View v,int height,int width){
+        setParams(v, (int) (height*Values.IncreaceFactor), (int) (width*Values.IncreaceFactor));
+    }
     public static void setMargins(View v,int l,int t,int r,int b){
         RelativeLayout.LayoutParams parm = (RelativeLayout.LayoutParams)v.getLayoutParams();
         parm.setMargins(l, t, r, b);
         v.setLayoutParams(parm);
     }
     public static void setParams(View v,int height,int width){
-        Log.i("PARAMS  "," H "+height+" W "+width);
         v.getLayoutParams().height=height;v.getLayoutParams().width=width;
     }
 }

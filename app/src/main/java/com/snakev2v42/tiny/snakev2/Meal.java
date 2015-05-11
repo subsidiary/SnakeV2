@@ -47,7 +47,6 @@ public class Meal {
             case 1 : j = 0; break;
             default: j = 0;
         }
-
         Bitmaps.DrawToMainB(bitmap, Values.SnakeSize * p.x, Values.SnakeSize * p.y);
     }
 }

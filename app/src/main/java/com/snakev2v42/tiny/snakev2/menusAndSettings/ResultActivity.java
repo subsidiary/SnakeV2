@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -44,31 +45,30 @@ public class ResultActivity extends Activity{
         resultTxt.setTypeface(StartActivity.DotTxt);
         GoGameTxt.setTypeface(StartActivity.DotTxt);
         GoMenuTxt.setTypeface(StartActivity.DotTxt);
-        recordTxt.setTextSize((float) Values.IncreaceFactor * 25);
-        resultTxt.setTextSize((float) Values.IncreaceFactor * 80);
-        GoGameTxt.setTextSize((float)Values.IncreaceFactor*14);
-        GoMenuTxt.setTextSize((float)Values.IncreaceFactor*16);
+        recordTxt.setTextSize(StartActivity.convertFromDp((float) Values.IncreaceFactor * 25));
+        resultTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*80));
+        GoGameTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*14));
+        GoMenuTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*16));
         GoMenu.setColorFilter(Values.getTheme().exit);
         GoGame.setColorFilter(Values.getTheme().exit);
 
-        StartActivity.setParams(GoGame,(int)(Values.IncreaceFactor*Values.dens*80),(int)(Values.IncreaceFactor*Values.dens*80));
-        StartActivity.setParams(GoMenu,(int)(Values.IncreaceFactor*Values.dens*80),(int)(Values.IncreaceFactor*Values.dens*80));
+        StartActivity.setParamsByFactor(GoGame, 80, 80);
+        StartActivity.setParamsByFactor(GoMenu, 80, 80);
 
         int score=getIntent().getExtras().getInt("Score",0);
         resultTxt.setText(score+"");
         recordTxt.setText(CheckRecords(score));
-        CheckRecords(score);
     }
 
     public void onGoMenuClick(View v){
-        GoMenu.startAnimation(StartActivity.button_clicked);
+//        GoMenu.startAnimation(StartActivity.button_clicked);
         Intent GoTOMenu = new Intent(this, StartActivity.class);
         startActivity(GoTOMenu);
         finish();
         overridePendingTransition(R.anim.wait_anim,R.anim.exit_activity);
     }
     public void onGoGameClick(View v){
-        GoGame.startAnimation(StartActivity.button_clicked);
+//        GoGame.startAnimation(StartActivity.button_clicked);
         finish();
         overridePendingTransition(R.anim.wait_anim,R.anim.exit_activity);
     }
@@ -102,6 +102,7 @@ public class ResultActivity extends Activity{
                 }
             }
         }
+        Values.saveSettings();
         return newRecord;
     }
     @Override

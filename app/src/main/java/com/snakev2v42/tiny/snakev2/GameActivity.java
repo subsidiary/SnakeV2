@@ -99,11 +99,11 @@ public class GameActivity extends Activity {
         //Here I am writing a pause, just now...
     }
 
-    @Override
+    /*@Override
     protected void onPause() {
         super.onPause();
         view.surfaceDestroyed(null);
-    }
+    }*/
 
     public void clicked(View v) {
         switch (v.getId()) {

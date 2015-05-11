@@ -74,13 +74,16 @@ public class GameActivity extends Activity {
         //Working on Objects
         Bitmaps bit = new Bitmaps(this);
 
+        //Use Values variables to communicate settings with game activity;
+        snakeSpeed=9-Values.lvl;
+
         random = new Random();
         random.setSeed(System.currentTimeMillis());
         for (int i = 0; i < 20; ++i)
             snakes.add(new Snake(30, i, Vector.WEST, 1, Color.parseColor("#F5F5F5"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
         //snakes.add(new Snake(10, 10, Vector.EAST, 1, Color.parseColor("#CDDC39"), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
 
-        Values.AMOUNT_OF_SNAKES = 1;
+        Values.AMOUNT_OF_SNAKES = 2;
 
         //m=Amount of meal
         for (int m = 0; m < 2; ++m) {
@@ -95,11 +98,17 @@ public class GameActivity extends Activity {
         snakes.add(6, new Snake(35, 18, Vector.WEST , 3, Color.parseColor("#E91E63")));*/
     }
 
-    /*@Override
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //Here I am writing a pause, just now...
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         view.surfaceDestroyed(null);
-    }*/
+    }
 
     public void clicked(View v) {
         switch (v.getId()) {
@@ -183,14 +192,13 @@ public class GameActivity extends Activity {
                     }
                 }
 
-                if (++i >= snakeSpeed)
+                if(++i >= snakeSpeed)
                     for (Snake snake : snakes) {
                         //snake.head().vec=Brains.YuraBot(snake);
                         snake.move();
                         snake.turn((random.nextInt(9) - 4) / 4);
                         i = 0;
-                    }
-
+                    };
             }
         }
     }

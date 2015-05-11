@@ -3,12 +3,16 @@
 
     <application android:allowBackup="true" android:label="@string/app_name"
         android:icon="@drawable/ic_launcher" android:theme="@style/AppTheme">
-        <activity android:name="com.snakev2v42.tiny.snakev2.GameActivity" >
+        <activity android:name="com.snakev2v42.tiny.snakev2.menusAndSettings.StartActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.snakev2v42.tiny.snakev2.GameActivity"/>
+        <activity android:name=".menusAndSettings.RecordsActivity"/>
+        <activity android:name=".menusAndSettings.InfoActivity"/>
+        <activity android:name=".menusAndSettings.PauseActivity"/>
     </application>
 
 </manifest>

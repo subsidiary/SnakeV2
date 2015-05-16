@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.snakev2v42.tiny.snakev2.GameActivity;
+import com.snakev2v42.tiny.snakev2.ModeProperties.Battle;
+import com.snakev2v42.tiny.snakev2.ModeProperties.Campaign;
+import com.snakev2v42.tiny.snakev2.ModeProperties.Classic;
 import com.snakev2v42.tiny.snakev2.R;
 import com.snakev2v42.tiny.snakev2.Values;
 
@@ -49,8 +50,8 @@ public class ResultActivity extends Activity{
         resultTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*80));
         GoGameTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*14));
         GoMenuTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*16));
-        GoMenu.setColorFilter(Values.getTheme().exit);
-        GoGame.setColorFilter(Values.getTheme().exit);
+        GoMenu.setColorFilter(Values.getTheme().buttonColor);
+        GoGame.setColorFilter(Values.getTheme().buttonColor);
 
         StartActivity.setParamsByFactor(GoGame, 80, 80);
         StartActivity.setParamsByFactor(GoMenu, 80, 80);
@@ -80,20 +81,18 @@ public class ResultActivity extends Activity{
         int[] temp;
         String newRecord="";
         switch(Values.mode){
-            case CLASSIC :temp=Values.classicRec;break;
-            case BATTLE  :temp=Values.battleRec;break;
-            case CAMPAIGN:temp=Values.campaignRec;break;
-            case MULTIPLAYER:temp=Values.multiplayerRec;break;
-            default: temp=Values.classicRec;
+            case CLASSIC :temp= Classic.records;break;
+            case BATTLE  :temp= Battle.records;break;
+            case CAMPAIGN:temp= Campaign.records;break;
+            default: temp=Classic.records;
         }
         for(int i=0;i<5;++i) {
             if(score>temp[i]){
                 if(temp[i]<score){
                     switch(Values.mode){
-                        case CLASSIC :Values.classicRec[i]=score;break;
-                        case BATTLE  :Values.battleRec[i]=score;break;
-                        case CAMPAIGN:Values.campaignRec[i]=score;break;
-                        case MULTIPLAYER:Values.multiplayerRec[i]=score;break;
+                        case CLASSIC :Classic.records[i]=score;break;
+                        case BATTLE  :Battle.records[i]=score;break;
+                        case CAMPAIGN:Campaign.records[i]=score;break;
                     }
                     if(i==0)newRecord="MASTER";
                     else

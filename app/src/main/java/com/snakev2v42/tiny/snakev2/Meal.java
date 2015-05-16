@@ -1,7 +1,10 @@
 package com.snakev2v42.tiny.snakev2;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 
 import java.util.Random;
 
@@ -10,20 +13,14 @@ import java.util.Random;
  */
 public class Meal {
     public Point p;
-    int color,size,type;
-    public Bitmap bitmap;
+    int color,size;
 
     public Meal(Point p,int size,int color){
         this.color=color;
         this.size=size;
         this.p=p;
-        bitmap=Bitmap.createBitmap(Bitmaps.MealParts[0]);
-        for (int ux = 0; ux < bitmap.getWidth(); ux++)
-            for (int uy = 0; uy < bitmap.getHeight(); uy++) {
-                if (bitmap.getPixel(ux, uy) == Color.parseColor("#3F51B5"))
-                    bitmap.setPixel(ux, uy, color);
-            }
     }
+
     public Meal(int size,int color){
         this(new Point(1,1),size,color);
         generate();
@@ -37,16 +34,16 @@ public class Meal {
     public void generate(){
         Map.MakeNewMap();
         while(Map.CheckMapCell(p)!=Cell.NOTHING) {
-            p.x = new Random().nextInt(Values.CellWidth - (size + 1));
-            p.y = new Random().nextInt(Values.CellHeight - (size + 1));
+            p.x = GameActivity.random.nextInt(Values.CellWidth - (size + 1));
+            p.y = GameActivity.random.nextInt(Values.CellHeight - (size + 1));
         }
     }
-    public void PaintMeal(){
-        int j;
-        switch (size){
-            case 1 : j = 0; break;
-            default: j = 0;
-        }
-        Bitmaps.DrawToMainB(bitmap, Values.SnakeSize * p.x, Values.SnakeSize * p.y);
+    public void draw(Canvas canvas){
+        canvas.save();
+        Paint paint=new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(color);
+        canvas.drawCircle(p.x*Values.SnakeSize,p.y*Values.SnakeSize,size/2*Values.SnakeSize,paint);
+        canvas.restore();
     }
 }

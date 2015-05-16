@@ -25,16 +25,4 @@ public class Map {
             return map[p.x][p.y];
     }
 
-    public static boolean IfBroken(Point p) {
-        int count = 0;
-        for (int s = 0; s < Values.AMOUNT_OF_SNAKES; ++s) {
-            for (int prt = 0; prt < GameActivity.snakes.get(s).length; ++prt) {
-                if (GameActivity.snakes.get(s).parts.get(prt).p.x == p.x && GameActivity.snakes.get(s).parts.get(prt).p.y == p.y) {
-                    ++count;
-                }
-            }
-        }
-        if (count > 1) return true;
-        else return false;
-    }
 }

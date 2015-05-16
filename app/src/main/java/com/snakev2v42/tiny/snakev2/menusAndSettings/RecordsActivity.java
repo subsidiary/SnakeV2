@@ -10,6 +10,9 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.snakev2v42.tiny.snakev2.ModeProperties.Battle;
+import com.snakev2v42.tiny.snakev2.ModeProperties.Campaign;
+import com.snakev2v42.tiny.snakev2.ModeProperties.Classic;
 import com.snakev2v42.tiny.snakev2.R;
 import com.snakev2v42.tiny.snakev2.Values;
 
@@ -46,7 +49,7 @@ public class RecordsActivity extends Activity {
         recordsTxt.setTextColor(Values.getTheme().TextColor);
         modeTxt.setTextColor(Values.getTheme().TextColor);
 
-        modeB.setColorFilter(Values.getTheme().exit);
+        modeB.setColorFilter(Values.getTheme().buttonColor);
 
         recordsTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*25));
         recordList.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*21));
@@ -58,6 +61,7 @@ public class RecordsActivity extends Activity {
         v.startAnimation(StartActivity.button_clicked);
 
         mode=Mode.incMode(mode);
+        if(mode==Mode.MULTIPLAYER)mode=Mode.BATTLE;
         switch(mode){
             case CLASSIC    :modeTxt.setText("CLASSIC");break;
             case BATTLE     :modeTxt.setText("BATTLE");break;
@@ -84,11 +88,10 @@ public class RecordsActivity extends Activity {
         int[] temp;
         String s="";
         switch(mode){
-            case CLASSIC :temp=Values.classicRec;break;
-            case BATTLE  :temp=Values.battleRec;break;
-            case CAMPAIGN:temp=Values.campaignRec;break;
-            case MULTIPLAYER:temp=Values.multiplayerRec;break;
-            default: temp=Values.classicRec;
+            case CLASSIC :temp= Classic.records;break;
+            case BATTLE  :temp= Battle.records;break;
+            case CAMPAIGN:temp= Campaign.records;break;
+            default: temp=Classic.records;
         }
         for(int i=0;i<5;++i) {
             s += (i + 1) + "  "+temp[i] + System.getProperty ("line.separator");

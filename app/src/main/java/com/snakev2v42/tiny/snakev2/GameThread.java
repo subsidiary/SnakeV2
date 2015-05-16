@@ -38,16 +38,11 @@ public class GameThread extends Thread {
                         surfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
-            if(++pos >= GameActivity.snakeSpeed)
-                for (int i=0;i<Values.AMOUNT_OF_SNAKES;++i) {
-                    Snake snake=GameActivity.snakes.get(i);
-                    if(i==0 && GameActivity.currVector!=Vector.inverse(snake.head().vec))
-                        snake.head().vec=GameActivity.currVector;
-                    else
-                        snake.turn((GameActivity.random.nextInt(9) - 4) / 4);
-                    snake.move();
-                    pos = 0;
-                }
+            if(++pos >= GameActivity.snakeSpeed){
+                Logic.think();
+                pos = 0;
+            }
+
         }
 
 

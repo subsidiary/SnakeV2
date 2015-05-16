@@ -33,7 +33,7 @@ public class StartActivity extends Activity {
     private static ImageView volumeImg,infoImg;
     static Handler handler;
     public static Animation button_clicked;
-    static Typeface DotTxt;
+    public static Typeface DotTxt;
 
     boolean breathAllowed = true,lockTheme=false;
     Thread breath = new Thread(new Runnable() {
@@ -333,7 +333,7 @@ public class StartActivity extends Activity {
                 public void run() {
                     lockTheme=false;
                 }
-            },800);
+            },1200);
         }
         Values.saveInt(Values.themeId,"themeId");
     }

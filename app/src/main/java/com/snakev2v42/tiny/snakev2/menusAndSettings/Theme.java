@@ -10,10 +10,11 @@ import java.util.Random;
 public class Theme {
     public int[] themeColors;
     private int AMOUNT_OF_THEMECOLORS;
-    public int volume,info,mode,exit,continueb,levels,records,theme,BoBar,controlButtons;
+    public int volume,info,mode,exit,continueb,levels,records,theme,BoBar,controlButtons,buttonColor;
     public int TextColor;
 
-    public Theme(int volume,int continueb,int records,int levels,int theme,int mode,int exit,int info,int TextColor){
+
+    public Theme(int volume,int continueb,int records,int levels,int theme,int mode,int exit,int info,int TextColor,int buttonColor){
         this.volume=volume;
         this.levels=levels;
         this.continueb=continueb;
@@ -23,8 +24,9 @@ public class Theme {
         this.mode=mode;
         this.exit=exit;
         this.TextColor=TextColor;
-        BoBar=exit;
-        controlButtons=exit;
+        this.buttonColor=buttonColor;
+        BoBar=buttonColor;
+        controlButtons=buttonColor;
         themeColors =new int[8];
 
         themeColors[0]=volume;
@@ -37,21 +39,22 @@ public class Theme {
         themeColors[7]=exit;
 
         boolean[] temp = new boolean[8];
+
         for(int i=0;i<7;++i){
             for(int j=i+1;j<8;++j)
-                if(themeColors[i]==themeColors[j]&&themeColors[j]!=-1){
-                    temp[j]=true;
-                }
+            if ( (themeColors[i] == themeColors[j]) && themeColors[j] != -1) {
+                temp[j] = true;
+            }
         }
         AMOUNT_OF_THEMECOLORS=-1;
         for(int i=0;i<8;++i){
             if(!temp[i]){
+                if(themeColors[i]!=buttonColor)
                 themeColors[++AMOUNT_OF_THEMECOLORS]=themeColors[i];
             }
         }
         Log.d("AMOUNT_OF_COLORS"," "+AMOUNT_OF_THEMECOLORS);
     }
-
     public int getColor(){
         return themeColors[new Random().nextInt(AMOUNT_OF_THEMECOLORS)];
     }

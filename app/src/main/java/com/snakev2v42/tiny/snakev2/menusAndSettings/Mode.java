@@ -7,7 +7,7 @@ public enum Mode {
     CLASSIC,BATTLE,CAMPAIGN,MULTIPLAYER;
     public static Mode incMode(Mode mode){
         switch (mode){
-            case BATTLE:  return CAMPAIGN;
+            case BATTLE:  return CLASSIC;
             case CAMPAIGN:return CLASSIC;
             case CLASSIC: return MULTIPLAYER;
             case MULTIPLAYER: return BATTLE;

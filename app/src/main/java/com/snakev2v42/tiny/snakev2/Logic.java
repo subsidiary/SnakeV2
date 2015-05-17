@@ -137,25 +137,25 @@ abstract class Logic {
         if(!Values.savedGame){
             switch (Values.mode){
                 case CLASSIC:
-                    snakes.add(new Snake(19, 10, Vector.WEST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(19, 10, Vector.WEST, 2, Values.getTheme().getSnakeColors()[0], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
                     Values.AMOUNT_OF_SNAKES = 1;
                     break;
                 case BATTLE:
-                    snakes.add(new Snake(5 , 1 , Vector.EAST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-                    snakes.add(new Snake(5 , 6 , Vector.EAST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-                    snakes.add(new Snake(5 , 11, Vector.EAST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-                    snakes.add(new Snake(5 , 16, Vector.EAST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-                    snakes.add(new Snake(5 , 21, Vector.EAST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-                    snakes.add(new Snake(35, 1 , Vector.WEST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-                    snakes.add(new Snake(35, 6 , Vector.WEST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-                    snakes.add(new Snake(35, 11, Vector.WEST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-                    snakes.add(new Snake(35, 16, Vector.WEST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-                    snakes.add(new Snake(35, 21, Vector.WEST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(35, 1 , Vector.WEST, 2, Values.getTheme().getSnakeColors()[0], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(35, 6 , Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(35, 11, Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(35, 16, Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(35, 21, Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(5 , 1 , Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(5 , 6 , Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(5 , 11, Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(5 , 16, Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(5 , 21, Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
                     Values.AMOUNT_OF_SNAKES = 10;
                     break;
                 case MULTIPLAYER:
-                    snakes.add(new Snake(35, 10, Vector.WEST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-                    snakes.add(new Snake(5 , 10, Vector.EAST, 2, Values.getTheme().getColor(), Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(35, 10, Vector.WEST, 2, Values.getTheme().getSnakeColors()[0], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+                    snakes.add(new Snake(5 , 10, Vector.EAST, 2, Values.getTheme().getSnakeColors()[1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
                     Values.AMOUNT_OF_SNAKES = 2;
                     break;
             }

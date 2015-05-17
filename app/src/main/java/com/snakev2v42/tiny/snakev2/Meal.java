@@ -38,12 +38,12 @@ public class Meal {
             p.y = GameActivity.random.nextInt(Values.CellHeight - (size + 1));
         }
     }
-    public void draw(Canvas canvas){
+    /*public void draw(Canvas canvas){
         canvas.save();
         Paint paint=new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(color);
-        canvas.drawCircle(p.x*Values.SnakeSize,p.y*Values.SnakeSize,size/2*Values.SnakeSize,paint);
+        canvas.drawCircle((p.x+0.5f)*Values.SnakeSize,(p.y+0.5f)*Values.SnakeSize,(size/3.5f)*Values.SnakeSize,paint);
         canvas.restore();
-    }
+    }*/
 }

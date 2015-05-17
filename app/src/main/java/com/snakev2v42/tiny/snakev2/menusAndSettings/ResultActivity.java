@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.snakev2v42.tiny.snakev2.GameActivity;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Battle;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Campaign;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Classic;

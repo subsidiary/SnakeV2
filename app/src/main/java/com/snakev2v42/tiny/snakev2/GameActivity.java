@@ -9,8 +9,10 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -32,9 +34,9 @@ public class GameActivity extends Activity {
     static ArrayList<Meal> ml = new ArrayList<>();
     ImageButton v1_1, v2_1, v3_1, v4_1, v1_2, v2_2, v3_2, v4_2;
     static Handler handler = new Handler();
-    static GameView view;
     public static int snakeSpeed;
     public static Random random;
+    static GameView view;
     static GameActivity game;
 
     @Override
@@ -58,6 +60,7 @@ public class GameActivity extends Activity {
         v2_2 = (ImageButton) findViewById(R.id.v2_2);
         v3_2 = (ImageButton) findViewById(R.id.v3_2);
         v4_2 = (ImageButton) findViewById(R.id.v4_2);
+        view = (GameView)findViewById(R.id.surface);
 
         BoBar.getLayoutParams().height = Values.BoBaHeight;
         score1.setTextSize(StartActivity.convertFromDp(Values.BoBaHeight -32));
@@ -97,6 +100,7 @@ public class GameActivity extends Activity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+        close();
         Intent GoResult = new Intent(this,ResultActivity.class);
         GoResult.putExtra("Score",random.nextInt(2000));
         startActivity(GoResult);
@@ -143,12 +147,21 @@ public class GameActivity extends Activity {
         for (Snake snake : GameActivity.snakes) {
             snake.draw(canvas, k);
         }
+        //As for me it takes less performance than draw it by draw() method in Meal.class
+        canvas.save();
         for (Meal meal : GameActivity.ml){
-            meal.draw(canvas);
+            Paint paint=new Paint();
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(meal.color);
+            canvas.drawCircle((meal.p.x + 0.5f) * Values.SnakeSize, (meal.p.y + 0.5f) * Values.SnakeSize, (meal.size / 3.5f) * Values.SnakeSize, paint);
         }
+        canvas.restore();
     }
 
     public void close(){
-        //view.thread.setRunning(false);
+        if(view!=null) {
+            view.surfaceDestroyed(view.getHolder());
+            view = null;
+        }
     }
 }

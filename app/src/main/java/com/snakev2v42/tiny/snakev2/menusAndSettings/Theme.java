@@ -8,13 +8,13 @@ import java.util.Random;
  * Created by yuriy on 5/10/2015.
  */
 public class Theme {
-    public int[] themeColors;
-    private int AMOUNT_OF_THEMECOLORS;
+    public int[] themeColors,snakeColors;
+    public int AMOUNT_OF_THEMECOLORS,AMOUNT_OF_SNAKECOLORS;
     public int volume,info,mode,exit,continueb,levels,records,theme,BoBar,controlButtons,buttonColor;
     public int TextColor;
 
 
-    public Theme(int volume,int continueb,int records,int levels,int theme,int mode,int exit,int info,int TextColor,int buttonColor){
+    public Theme(int volume,int continueb,int records,int levels,int theme,int mode,int exit,int info,int TextColor,int buttonColor,int[] snakeColors){
         this.volume=volume;
         this.levels=levels;
         this.continueb=continueb;
@@ -28,7 +28,8 @@ public class Theme {
         BoBar=buttonColor;
         controlButtons=buttonColor;
         themeColors =new int[8];
-
+        this.snakeColors = snakeColors;
+        AMOUNT_OF_SNAKECOLORS=snakeColors.length;
         themeColors[0]=volume;
         themeColors[1]=continueb;
         themeColors[2]=records;
@@ -57,5 +58,8 @@ public class Theme {
     }
     public int getColor(){
         return themeColors[new Random().nextInt(AMOUNT_OF_THEMECOLORS)];
+    }
+    public int[]getSnakeColors(){
+        return snakeColors;
     }
 }

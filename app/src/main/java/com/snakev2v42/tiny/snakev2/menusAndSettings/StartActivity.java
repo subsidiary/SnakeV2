@@ -87,7 +87,7 @@ public class StartActivity extends Activity {
         themeTxt.setTypeface(DotTxt);
         continueTxt.setTypeface(DotTxt);
 
-        Values.init(this);
+            Values.init(this);
         button_clicked= AnimationUtils.loadAnimation(this,R.anim.button_anim);
         handler = new Handler();
 

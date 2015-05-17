@@ -147,6 +147,7 @@ public class GameActivity extends Activity {
         for (Snake snake : GameActivity.snakes) {
             snake.draw(canvas, k);
         }
+
         //As for me it takes less performance than draw it by draw() method in Meal.class
         canvas.save();
         for (Meal meal : GameActivity.ml){

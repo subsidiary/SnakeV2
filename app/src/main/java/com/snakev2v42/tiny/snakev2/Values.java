@@ -93,4 +93,25 @@ public abstract class Values {
         Multiplayer.save();
         Campaign.save();
     }
+    /*public static void SaveTheGame(){
+        savedGame=true;
+        switch(Values.mode){
+            case CLASSIC :
+                Classic.savedGame=true;
+                Classic.save();
+                break;
+            case BATTLE :
+                Battle.savedGame=true;
+                Battle.save();
+                break;
+            case MULTIPLAYER :
+                Multiplayer.savedGame=true;
+                Multiplayer.save();
+                break;
+            case CAMPAIGN :
+                Campaign.savedGame=true;
+                Campaign.save();
+                break;
+        }
+    }*/
 }

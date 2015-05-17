@@ -272,7 +272,6 @@ public class StartActivity extends Activity {
             @Override
             public void run() {
                 startActivity(GoSetts);
-                overridePendingTransition(R.anim.start_activity,R.anim.wait_anim);
             }
         }, 650);
     }

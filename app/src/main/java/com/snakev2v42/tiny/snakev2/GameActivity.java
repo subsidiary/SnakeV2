@@ -5,6 +5,7 @@ package com.snakev2v42.tiny.snakev2;
  */
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
@@ -12,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -29,23 +29,25 @@ import java.util.Random;
 public class GameActivity extends Activity {
     static RelativeLayout ll;
     static ImageView BoBar;
-    static TextView score1,score2;
-    static ArrayList<Snake> snakes = new ArrayList<>();
-    static ArrayList<Meal> ml = new ArrayList<>();
+    public static TextView score1,score2;
+    public static ArrayList<Snake> snakes = new ArrayList<>();
+    public static ArrayList<Meal> ml = new ArrayList<>();
     ImageButton v1_1, v2_1, v3_1, v4_1, v1_2, v2_2, v3_2, v4_2;
-    static Handler handler = new Handler();
+    public static Handler handler = new Handler();
     public static int snakeSpeed;
     public static Random random;
     static GameView view;
-    static GameActivity game;
+    public static Context game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.start_activity,R.anim.wait_anim);
         setContentView(R.layout.game_activity);
 
         //Working on Graphic stuff
+        game=this;
         ll = (RelativeLayout) findViewById(R.id.GameLayout);
         BoBar = (ImageView) findViewById(R.id.BottomBar);
 
@@ -82,7 +84,6 @@ public class GameActivity extends Activity {
         v4_2.setColorFilter(Values.getTheme().controlButtons);
 
 
-
         //Logic part
         if(Values.mode== Mode.MULTIPLAYER){
             v1_2.setVisibility(View.VISIBLE);
@@ -99,18 +100,15 @@ public class GameActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        close();
+        super.onBackPressed();
+        //Values.SaveTheGame();
         Intent GoResult = new Intent(this,ResultActivity.class);
-        GoResult.putExtra("Score",random.nextInt(2000));
         startActivity(GoResult);
-        overridePendingTransition(R.anim.start_activity,R.anim.wait_anim);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        close();
     }
 
     public void joystick (View v) {
@@ -159,10 +157,4 @@ public class GameActivity extends Activity {
         canvas.restore();
     }
 
-    public void close(){
-        if(view!=null) {
-            view.surfaceDestroyed(view.getHolder());
-            view = null;
-        }
-    }
 }

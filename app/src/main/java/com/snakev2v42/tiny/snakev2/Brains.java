@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Created by Yuriy475 on 4/9/2015.
  */
-abstract class Brains {
+public abstract class Brains {
 
 
     public static int FreeCells(Point p){

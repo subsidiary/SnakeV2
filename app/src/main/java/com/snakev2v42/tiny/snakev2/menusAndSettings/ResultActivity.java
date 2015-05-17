@@ -4,15 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.snakev2v42.tiny.snakev2.GameActivity;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Battle;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Campaign;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Classic;
+import com.snakev2v42.tiny.snakev2.ModeProperties.Multiplayer;
 import com.snakev2v42.tiny.snakev2.R;
 import com.snakev2v42.tiny.snakev2.Values;
 
@@ -21,13 +22,14 @@ import com.snakev2v42.tiny.snakev2.Values;
  */
 public class ResultActivity extends Activity{
     private RelativeLayout re;
-    private TextView resultTxt,recordTxt,GoGameTxt,GoMenuTxt;
+    public static TextView resultTxt,recordTxt,GoGameTxt,GoMenuTxt;
     private ImageButton GoGame,GoMenu;
-
+    public static Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.start_activity,R.anim.wait_anim);
         setContentView(R.layout.result_activity);
         re=(RelativeLayout)findViewById(R.id.re);
         resultTxt=(TextView)findViewById(R.id.resultTxt);
@@ -57,9 +59,13 @@ public class ResultActivity extends Activity{
         StartActivity.setParamsByFactor(GoGame, 80, 80);
         StartActivity.setParamsByFactor(GoMenu, 80, 80);
 
-        int score=getIntent().getExtras().getInt("Score",0);
-        resultTxt.setText(score+"");
-        recordTxt.setText(CheckRecords(score));
+        handler = new Handler();
+        switch (Values.mode){
+            case CLASSIC: Classic.end();break;
+            case CAMPAIGN: Campaign.end();break;
+            case BATTLE: Battle.end();break;
+            case MULTIPLAYER: Multiplayer.end();break;
+        }
     }
 
     public void onGoMenuClick(View v){
@@ -75,36 +81,6 @@ public class ResultActivity extends Activity{
         overridePendingTransition(R.anim.wait_anim,R.anim.exit_activity);
     }
 
-
-
-
-    public String CheckRecords(int score){
-        int[] temp;
-        String newRecord="";
-        switch(Values.mode){
-            case CLASSIC :temp= Classic.records;break;
-            case BATTLE  :temp= Battle.records;break;
-            case CAMPAIGN:temp= Campaign.records;break;
-            default: temp=Classic.records;
-        }
-        for(int i=0;i<5;++i) {
-            if(score>temp[i]){
-                if(temp[i]<score){
-                    switch(Values.mode){
-                        case CLASSIC :Classic.records[i]=score;break;
-                        case BATTLE  :Battle.records[i]=score;break;
-                        case CAMPAIGN:Campaign.records[i]=score;break;
-                    }
-                    if(i==0)newRecord="MASTER";
-                    else
-                    newRecord="RECORD";
-                    break;
-                }
-            }
-        }
-        Values.saveSettings();
-        return newRecord;
-    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();

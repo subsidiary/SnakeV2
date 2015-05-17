@@ -1,5 +1,9 @@
 package com.snakev2v42.tiny.snakev2.menusAndSettings;
 
+import com.snakev2v42.tiny.snakev2.ModeProperties.Battle;
+import com.snakev2v42.tiny.snakev2.ModeProperties.Campaign;
+import com.snakev2v42.tiny.snakev2.Values;
+
 /**
  * Created by yuriy on 5/9/2015.
  */

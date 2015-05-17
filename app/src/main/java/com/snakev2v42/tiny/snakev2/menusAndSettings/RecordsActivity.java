@@ -30,6 +30,7 @@ public class RecordsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.start_activity,R.anim.wait_anim);
         setContentView(R.layout.records_activity);
         modeTxt =(TextView)findViewById(R.id.modeTxt);
         recordsTxt =(TextView)findViewById(R.id.records);

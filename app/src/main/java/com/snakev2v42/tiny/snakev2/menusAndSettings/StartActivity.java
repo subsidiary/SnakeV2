@@ -3,11 +3,10 @@ package com.snakev2v42.tiny.snakev2.menusAndSettings;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,8 +21,6 @@ import com.snakev2v42.tiny.snakev2.GameActivity;
 import com.snakev2v42.tiny.snakev2.R;
 import com.snakev2v42.tiny.snakev2.Values;
 
-import java.util.Random;
-
 /**
  * Created by yuriy on 5/8/2015.
  */
@@ -35,18 +32,18 @@ public class StartActivity extends Activity {
     public static Animation button_clicked;
     public static Typeface DotTxt;
 
-    boolean breathAllowed = true,lockTheme=false;
-    Thread breath = new Thread(new Runnable() {
+    boolean lockTheme=false;//,breathAllowed=false;
+    /*Thread breath = new Thread(new Runnable() {
         @Override
         public void run() {
             while (true) {
                 if(breathAllowed)
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        breathAnim(false);
-                    }
-                });
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            breathAnim(false);
+                        }
+                    });
                 try {
                     Thread.sleep(10000);
                 } catch (InterruptedException ex) {
@@ -54,12 +51,12 @@ public class StartActivity extends Activity {
                 }
             }
         }
-   });
-
+    });
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.start_activity,R.anim.wait_anim);
         setContentView(R.layout.start_activity);
         DotTxt = Typeface.createFromAsset(getAssets(),"fonts/high_speed.TTF");
         continueb =(ImageButton)findViewById(R.id.Comtinue);
@@ -87,7 +84,9 @@ public class StartActivity extends Activity {
         themeTxt.setTypeface(DotTxt);
         continueTxt.setTypeface(DotTxt);
 
-            Values.init(this);
+        Values.init(this);
+
+
         button_clicked= AnimationUtils.loadAnimation(this,R.anim.button_anim);
         handler = new Handler();
 
@@ -110,8 +109,8 @@ public class StartActivity extends Activity {
         themeTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*20));
         exitTxt.setTextSize(StartActivity.convertFromDp((float)Values.IncreaceFactor*21));
 
-        if(!breath.isAlive())
-            breath.start();
+        /*if(!breath.isAlive())
+            breath.start();*/
     }
 
     @Override
@@ -119,14 +118,15 @@ public class StartActivity extends Activity {
         super.onResume();
         returnDefaultButtonProperties();
         EnableButts(true);
-        breathAllowed=true;
+        //breathAllowed=true;
         setLables();
+        breathAnim(false);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        breathAllowed=false;
+        //breathAllowed=false;
         Values.saveSettings();
     }
 
@@ -208,7 +208,7 @@ public class StartActivity extends Activity {
             }
         });
         TextAnim.start();
-        Values.saveInt(Mode.ModeToInt(Values.mode),"mode");
+        Values.saveInt(Mode.ModeToInt(Values.mode), "mode");
     }
 
     public void onExitClick(final View v){
@@ -239,7 +239,6 @@ public class StartActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                System.exit(0);
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         }, 305);
@@ -280,10 +279,14 @@ public class StartActivity extends Activity {
         volume.startAnimation(button_clicked);
         volumeImg.startAnimation(button_clicked);
         Values.Volume =!Values.Volume;
-        if(Values.Volume)
+        if(Values.Volume) {
             volumeImg.setImageResource(R.drawable.ic_volume_on);
-        else
+            Values.music.start();
+        }else {
             volumeImg.setImageResource(R.drawable.ic_volume_off);
+            if(Values.music.isPlaying())
+                Values.music.pause();
+        }
         Values.saveBool(Values.Volume,"Volume");
     }
 
@@ -613,7 +616,7 @@ public class StartActivity extends Activity {
         info.setEnabled(enable);
         continueb.setEnabled(enable);
         theme.setEnabled(enable);
-        breathAllowed=enable;
+        //breathAllowed=enable;
     }
     public static float convertFromDp(float input) {
         return ((input - 0.5f) / Values.dens);

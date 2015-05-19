@@ -13,7 +13,8 @@ import java.util.Random;
  */
 public class Meal {
     public Point p;
-    int color,size;
+    public int color;
+    public int size;
 
     public Meal(Point p,int size,int color){
         this.color=color;

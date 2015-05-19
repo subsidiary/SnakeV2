@@ -11,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -32,7 +33,7 @@ public class GameActivity extends Activity {
     public static TextView score1,score2;
     public static ArrayList<Snake> snakes = new ArrayList<>();
     public static ArrayList<Meal> ml = new ArrayList<>();
-    ImageButton v1_1, v2_1, v3_1, v4_1, v1_2, v2_2, v3_2, v4_2;
+    public static ImageButton v1_1, v2_1, v3_1, v4_1, v1_2, v2_2, v3_2, v4_2;
     public static Handler handler = new Handler();
     public static int snakeSpeed;
     public static Random random;
@@ -41,11 +42,8 @@ public class GameActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.start_activity,R.anim.wait_anim);
         setContentView(R.layout.game_activity);
-
         //Working on Graphic stuff
         game=this;
         ll = (RelativeLayout) findViewById(R.id.GameLayout);
@@ -92,7 +90,8 @@ public class GameActivity extends Activity {
             v4_2.setVisibility(View.VISIBLE);
             score2.setVisibility(View.VISIBLE);
         }
-        snakeSpeed=3+9-Values.lvl;
+
+        snakeSpeed=10-Values.lvl;
         random = new Random();
         random.setSeed(System.currentTimeMillis());
         Logic.start();
@@ -100,7 +99,7 @@ public class GameActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
         //Values.SaveTheGame();
         Intent GoResult = new Intent(this,ResultActivity.class);
         startActivity(GoResult);
@@ -109,6 +108,12 @@ public class GameActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        view.surfaceDestroyed(view.getHolder());
     }
 
     public void joystick (View v) {
@@ -142,19 +147,19 @@ public class GameActivity extends Activity {
 
     public static void render(Canvas canvas, int k) {
         canvas.drawColor(Color.parseColor("#212121"));
-        for (Snake snake : GameActivity.snakes) {
-            snake.draw(canvas, k);
-        }
-
         //As for me it takes less performance than draw it by draw() method in Meal.class
         canvas.save();
         for (Meal meal : GameActivity.ml){
             Paint paint=new Paint();
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(meal.color);
-            canvas.drawCircle((meal.p.x + 0.5f) * Values.SnakeSize, (meal.p.y + 0.5f) * Values.SnakeSize, (meal.size / 3.5f) * Values.SnakeSize, paint);
+            canvas.drawCircle((meal.p.x + meal.size/2f) * Values.SnakeSize, (meal.p.y + meal.size/2f) * Values.SnakeSize, (meal.size / 3.5f+(k/300f)) * Values.SnakeSize, paint);
         }
         canvas.restore();
+        //Draw snakes
+        for (Snake snake : GameActivity.snakes) {
+            snake.draw(canvas, k);
+        }
     }
 
 }

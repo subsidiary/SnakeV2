@@ -9,7 +9,8 @@ import android.view.SurfaceView;
  * Created by yuriy on 5/11/2015.
  */
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    GameThread thread;
+    GameViewThread thread;
+    GameFPSstabilizerThread thread2;
 
     public GameView(Context context) {
         super(context);
@@ -26,9 +27,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        thread = new GameThread(getHolder());
+        thread = new GameViewThread(getHolder());
         thread.setRunning(true);
         thread.start();
+        thread2 = new GameFPSstabilizerThread();
+        thread2.setRunning(true);
+        thread2.start();
     }
 
     @Override
@@ -39,5 +43,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         thread.setRunning(false);
+        thread2.setRunning(false);
     }
 }

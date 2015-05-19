@@ -26,7 +26,7 @@ public class Snake {
     private Picture headPicture, bodyPicture, bigCornerPicture, smallCornerPicture;
     public int length;
     public ArrayList<Part> parts;
-    public boolean broken;
+    public boolean broken=false;
     private float eyeR, eyeDist, headR, l, w;
     public static Path bodyPath, bigCornerPath, smallCornerPath;
     private boolean flag;

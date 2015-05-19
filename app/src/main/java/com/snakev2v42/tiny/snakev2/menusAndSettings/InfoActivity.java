@@ -15,7 +15,6 @@ public class InfoActivity extends Activity {
     RelativeLayout infLay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_activity);
         infLay=(RelativeLayout)findViewById(R.id.InfLay);

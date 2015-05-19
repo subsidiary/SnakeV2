@@ -10,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.snakev2v42.tiny.snakev2.GameActivity;
+import com.snakev2v42.tiny.snakev2.Logic;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Battle;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Campaign;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Classic;
@@ -27,7 +29,6 @@ public class ResultActivity extends Activity{
     public static Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.start_activity,R.anim.wait_anim);
         setContentView(R.layout.result_activity);
@@ -77,8 +78,10 @@ public class ResultActivity extends Activity{
     }
     public void onGoGameClick(View v){
 //        GoGame.startAnimation(StartActivity.button_clicked);
-        finish();
+        super.onBackPressed();
         overridePendingTransition(R.anim.wait_anim,R.anim.exit_activity);
+        finish();
+        Logic.start();
     }
 
     @Override
@@ -86,5 +89,6 @@ public class ResultActivity extends Activity{
         super.onBackPressed();
         overridePendingTransition(R.anim.wait_anim,R.anim.exit_activity);
         finish();
+        Logic.start();
     }
 }

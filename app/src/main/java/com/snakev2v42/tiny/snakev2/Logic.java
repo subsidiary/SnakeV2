@@ -28,18 +28,6 @@ public abstract class Logic {
         }
     }
 
-    private static void thinkMULTIPLAYER() {
-
-    }
-
-    private static void thinkCLASSIC() {
-
-    }
-
-    private static void thinkBATTLE() {
-
-    }
-
     public static void start() {
         ArrayList<Snake> snakes = GameActivity.snakes;
         ArrayList<Meal> ml = GameActivity.ml;

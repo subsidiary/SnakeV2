@@ -24,19 +24,25 @@ public abstract class Battle {
 
     public static void start(){
         ArrayList<Snake> snakes = GameActivity.snakes;
-        int snakeSpeed = GameActivity.snakeSpeed;
-        snakes.add(new Snake(35, 1 , Vector.WEST, 2, Values.getTheme().getSnakeColors()[0], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-        snakes.add(new Snake(35, 6 , Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-        snakes.add(new Snake(35, 11, Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-        snakes.add(new Snake(35, 16, Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-        snakes.add(new Snake(35, 21, Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-        snakes.add(new Snake(5 , 1 , Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-        snakes.add(new Snake(5 , 6 , Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-        snakes.add(new Snake(5 , 11, Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-        snakes.add(new Snake(5 , 16, Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
-        snakes.add(new Snake(5 , 21, Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, snakeSpeed));
+        snakes.add(new Snake(35, 0 , Vector.WEST, 2, Values.getTheme().getSnakeColors()[0], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        snakes.add(new Snake(35, 5 , Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        snakes.add(new Snake(35, 10, Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        snakes.add(new Snake(35, 15, Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        snakes.add(new Snake(35, 20, Vector.WEST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        snakes.add(new Snake(5 , 0 , Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        snakes.add(new Snake(5 , 5 , Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        snakes.add(new Snake(5 , 10, Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        snakes.add(new Snake(5 , 15, Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        snakes.add(new Snake(5 , 20, Vector.EAST, 2, Values.getTheme().getSnakeColors()[GameActivity.random.nextInt(Values.getTheme().AMOUNT_OF_SNAKECOLORS-1)+1], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
         Values.AMOUNT_OF_SNAKES = 10;
 
+        GameActivity.handler.post(new Runnable() {
+            @Override
+            public void run() {
+                GameActivity.score1.setText(score+"");
+            }
+        });
+        Logic.currentVector1=Vector.WEST;
         score=0;
     }
     public static void think(){
@@ -46,7 +52,7 @@ public abstract class Battle {
             if(i==0 && Logic.currentVector1 !=Vector.inverse(snake.head().vec))
                 snake.head().vec= Logic.currentVector1;
             else
-                snake.head().vec= Brains.YuraBot(snake);
+                snake.head().vec= Brains.StupidBot(snake);
 
             for(Meal meal : GameActivity.ml)
                 if(meal.eat(snake.head().p)){
@@ -64,10 +70,27 @@ public abstract class Battle {
                 }
             snake.move();
             if(Logic.ifBroken(snake.head().p)){
-                Intent GoResult = new Intent(GameActivity.game,ResultActivity.class);
-                GameActivity.game.startActivity(GoResult);
+                snake.broken=true;
             }
-        }    }
+
+            if(i+1==Values.AMOUNT_OF_SNAKES) {
+                if (GameActivity.snakes.get(0).broken) {
+                    Intent GoResult = new Intent(GameActivity.game, ResultActivity.class);
+                    GameActivity.game.startActivity(GoResult);
+                    GameActivity.snakes.remove(0);
+                    Values.AMOUNT_OF_SNAKES=0;
+                }else
+                for(int j=1;j<Values.AMOUNT_OF_SNAKES;++j)
+                    if(GameActivity.snakes.get(j).broken){
+                        GameActivity.snakes.remove(j);
+                        --j;
+                        --Values.AMOUNT_OF_SNAKES;
+                    }
+            }
+        }
+
+    }
+
     public static void end(){
         savedGame=false;
         ResultActivity.handler.post(new Runnable() {
@@ -93,14 +116,13 @@ public abstract class Battle {
     public static String CheckRecords(int score){
         String newRecord="";
         for(int i=0;i<5;++i) {
-            if(score>records[i]){
-                if(records[i]<score){
-                    records[i]=score;
-                    if(i==0)newRecord="MASTER";
-                    else
-                        newRecord="RECORD";
-                    break;
-                }
+            if(score>records[i]) {
+                records[i] = score;
+                if (i == 0) newRecord = "MASTER";
+                else
+                    newRecord = "RECORD";
+                break;
+
             }
         }
         Values.saveSettings();

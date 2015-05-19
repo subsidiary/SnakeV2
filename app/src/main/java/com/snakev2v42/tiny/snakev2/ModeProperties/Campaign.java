@@ -39,14 +39,13 @@ public abstract class Campaign {
     public static String CheckRecords(int score){
         String newRecord="";
         for(int i=0;i<5;++i) {
-            if(score>records[i]){
-                if(records[i]<score){
-                    records[i]=score;
-                    if(i==0)newRecord="MASTER";
-                    else
-                        newRecord="RECORD";
-                    break;
-                }
+            if(score>records[i]) {
+                records[i] = score;
+                if (i == 0) newRecord = "MASTER";
+                else
+                    newRecord = "RECORD";
+                break;
+
             }
         }
         Values.saveSettings();

@@ -6,7 +6,7 @@ import java.util.Arrays;
  * Created by yuriy on 4/29/2015.
  */
 public class Map {
-    static Cell[][] map = new Cell[Values.CellWidth][Values.CellHeight];;
+    static Cell[][] map = new Cell[Values.CellWidth][Values.CellHeight];
 
     public static void MakeNewMap() {
         for(int i = 0;i<Values.CellWidth;++i)

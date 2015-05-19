@@ -3,7 +3,10 @@ package com.snakev2v42.tiny.snakev2;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.snakev2v42.tiny.snakev2.ModeProperties.Battle;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Campaign;
@@ -29,6 +32,8 @@ public abstract class Values {
     static SharedPreferences settings;
     public static boolean savedGame=false;
 
+    public static MediaPlayer music=null,eat,crash;
+
     public static void init(Context c){
         DisplayMetrics display = c.getResources().getDisplayMetrics();
         Width=display.widthPixels;
@@ -37,14 +42,15 @@ public abstract class Values {
         CellWidth=40;CellHeight=(int)((Height-30*dens)/Width*CellWidth);
         SnakeSize=Width/CellWidth;
         BoBaHeight=Height-CellHeight*SnakeSize;
+        if(themes==null) {
             themes = new Theme[AMOUNT_OF_THEMES];
-            //                       volume       continue       records        levels       theme          mode          exit          info        TextColor    buttonColor              snakeColors
+            //                       volume       continue       records        levels        theme         mode          exit          info        TextColor    buttonColor              snakeColors
             themes[0] = new Theme(c("#485864"), c("#485864"), c("#000000"), c("#485864"), c("#485864"), c("#929fa6"), c("#bb0a01"), c("#485864"), c("#f5f5f5"), c("#bb0a01"), new int[]{c("#bb0a01"), c("#485864"), c("#929fa6")});
             themes[1] = new Theme(c("#f73a18"), c("#1a2139"), c("#333e5b"), c("#9d9683"), c("#798190"), c("#333e5b"), c("#f73a18"), c("#333e5b"), c("#f5f5f5"), c("#f73a18"), new int[]{c("#f73a18"), c("#9d9683"), c("#798190"), c("#333e5b")});
             themes[2] = new Theme(c("#607d8b"), c("#33691e"), c("#8bc34a"), c("#8bc34a"), c("#9e9e9e"), c("#8bc34a"), c("#000000"), c("#4caf50"), c("#f5f5f5"), c("#000000"), new int[]{c("#9e9e9e"), c("#4caf50"), c("#8bc34a"), c("#607d8b"), c("#33691e")});
-            themes[3] = new Theme(c("#f6ebf9"), c("#eb5401"), c("#018c96"), c("#8bc34a"), c("#016a66"), c("#eb5401"), c("#016a66"), c("#018c96"), c("#f5f5f5"), c("#016a66"), new int[]{c("#eb5401"), c("#f6ebf9"), c("#eb5401"), c("#018c96"), c("#016a66")});
-            themes[4] = new Theme(c("#bdac9c"), c("#d1a701"), c("#1c1e26"), c("#9d815b"), c("#fdeb37"), c("#d1a701"), c("#1c1e26"), c("#9d815b"), c("#f5f5f5"), c("#d1a701"), new int[]{c("#d1a701"), c("#bdac9c"), c("#9d815b"), c("#fdeb37")});
-
+            themes[3] = new Theme(c("#bab3d9"), c("#818692"), c("#434945"), c("#a6b7ae"), c("#818692"), c("#bab3d9"), c("#4a683a"), c("#434945"), c("#f5f5f5"), c("#bab3d9"), new int[]{c("#bab3d9"), c("#4a683a"), c("#818692"), c("#434945")});
+            themes[4] = new Theme(c("#bdac9c"), c("#d1a701"), c("#1c1e26"), c("#9d815b"), c("#fdeb37"), c("#d1a701"), c("#1c1e26"), c("#9d815b"), c("#f5f5f5"), c("#a6b7ae"), new int[]{c("#d1a701"), c("#bdac9c"), c("#9d815b"), c("#fdeb37")});
+        }
         settings = c.getSharedPreferences("SNAKEV2_SETTINGS", Context.MODE_PRIVATE);
         //loading settings
         themeId=loadInt(themeId, "themeId");
@@ -55,6 +61,15 @@ public abstract class Values {
         Battle.load();
         Campaign.load();
         Multiplayer.load();
+
+        if(music ==null){
+            music = MediaPlayer.create(c.getApplicationContext(), R.raw.music);
+            eat = MediaPlayer.create(c.getApplicationContext(), R.raw.eat);
+            crash = MediaPlayer.create(c.getApplicationContext(), R.raw.crash);
+
+            music.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            music.setLooping(true);
+        }
     }
 
     public static void saveInt(int integer,String key){
@@ -75,8 +90,8 @@ public abstract class Values {
     }
 
 
-
     public static Theme getTheme(){
+        Log.d("Values ",""+themeId);
         return themes[Values.themeId];
     }
     static int c(String s){

@@ -32,6 +32,7 @@ public abstract class Classic {
     private static class BigMealTimer extends Thread {
         long startTime;
         boolean flag =true;
+        int BigMealDelay,MaxPoints;
         @Override
         public void run() {
             while(flag) {
@@ -55,7 +56,10 @@ public abstract class Classic {
             GameActivity.ml.get(0).size=1;
             GameActivity.ml.get(0).color = Color.parseColor("#3F51B5");
             GameActivity.ml.get(0).generate();
-            return (int)((5400+startTime-System.currentTimeMillis())/10);
+            Log.i("CLASSIC ","  (int) "+(int)( Math.sqrt(BigMealDelay-(System.currentTimeMillis() - startTime))  *  (MaxPoints / Math.sqrt(BigMealDelay)) )+
+            " (double) "+Math.sqrt(BigMealDelay-(System.currentTimeMillis() - startTime))  *  (MaxPoints / Math.sqrt(BigMealDelay)) +
+            " (Time) "+BigMealDelay+" (MaxPoint) "+MaxPoints+" (GONE_Time) "+(int)(System.currentTimeMillis() - startTime));
+            return (int)( Math.sqrt(BigMealDelay-(System.currentTimeMillis() - startTime))  *  (MaxPoints / Math.sqrt(BigMealDelay)) );
         }
     }
 
@@ -71,29 +75,31 @@ public abstract class Classic {
             }
         });
 
-        Logic.currentVector1=Vector.WEST;
-        score=0;BigMealTurn=0;BigMeal=false;
         if(BigMealTimer==null) {
             BigMealTimer = new BigMealTimer();
             BigMealTimer.start();
         }
+        Logic.currentVector1=Vector.WEST;
+        score=0;BigMealTurn=0;BigMeal=false;
+        BigMealTimer.MaxPoints=Values.lvl*100;
+        BigMealTimer.BigMealDelay=(int)(  (Values.CellHeight/2f+Values.CellWidth/2f  +5) * (Values.snakeSpeed*Values.SnakeSize)   );
     }
 
-    public static void think(){
-        for (int i=0;i<Values.AMOUNT_OF_SNAKES;++i) {
-            Snake snake=GameActivity.snakes.get(i);
+    public static void think() {
+        if(Values.AMOUNT_OF_SNAKES!=0) {
+            Snake snake = GameActivity.snakes.get(0);
 
-            if(Logic.currentVector1 !=Vector.inverse(snake.head().vec))
-                snake.head().vec= Logic.currentVector1;
+            if (Logic.currentVector1 != Vector.inverse(snake.head().vec))
+                snake.head().vec = Logic.currentVector1;
 
-            for(Meal meal : GameActivity.ml)
-                if(meal.eat(snake.head().p)){
-                    if(Values.Volume)
+            for (Meal meal : GameActivity.ml)
+                if (meal.eat(snake.head().p)) {
+                    if (Values.Volume)
                         Values.eat.start();
-                    if(BigMeal){
-                        score+=BigMealTimer.stopTimer();
-                    }else {
-                        ++score;
+                    if (BigMeal) {
+                        score += BigMealTimer.stopTimer();
+                    } else {
+                        score += Values.lvl;
                         if (++BigMealTurn == 5) {
                             BigMealTurn = 0;
                             BigMealTimer.startTimer();
@@ -109,13 +115,14 @@ public abstract class Classic {
 
                     snake.grow(1);
                 }
+
             snake.move();
-            if(Logic.ifBroken(snake.head().p)){
-                if(Values.Volume)
+            if (Logic.ifBroken(snake.head().p)) {
+                if (Values.Volume)
                     Values.crash.start();
-                Intent GoResult = new Intent(GameActivity.game,ResultActivity.class);
+                Intent GoResult = new Intent(GameActivity.game, ResultActivity.class);
                 GameActivity.game.startActivity(GoResult);
-                Values.AMOUNT_OF_SNAKES=0;
+                Values.AMOUNT_OF_SNAKES = 0;
             }
         }
     }

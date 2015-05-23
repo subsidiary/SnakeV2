@@ -23,7 +23,7 @@ import com.snakev2v42.tiny.snakev2.Values;
  * Created by yuriy on 5/11/2015.
  */
 public class ResultActivity extends Activity{
-    private RelativeLayout re;
+    public static RelativeLayout re;
     public static TextView resultTxt,recordTxt,GoGameTxt,GoMenuTxt;
     private ImageButton GoGame,GoMenu;
     public static Handler handler;

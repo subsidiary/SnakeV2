@@ -11,6 +11,8 @@ public class GameViewThread extends Thread {
     private final SurfaceHolder surfaceHolder;
     private boolean running=false;
     private Canvas canvas;
+    private GameFPSstabilizerThread GFPSST=null;
+    public static int pos=0;
 
     public GameViewThread(SurfaceHolder surfaceHolder) {
         this.surfaceHolder = surfaceHolder;
@@ -18,6 +20,11 @@ public class GameViewThread extends Thread {
 
     public void setRunning(boolean flag){
         running=flag;
+        if(GFPSST==null)
+            GFPSST= new GameFPSstabilizerThread();
+        GFPSST.setRunning(flag);
+        if(!GFPSST.isAlive() && flag)
+            GFPSST.start();
     }
     @Override
     public void run() {
@@ -28,7 +35,7 @@ public class GameViewThread extends Thread {
                 canvas = surfaceHolder.lockCanvas(null);
                 synchronized (surfaceHolder) {
                     if(running)
-                        GameActivity.render(canvas, GameFPSstabilizerThread.pos);
+                        GameActivity.render(canvas, pos);
                 }
             }
             finally {
@@ -37,15 +44,34 @@ public class GameViewThread extends Thread {
                         surfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
-            if(GameFPSstabilizerThread.pos >= Values.SnakeSize){
-                long startPoint=System.currentTimeMillis();
+            if(pos >= Values.SnakeSize-1){
+                //long startPoint=System.currentTimeMillis();
                 Logic.think();
-                Log.i("Logic.think()      ", System.currentTimeMillis() - startPoint + "");
-                GameFPSstabilizerThread.pos = 0;
+                //Log.i("Logic.think()      ", System.currentTimeMillis() - startPoint + "");
+                pos = 0;
             }
-
         }
+    }
 
 
+    public static class GameFPSstabilizerThread extends Thread {
+        private boolean running=false;
+
+        public void setRunning(boolean flag){
+            running=flag;
+        }
+        @Override
+        public void run() {
+            super.run();
+            while(running){
+                try {
+                    sleep(Values.snakeSpeed);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(GameViewThread.pos<Values.SnakeSize-1)
+                    ++GameViewThread.pos;
+            }
+        }
     }
 }

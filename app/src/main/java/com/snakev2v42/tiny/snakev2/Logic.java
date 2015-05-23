@@ -57,7 +57,6 @@ public abstract class Logic {
         while(Values.AMOUNT_OF_MEAL!=Values.AMOUNT_OF_SNAKES-1)
             ml.add(++Values.AMOUNT_OF_MEAL, new Meal(1, Color.parseColor("#3F51B5")));
         ++Values.AMOUNT_OF_MEAL;
-        Log.i("dsfef"," "+Values.AMOUNT_OF_MEAL);
     }
 
 
@@ -72,5 +71,18 @@ public abstract class Logic {
         }
         if (count > 1) return true;
         else return false;
+    }
+    public static boolean[] returnCell(Point p){
+        boolean Cell[]=null;
+        for (int s = 0; s < Values.AMOUNT_OF_SNAKES; ++s) {
+            for (int prt = 0; prt < GameActivity.snakes.get(s).length; ++prt) {
+                if (GameActivity.snakes.get(s).parts.get(prt).p.x == p.x && GameActivity.snakes.get(s).parts.get(prt).p.y == p.y) {
+                    if(Cell==null)
+                        Cell = new boolean[Values.AMOUNT_OF_SNAKES];
+                    Cell[s]=true;
+                }
+            }
+        }
+        return Cell;
     }
 }

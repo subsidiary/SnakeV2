@@ -14,7 +14,7 @@ import com.snakev2v42.tiny.snakev2.ModeProperties.Classic;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Multiplayer;
 import com.snakev2v42.tiny.snakev2.menusAndSettings.Mode;
 import com.snakev2v42.tiny.snakev2.menusAndSettings.Theme;
-
+import com.google.android.gms.ads.*;
 /**
  * Created by yuriy on 4/24/2015.
  */
@@ -28,9 +28,11 @@ public abstract class Values {
     public static Mode mode = Mode.CLASSIC;
     public static Theme[] themes=null;
     public static int themeId=0;
+    public static int snakeSpeed;
     public static double IncreaceFactor=1;
     static SharedPreferences settings;
     public static boolean savedGame=false;
+    public AdView adView;
 
     public static MediaPlayer music=null,eat,crash;
 

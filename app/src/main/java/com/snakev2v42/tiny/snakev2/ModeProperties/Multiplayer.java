@@ -2,6 +2,7 @@ package com.snakev2v42.tiny.snakev2.ModeProperties;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.snakev2v42.tiny.snakev2.GameActivity;
 import com.snakev2v42.tiny.snakev2.Logic;
@@ -19,11 +20,14 @@ import java.util.ArrayList;
 public abstract class Multiplayer {
     public static boolean savedGame=false;
     static int score1=0,score2=0;
+    static int color1,color2;
 
     public static void start(){
         ArrayList<Snake> snakes = GameActivity.snakes;
-        snakes.add(new Snake(35, 10, Vector.WEST, 2, Values.getTheme().getSnakeColors()[0], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
-        snakes.add(new Snake(5 , 10, Vector.EAST, 2, Values.getTheme().getSnakeColors()[1], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        color1=Values.getTheme().getSnakeColors()[0];
+        color2=Values.getTheme().getSnakeColors()[1];
+        snakes.add(new Snake(35, 10, Vector.WEST, 2, color1, Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        snakes.add(new Snake(5 , 10, Vector.EAST, 2, color2, Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
         Values.AMOUNT_OF_SNAKES = 2;
 
         GameActivity.handler.post(new Runnable() {
@@ -65,9 +69,11 @@ public abstract class Multiplayer {
 
             for(Meal meal : GameActivity.ml)
                 if(meal.eat(snake.head().p)){
+                    if (Values.Volume)
+                        Values.eat.start();
                     switch(i){
-                        case 0:++score1;break;
-                        case 1:++score2;break;
+                        case 0:score1+=Values.lvl;break;
+                        case 1:score2+=Values.lvl;break;
                     }
                     meal.generate();
                     GameActivity.handler.post(new Runnable() {
@@ -81,35 +87,40 @@ public abstract class Multiplayer {
                     snake.grow(1);
                 }
             snake.move();
-            if(Logic.ifBroken(snake.head().p)){
-                snake.broken=true;
-                switch (i){
-                    case 0:score1=-1;break;
-                    case 1:score2=-1;break;
+        }
+
+        for (int i=0;i<Values.AMOUNT_OF_SNAKES;++i) {
+            Snake snake=GameActivity.snakes.get(i);
+            if (Logic.ifBroken(snake.head().p)) {
+                snake.broken = true;
+                switch (i) {
+                    case 0:
+                        score1 = -1;
+                        break;
+                    case 1:
+                        score2 = -1;
+                        break;
                 }
+                Log.i("SNAKE NUMBER ", (i + 1) + " have crashed");
             }
 
-
-            if(i+1==Values.AMOUNT_OF_SNAKES) {
+            if (i + 1 == Values.AMOUNT_OF_SNAKES) {
                 if (GameActivity.snakes.get(0).broken) {
-                    if(Values.Volume)
+                    if (Values.Volume)
                         Values.crash.start();
                     Intent GoResult = new Intent(GameActivity.game, ResultActivity.class);
                     GameActivity.game.startActivity(GoResult);
-                    GameActivity.snakes.remove(0);
-                    Values.AMOUNT_OF_SNAKES=0;
-                }else
+                    Values.AMOUNT_OF_SNAKES = 0;
+                } else
                 if (GameActivity.snakes.get(1).broken) {
-                    if(Values.Volume)
+                    if (Values.Volume)
                         Values.crash.start();
                     Intent GoResult = new Intent(GameActivity.game, ResultActivity.class);
                     GameActivity.game.startActivity(GoResult);
-                    GameActivity.snakes.remove(1);
-                    Values.AMOUNT_OF_SNAKES=0;
+                    Values.AMOUNT_OF_SNAKES = 0;
                 }
             }
         }
-
 
     }
     public static void end(){
@@ -120,20 +131,41 @@ public abstract class Multiplayer {
                 if(score2<score1) {
                     ResultActivity.recordTxt.setText("First player win");
                     ResultActivity.resultTxt.setText(score1+"");
-                    ResultActivity.resultTxt.setTextColor(Values.getTheme().getSnakeColors()[0]);
-                    ResultActivity.recordTxt.setTextColor(Values.getTheme().getSnakeColors()[0]);
+                    ResultActivity.resultTxt.setTextColor(color1);
+                    ResultActivity.recordTxt.setTextColor(color1);
+
+
+                    {//BackgroundColor
+                        int BacgroundColor = Values.getTheme().getColor(), counter = 0;
+                        while ((BacgroundColor == color1) && (++counter < 20))
+                            BacgroundColor = Values.getTheme().getColor();
+                        ResultActivity.re.setBackgroundColor(BacgroundColor);
+                    }
                 }else
                 if(score1<score2) {
                     ResultActivity.recordTxt.setText("Second player win");
                     ResultActivity.resultTxt.setText(score2+"");
-                    ResultActivity.resultTxt.setTextColor(Values.getTheme().getSnakeColors()[1]);
-                    ResultActivity.recordTxt.setTextColor(Values.getTheme().getSnakeColors()[1]);
+                    ResultActivity.resultTxt.setTextColor(color2);
+                    ResultActivity.recordTxt.setTextColor(color2);
+
+                    {//BackgroundColor
+                        int BacgroundColor = Values.getTheme().getColor(), counter = 0;
+                        while ((BacgroundColor == color2) && (++counter < 20))
+                            BacgroundColor = Values.getTheme().getColor();
+                        ResultActivity.re.setBackgroundColor(BacgroundColor);
+                    }
                 }else
                 if(score1==score2){
                     ResultActivity.recordTxt.setText("Nobody win");
                     ResultActivity.resultTxt.setText("Draw");
-                }
 
+                    //BackgroundColor
+                    ResultActivity.re.setBackgroundColor(Values.getTheme().getColor());
+                }
+                int BacgroundColor=Values.getTheme().getColor(),counter=0;
+                while( (BacgroundColor==color1 || BacgroundColor==color2)  &&  (++counter<20) )
+                    BacgroundColor=Values.getTheme().getColor();
+                ResultActivity.re.setBackgroundColor(BacgroundColor);
             }
         });
     }

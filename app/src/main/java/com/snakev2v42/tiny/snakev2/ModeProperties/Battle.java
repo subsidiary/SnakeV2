@@ -2,6 +2,7 @@ package com.snakev2v42.tiny.snakev2.ModeProperties;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.snakev2v42.tiny.snakev2.Brains;
 import com.snakev2v42.tiny.snakev2.GameActivity;
@@ -56,36 +57,52 @@ public abstract class Battle {
 
             for(Meal meal : GameActivity.ml)
                 if(meal.eat(snake.head().p)){
+                    if (Values.Volume)
+                        Values.eat.start();
                     if(i == 0)
-                        ++Battle.score;
+                        score+=Values.lvl;
                     meal.generate();
                     GameActivity.handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            GameActivity.score1.setText(Battle.score+"");
+                            GameActivity.score1.setText(score+"");
                         }
                     });
 
                     snake.grow(1);
                 }
             snake.move();
+        }
+
+        for(int i=0;i<Values.AMOUNT_OF_SNAKES;++i){
+            Snake snake=GameActivity.snakes.get(i);
+
             if(Logic.ifBroken(snake.head().p)){
                 snake.broken=true;
             }
 
             if(i+1==Values.AMOUNT_OF_SNAKES) {
                 if (GameActivity.snakes.get(0).broken) {
+                    if (Values.Volume)
+                        Values.crash.start();
                     Intent GoResult = new Intent(GameActivity.game, ResultActivity.class);
                     GameActivity.game.startActivity(GoResult);
-                    GameActivity.snakes.remove(0);
                     Values.AMOUNT_OF_SNAKES=0;
                 }else
-                for(int j=1;j<Values.AMOUNT_OF_SNAKES;++j)
-                    if(GameActivity.snakes.get(j).broken){
-                        GameActivity.snakes.remove(j);
-                        --j;
-                        --Values.AMOUNT_OF_SNAKES;
-                    }
+                    for(int j=1;j<Values.AMOUNT_OF_SNAKES;++j)
+                        if(GameActivity.snakes.get(j).broken){
+                            if (Values.Volume)
+                                Values.crash.start();
+
+                            boolean[] CellMembers=Logic.returnCell(snake.head().p);
+                            if(CellMembers!=null && CellMembers[0]) {
+                                score += snake.length * Values.lvl *10;
+                                Log.i("BATTLE ", " PLUSSED " + snake.length * Values.lvl + " length " + snake.length);
+                            }
+                            GameActivity.snakes.remove(j);
+                            --j;
+                            --Values.AMOUNT_OF_SNAKES;
+                        }
             }
         }
 

@@ -35,7 +35,6 @@ public class GameActivity extends Activity {
     public static ArrayList<Meal> ml = new ArrayList<>();
     public static ImageButton v1_1, v2_1, v3_1, v4_1, v1_2, v2_2, v3_2, v4_2;
     public static Handler handler = new Handler();
-    public static int snakeSpeed;
     public static Random random;
     static GameView view;
     public static Context game;
@@ -91,7 +90,7 @@ public class GameActivity extends Activity {
             score2.setVisibility(View.VISIBLE);
         }
 
-        snakeSpeed=10-Values.lvl;
+        Values.snakeSpeed=10-Values.lvl;
         random = new Random();
         random.setSeed(System.currentTimeMillis());
         Logic.start();

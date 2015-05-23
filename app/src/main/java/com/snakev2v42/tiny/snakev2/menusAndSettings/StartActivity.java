@@ -281,6 +281,7 @@ public class StartActivity extends Activity {
         Values.Volume =!Values.Volume;
         if(Values.Volume) {
             volumeImg.setImageResource(R.drawable.ic_volume_on);
+            Values.eat.start();
             Values.music.start();
         }else {
             volumeImg.setImageResource(R.drawable.ic_volume_off);

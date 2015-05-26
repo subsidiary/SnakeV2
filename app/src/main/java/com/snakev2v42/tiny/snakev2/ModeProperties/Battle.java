@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.snakev2v42.tiny.snakev2.GoogleServices.AdMob;
 import com.snakev2v42.tiny.snakev2.Brains;
 import com.snakev2v42.tiny.snakev2.GameActivity;
 import com.snakev2v42.tiny.snakev2.Logic;
@@ -53,7 +54,7 @@ public abstract class Battle {
             if(i==0 && Logic.currentVector1 !=Vector.inverse(snake.head().vec))
                 snake.head().vec= Logic.currentVector1;
             else
-                snake.head().vec= Brains.StupidBot(snake);
+                snake.head().vec= Brains.YuraBot(snake);
 
             for(Meal meal : GameActivity.ml)
                 if(meal.eat(snake.head().p)){
@@ -110,6 +111,7 @@ public abstract class Battle {
 
     public static void end(){
         savedGame=false;
+        AdMob.displayInterstitial(false);
         ResultActivity.handler.post(new Runnable() {
             @Override
             public void run() {

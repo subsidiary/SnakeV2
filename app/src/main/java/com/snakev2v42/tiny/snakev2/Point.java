@@ -27,6 +27,10 @@ public class Point {
         pt.plus(vector);
         return pt;
     }
+    public static Point plus(Point point, int x,int y) {
+        Point pt = new Point(point.x+x, point.y+y);
+        return pt;
+    }
 
     public void outOfBounds() {
         x = mod(x, Values.CellWidth);

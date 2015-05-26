@@ -12,6 +12,7 @@ import com.snakev2v42.tiny.snakev2.ModeProperties.Multiplayer;
 import com.snakev2v42.tiny.snakev2.menusAndSettings.ResultActivity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by yuriy on 5/16/2015.
@@ -29,16 +30,27 @@ public abstract class Logic {
     }
 
     public static void start() {
+
+        if(GameActivity.snakes==null)
+            GameActivity.snakes = new ArrayList<>();
+        if(GameActivity.ml==null)
+            GameActivity.ml = new ArrayList<>();
         ArrayList<Snake> snakes = GameActivity.snakes;
         ArrayList<Meal> ml = GameActivity.ml;
-
         //if(Values.savedGame){}else
         {
-            int sizeS=snakes.size()-1,sizeM=ml.size()-1;
-            for(int i=sizeS;i>=0;--i)
-                snakes.remove(i);
-            for(int i=sizeM;i>=0;--i)
-                ml.remove(i);
+            System.gc();
+            Iterator<Snake> iter = snakes.listIterator();
+            while (iter.hasNext()) {
+                iter.next().recycle();
+                iter.remove();
+            }
+            ml.clear();
+
+            if(GameActivity.snakes==null)
+                GameActivity.snakes = new ArrayList<>();
+            if(GameActivity.ml==null)
+                GameActivity.ml = new ArrayList<>();
 
             switch (Values.mode){
                 case CLASSIC:

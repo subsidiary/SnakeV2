@@ -183,6 +183,7 @@ public class StartActivity extends Activity {
             @Override
             public void run() {
                 startActivity(GoGame);
+                finish();
                 overridePendingTransition(R.anim.start_activity, R.anim.wait_anim);
             }
         }, 900);
@@ -282,11 +283,8 @@ public class StartActivity extends Activity {
         if(Values.Volume) {
             volumeImg.setImageResource(R.drawable.ic_volume_on);
             Values.eat.start();
-            Values.music.start();
         }else {
             volumeImg.setImageResource(R.drawable.ic_volume_off);
-            if(Values.music.isPlaying())
-                Values.music.pause();
         }
         Values.saveBool(Values.Volume,"Volume");
     }

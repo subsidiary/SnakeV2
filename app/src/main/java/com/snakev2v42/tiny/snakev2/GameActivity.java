@@ -31,8 +31,8 @@ public class GameActivity extends Activity {
     static RelativeLayout ll;
     static ImageView BoBar;
     public static TextView score1,score2;
-    public static ArrayList<Snake> snakes = new ArrayList<>();
-    public static ArrayList<Meal> ml = new ArrayList<>();
+    public static ArrayList<Snake> snakes = null;
+    public static ArrayList<Meal> ml = null;
     public static ImageButton v1_1, v2_1, v3_1, v4_1, v1_2, v2_2, v3_2, v4_2;
     public static Handler handler = new Handler();
     public static Random random;
@@ -101,7 +101,8 @@ public class GameActivity extends Activity {
         //super.onBackPressed();
         //Values.SaveTheGame();
         Intent GoResult = new Intent(this,ResultActivity.class);
-        startActivity(GoResult);
+        //view.surfaceDestroyed(view.getHolder());
+        startActivity(GoResult);//R
     }
 
     @Override
@@ -112,7 +113,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        view.surfaceDestroyed(view.getHolder());
+        //view.surfaceDestroyed(view.getHolder());
     }
 
     public void joystick (View v) {

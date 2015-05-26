@@ -34,10 +34,18 @@ public class Meal {
     }
     public void generate(){
         Map.MakeNewMap();
-        while(Map.CheckMapCell(p)!=Cell.NOTHING) {
+        while(checkPlace(p)) {
             p.x = GameActivity.random.nextInt(Values.CellWidth - (size + 1));
             p.y = GameActivity.random.nextInt(Values.CellHeight - (size + 1));
         }
+    }
+    public boolean checkPlace(Point p){
+        boolean flag=false;
+        for(int x=0;x<size;++x)
+            for(int y=0;y<size;++y)
+                if(Map.CheckMapCell(Point.plus(p,x,y))!=Cell.NOTHING)
+                    flag=true;
+        return flag;
     }
     /*public void draw(Canvas canvas){
         canvas.save();

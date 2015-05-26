@@ -45,9 +45,9 @@ public class GameViewThread extends Thread {
                 }
             }
             if(pos >= Values.SnakeSize-1){
-                //long startPoint=System.currentTimeMillis();
+                long startPoint=System.currentTimeMillis();
                 Logic.think();
-                //Log.i("Logic.think()      ", System.currentTimeMillis() - startPoint + "");
+                Log.i("Logic.think()      ", System.currentTimeMillis() - startPoint + "");
                 pos = 0;
             }
         }

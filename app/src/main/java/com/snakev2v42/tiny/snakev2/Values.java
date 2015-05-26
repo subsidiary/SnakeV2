@@ -8,13 +8,13 @@ import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.snakev2v42.tiny.snakev2.GoogleServices.AdMob;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Battle;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Campaign;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Classic;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Multiplayer;
 import com.snakev2v42.tiny.snakev2.menusAndSettings.Mode;
 import com.snakev2v42.tiny.snakev2.menusAndSettings.Theme;
-import com.google.android.gms.ads.*;
 /**
  * Created by yuriy on 4/24/2015.
  */
@@ -32,9 +32,8 @@ public abstract class Values {
     public static double IncreaceFactor=1;
     static SharedPreferences settings;
     public static boolean savedGame=false;
-    public AdView adView;
 
-    public static MediaPlayer music=null,eat,crash;
+    public static MediaPlayer eat=null,crash;
 
     public static void init(Context c){
         DisplayMetrics display = c.getResources().getDisplayMetrics();
@@ -47,8 +46,8 @@ public abstract class Values {
         if(themes==null) {
             themes = new Theme[AMOUNT_OF_THEMES];
             //                       volume       continue       records        levels        theme         mode          exit          info        TextColor    buttonColor              snakeColors
-            themes[0] = new Theme(c("#485864"), c("#485864"), c("#000000"), c("#485864"), c("#485864"), c("#929fa6"), c("#bb0a01"), c("#485864"), c("#f5f5f5"), c("#bb0a01"), new int[]{c("#bb0a01"), c("#485864"), c("#929fa6")});
-            themes[1] = new Theme(c("#f73a18"), c("#1a2139"), c("#333e5b"), c("#9d9683"), c("#798190"), c("#333e5b"), c("#f73a18"), c("#333e5b"), c("#f5f5f5"), c("#f73a18"), new int[]{c("#f73a18"), c("#9d9683"), c("#798190"), c("#333e5b")});
+            themes[1] = new Theme(c("#485864"), c("#485864"), c("#000000"), c("#485864"), c("#485864"), c("#929fa6"), c("#bb0a01"), c("#485864"), c("#f5f5f5"), c("#bb0a01"), new int[]{c("#bb0a01"), c("#485864"), c("#929fa6")});
+            themes[0] = new Theme(c("#f73a18"), c("#1a2139"), c("#333e5b"), c("#9d9683"), c("#798190"), c("#333e5b"), c("#f73a18"), c("#333e5b"), c("#f5f5f5"), c("#f73a18"), new int[]{c("#f73a18"), c("#9d9683"), c("#798190"), c("#333e5b")});
             themes[2] = new Theme(c("#607d8b"), c("#33691e"), c("#8bc34a"), c("#8bc34a"), c("#9e9e9e"), c("#8bc34a"), c("#000000"), c("#4caf50"), c("#f5f5f5"), c("#000000"), new int[]{c("#9e9e9e"), c("#4caf50"), c("#8bc34a"), c("#607d8b"), c("#33691e")});
             themes[3] = new Theme(c("#bab3d9"), c("#818692"), c("#434945"), c("#a6b7ae"), c("#818692"), c("#bab3d9"), c("#4a683a"), c("#434945"), c("#f5f5f5"), c("#bab3d9"), new int[]{c("#bab3d9"), c("#4a683a"), c("#818692"), c("#434945")});
             themes[4] = new Theme(c("#bdac9c"), c("#d1a701"), c("#1c1e26"), c("#9d815b"), c("#fdeb37"), c("#d1a701"), c("#1c1e26"), c("#9d815b"), c("#f5f5f5"), c("#a6b7ae"), new int[]{c("#d1a701"), c("#bdac9c"), c("#9d815b"), c("#fdeb37")});
@@ -64,14 +63,14 @@ public abstract class Values {
         Campaign.load();
         Multiplayer.load();
 
-        if(music ==null){
-            music = MediaPlayer.create(c.getApplicationContext(), R.raw.music);
+        if(eat ==null){
             eat = MediaPlayer.create(c.getApplicationContext(), R.raw.eat);
             crash = MediaPlayer.create(c.getApplicationContext(), R.raw.crash);
 
-            music.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            music.setLooping(true);
+            /*music.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            music.setLooping(true);*/
         }
+        AdMob.init(c);
     }
 
     public static void saveInt(int integer,String key){

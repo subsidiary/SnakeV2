@@ -2,15 +2,27 @@ package com.snakev2v42.tiny.snakev2;
 
 import android.util.Log;
 
+import java.sql.Array;
 import java.util.Arrays;
 
 /**
  * Created by Yuriy475 on 4/9/2015.
  */
 public abstract class Brains {
-
+    private static boolean[][] was;
 
     public static int FreeCells(Point p){
+        was[p.x][p.y] = true;
+        if (Map.CheckMapCell(p) == Cell.SNAKE)
+            return 0;
+        int res = 0;
+        for(int i = 1; i < 5; ++i) {
+            Point pt = Point.plus(p, Vector.IntToVector(i));
+            if (!was[pt.x][pt.y]){
+                res += FreeCells(pt);
+            }
+        }
+        return res + 1;/*
         int s = 0;
         int[][] was = new int[Values.CellWidth][Values.CellHeight];
         Point start = new Point(p.x,p.y);
@@ -36,7 +48,7 @@ public abstract class Brains {
                 p.plus(Vector.inverse(Vector.IntToVector(was[p.x][p.y])));
             }
         }
-        return s;
+        return s;*/
     }
 
     public static Vector YuraBot(Snake me){
@@ -56,8 +68,11 @@ public abstract class Brains {
         //AlivePriority..
         for (int j = 1; j <= 4; ++j)
             if (Map.CheckMapCell(Point.plus(head.p, Vector.IntToVector(j))) == Cell.SNAKE)
-                AlivePriority[j]=0;else
-                AlivePriority[j]=FreeCells(Point.plus(head.p, Vector.IntToVector(j)));
+                AlivePriority[j]=0;else{
+                was = new boolean[Values.CellWidth][Values.CellHeight];
+                for(boolean[] arr: was)
+                    Arrays.fill(arr, false);
+                AlivePriority[j]=FreeCells(Point.plus(head.p, Vector.IntToVector(j)));}
 
         //Summary
         int max=0,maxID=1;

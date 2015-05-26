@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.snakev2v42.tiny.snakev2.GoogleServices.AdMob;
 import com.snakev2v42.tiny.snakev2.GameActivity;
 import com.snakev2v42.tiny.snakev2.Logic;
 import com.snakev2v42.tiny.snakev2.Meal;
@@ -125,6 +126,7 @@ public abstract class Multiplayer {
     }
     public static void end(){
         savedGame=false;
+        AdMob.displayInterstitial(false);
         ResultActivity.handler.post(new Runnable() {
             @Override
             public void run() {

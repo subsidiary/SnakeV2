@@ -13,6 +13,7 @@ import android.graphics.PathMeasure;
 import android.graphics.Picture;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
 import android.graphics.Xfermode;
 import android.util.Log;
 
@@ -53,8 +54,8 @@ public class Snake {
         parts.add(new Part(startX, startY, vector, l));
         this.broken = false;
         this.length = 1;
-        picture = Bitmap.createBitmap(Values.Width, Values.Height, Bitmap.Config.ARGB_8888);
-        c = new Canvas(picture);
+        //picture = Bitmap.createBitmap(Values.Width, Values.Height, Bitmap.Config.ARGB_8888);
+        //c = new Canvas(picture);
         grow(length);
     }
 
@@ -67,7 +68,7 @@ public class Snake {
             part.move(parts.get(i - 1).vec);
         }
         parts.get(0).move(parts.get(0).vec);
-
+/*
         c.save();
         Part part = parts.get(1);
         Picture picture;
@@ -90,7 +91,7 @@ public class Snake {
         paint.setAntiAlias(true);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         c.drawRect(0, 0, l, l, paint);
-        c.restore();
+        c.restore();*/
     }
 
     /**
@@ -106,13 +107,13 @@ public class Snake {
             //Update tail part
             tail = parts.get(length++);
 
-            c.save();
+            /*c.save();
             c.translate(tail.p.x * l, tail.p.y * l);
             c.rotate(tail.vec.angle, l * 0.5f, l * 0.5f);
             if (tail.oldVec == tail.vec && tail.dir == Part.Direction.LEFT || tail.vec.turn(1) == tail.oldVec)
                 c.scale(-1, 1, l * 0.5f, l * 0.5f);
             c.drawPicture(bodyPicture);
-            c.restore();
+            c.restore();*/
 
             //Move tail part
             tail.p.plus(Vector.inverse(tail.vec));
@@ -135,30 +136,30 @@ public class Snake {
         bodyPath = new Path();
         x = l;
         y = l;
-        bodyPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 180, 30, false);
+        bodyPath.arcTo(new RectF(x - l / 2, y - l / 2, x + l / 2, y + l / 2), 180, 30, false);
         x = (float) (1 - Math.sqrt(0.75)) * l;
         y = l / 2;
-        bodyPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 30, -60, false);
+        bodyPath.arcTo(new RectF(x - l / 2, y - l / 2, x + l / 2, y + l / 2), 30, -60, false);
         x = l;
         y = 0;
-        bodyPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 150, 30f, false);
+        bodyPath.arcTo(new RectF(x - l / 2, y - l / 2, x + l / 2, y + l / 2), 150, 30f, false);
 
         smallCornerPath = new Path();
         x = l;
         y = 0;
-        smallCornerPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 90, 90, false);
+        smallCornerPath.arcTo(new RectF(x - l / 2, y - l / 2, x + l / 2, y + l / 2), 90, 90, false);
 
         bigCornerPath = new Path();
         x = l;
         y = l;
-        bigCornerPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 270, -30, false);
+        bigCornerPath.arcTo(new RectF(x - l / 2, y - l / 2, x + l / 2, y + l / 2), 270, -30, false);
         x = (float) ((3 - Math.sqrt(3)) * l / 2);
         y = (float) ((Math.sqrt(3) - 1) * l / 2);
         float r = (float) ((Math.sqrt(3) - 1) * l - l / 2);
-        bigCornerPath.arcTo(x - r, y - r, x + r, y + r, 60, 150, false);
+        bigCornerPath.arcTo(new RectF(x - r, y - r, x + r, y + r), 60, 150, false);
         x = 0;
         y = 0;
-        bigCornerPath.arcTo(x - l / 2, y - l / 2, x + l / 2, y + l / 2, 30, -30f, false);
+        bigCornerPath.arcTo(new RectF(x - l / 2, y - l / 2, x + l / 2, y + l / 2), 30, -30f, false);
 
         bodyPicture = new Picture();
         c = bodyPicture.beginRecording((int) l, (int) l);
@@ -199,7 +200,7 @@ public class Snake {
 
         k %= speed;
 
-        canvas.drawBitmap(this.picture, 0, 0, null);
+        //canvas.drawBitmap(this.picture, 0, 0, null);
 
         for (int i = 0; i < length; i += length - 1) {
             Path path;
@@ -258,5 +259,14 @@ public class Snake {
 
     public void turn(double direction) {
         head().vec = head().vec.turn(direction);
+    }
+
+    public void recycle(){
+        if(picture!=null) {
+            picture.recycle();
+            picture = null;
+            c=null;
+        }
+        System.gc();
     }
 }

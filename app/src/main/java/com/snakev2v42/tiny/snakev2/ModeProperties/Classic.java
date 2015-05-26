@@ -2,10 +2,9 @@ package com.snakev2v42.tiny.snakev2.ModeProperties;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
-import android.renderscript.Sampler;
 import android.util.Log;
 
+import com.snakev2v42.tiny.snakev2.GoogleServices.AdMob;
 import com.snakev2v42.tiny.snakev2.GameActivity;
 import com.snakev2v42.tiny.snakev2.Logic;
 import com.snakev2v42.tiny.snakev2.Meal;
@@ -13,7 +12,6 @@ import com.snakev2v42.tiny.snakev2.Snake;
 import com.snakev2v42.tiny.snakev2.Values;
 import com.snakev2v42.tiny.snakev2.Vector;
 import com.snakev2v42.tiny.snakev2.menusAndSettings.ResultActivity;
-import com.snakev2v42.tiny.snakev2.menusAndSettings.StartActivity;
 
 import java.util.ArrayList;
 
@@ -32,12 +30,12 @@ public abstract class Classic {
     private static class BigMealTimer extends Thread {
         long startTime;
         boolean flag =true;
-        int BigMealDelay,MaxPoints;
+        int MaxDelay,MaxPoints;
         @Override
         public void run() {
             while(flag) {
                 while (BigMeal) {
-                    if (System.currentTimeMillis() - startTime > 5000)
+                    if (System.currentTimeMillis() - startTime > MaxDelay)
                         stopTimer();
                 }
             }
@@ -56,16 +54,16 @@ public abstract class Classic {
             GameActivity.ml.get(0).size=1;
             GameActivity.ml.get(0).color = Color.parseColor("#3F51B5");
             GameActivity.ml.get(0).generate();
-            Log.i("CLASSIC ","  (int) "+(int)( Math.sqrt(BigMealDelay-(System.currentTimeMillis() - startTime))  *  (MaxPoints / Math.sqrt(BigMealDelay)) )+
-            " (double) "+Math.sqrt(BigMealDelay-(System.currentTimeMillis() - startTime))  *  (MaxPoints / Math.sqrt(BigMealDelay)) +
-            " (Time) "+BigMealDelay+" (MaxPoint) "+MaxPoints+" (GONE_Time) "+(int)(System.currentTimeMillis() - startTime));
-            return (int)( Math.sqrt(BigMealDelay-(System.currentTimeMillis() - startTime))  *  (MaxPoints / Math.sqrt(BigMealDelay)) );
+            if(System.currentTimeMillis()-startTime<MaxDelay/10)
+                return MaxDelay/10;
+            else
+                return (int)((MaxDelay-(System.currentTimeMillis()-startTime))*1f/MaxDelay*MaxPoints);
         }
     }
 
     public static void start(){
         ArrayList<Snake> snakes = GameActivity.snakes;
-        snakes.add(new Snake(19, 10, Vector.WEST, 2, Values.getTheme().getSnakeColors()[0], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
+        snakes.add(new Snake(19, 10, Vector.WEST, 10, Values.getTheme().getSnakeColors()[0], Color.BLACK, Color.BLACK, Values.SnakeSize, Values.SnakeSize));
         Values.AMOUNT_OF_SNAKES = 1;
 
         GameActivity.handler.post(new Runnable() {
@@ -82,7 +80,7 @@ public abstract class Classic {
         Logic.currentVector1=Vector.WEST;
         score=0;BigMealTurn=0;BigMeal=false;
         BigMealTimer.MaxPoints=Values.lvl*100;
-        BigMealTimer.BigMealDelay=(int)(  (Values.CellHeight/2f+Values.CellWidth/2f  +5) * (Values.snakeSpeed*Values.SnakeSize)   );
+        BigMealTimer.MaxDelay =(int)(  (Values.CellHeight/2f+Values.CellWidth/2f  +15) * (Values.snakeSpeed*Values.SnakeSize)   );
     }
 
     public static void think() {
@@ -128,6 +126,7 @@ public abstract class Classic {
     }
     public static void end(){
         savedGame=false;
+        AdMob.displayInterstitial(false);
         ResultActivity.handler.post(new Runnable() {
             @Override
             public void run() {

@@ -6,7 +6,7 @@ import com.snakev2v42.tiny.snakev2.menusAndSettings.ResultActivity;
 /**
  * Created by yuriy on 5/16/2015.
  */
-public abstract class Campaign {
+public class Campaign extends CurrentMode {
     public static boolean savedGame=false;
     public static int[] records ={0,0,0,0,0};
     public static int score;

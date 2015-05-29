@@ -55,7 +55,7 @@ public class Snake {
         this.broken = false;
         this.length = 1;
         //picture = Bitmap.createBitmap(Values.Width, Values.Height, Bitmap.Config.ARGB_8888);
-        //c = new Canvas(picture);
+        c = GameActivity.canvas;
         grow(length);
     }
 
@@ -68,7 +68,7 @@ public class Snake {
             part.move(parts.get(i - 1).vec);
         }
         parts.get(0).move(parts.get(0).vec);
-/*
+
         c.save();
         Part part = parts.get(1);
         Picture picture;
@@ -91,7 +91,7 @@ public class Snake {
         paint.setAntiAlias(true);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         c.drawRect(0, 0, l, l, paint);
-        c.restore();*/
+        c.restore();
     }
 
     /**
@@ -107,13 +107,13 @@ public class Snake {
             //Update tail part
             tail = parts.get(length++);
 
-            /*c.save();
+            c.save();
             c.translate(tail.p.x * l, tail.p.y * l);
             c.rotate(tail.vec.angle, l * 0.5f, l * 0.5f);
             if (tail.oldVec == tail.vec && tail.dir == Part.Direction.LEFT || tail.vec.turn(1) == tail.oldVec)
                 c.scale(-1, 1, l * 0.5f, l * 0.5f);
             c.drawPicture(bodyPicture);
-            c.restore();*/
+            c.restore();
 
             //Move tail part
             tail.p.plus(Vector.inverse(tail.vec));

@@ -22,11 +22,7 @@ public abstract class Logic {
     public static Vector currentVector2 = Vector.EAST;
 
     public static void think(){
-        switch (Values.mode){
-            case CLASSIC    : Classic.think();break;
-            case BATTLE     : Battle.think();break;
-            case MULTIPLAYER: Multiplayer.think();break;
-        }
+        Values.currentMode.think();
     }
 
     public static void start() {
@@ -52,17 +48,7 @@ public abstract class Logic {
             if(GameActivity.ml==null)
                 GameActivity.ml = new ArrayList<>();
 
-            switch (Values.mode){
-                case CLASSIC:
-                    Classic.start();
-                    break;
-                case BATTLE:
-                    Battle.start();
-                    break;
-                case MULTIPLAYER:
-                    Multiplayer.start();
-                    break;
-            }
+            Values.currentMode.start();
         }
 
         Values.AMOUNT_OF_MEAL=-1;

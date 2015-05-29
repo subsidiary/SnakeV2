@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Created by yuriy on 5/16/2015.
  */
-public abstract class Battle {
+public class Battle extends CurrentMode {
     public static boolean savedGame=false;
     public static int[] records ={0,0,0,0,0};
     public static int score;
@@ -50,6 +50,7 @@ public abstract class Battle {
     public static void think(){
         for (int i=0;i<Values.AMOUNT_OF_SNAKES;++i) {
             Snake snake=GameActivity.snakes.get(i);
+            snake.move();
 
             if(i==0 && Logic.currentVector1 !=Vector.inverse(snake.head().vec))
                 snake.head().vec= Logic.currentVector1;
@@ -72,7 +73,6 @@ public abstract class Battle {
 
                     snake.grow(1);
                 }
-            snake.move();
         }
 
         for(int i=0;i<Values.AMOUNT_OF_SNAKES;++i){

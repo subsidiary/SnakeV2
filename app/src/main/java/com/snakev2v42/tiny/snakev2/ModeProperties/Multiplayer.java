@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by yuriy on 5/16/2015.
  */
-public abstract class Multiplayer {
+public class Multiplayer extends CurrentMode {
     public static boolean savedGame=false;
     static int score1=0,score2=0;
     static int color1,color2;

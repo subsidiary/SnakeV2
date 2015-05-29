@@ -37,4 +37,7 @@ public enum Mode {
             default:      return CLASSIC;
         }
     }
+
+    public void think() {
+    }
 }

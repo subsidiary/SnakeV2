@@ -12,6 +12,7 @@ import com.snakev2v42.tiny.snakev2.GoogleServices.AdMob;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Battle;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Campaign;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Classic;
+import com.snakev2v42.tiny.snakev2.ModeProperties.CurrentMode;
 import com.snakev2v42.tiny.snakev2.ModeProperties.Multiplayer;
 import com.snakev2v42.tiny.snakev2.menusAndSettings.Mode;
 import com.snakev2v42.tiny.snakev2.menusAndSettings.Theme;
@@ -34,6 +35,7 @@ public abstract class Values {
     public static boolean savedGame=false;
 
     public static MediaPlayer eat=null,crash;
+    public static CurrentMode currentMode;
 
     public static void init(Context c){
         DisplayMetrics display = c.getResources().getDisplayMetrics();
@@ -90,6 +92,22 @@ public abstract class Values {
         return bool;
     }
 
+    public static CurrentMode setupMode() {
+        switch (Values.mode){
+            case CLASSIC:
+                currentMode = new Classic();
+                break;
+            case BATTLE:
+                currentMode = new Battle();
+                break;
+            case MULTIPLAYER:
+                currentMode = new Multiplayer();
+                break;
+            case CAMPAIGN:
+                currentMode = new Campaign();
+        }
+        return currentMode;
+    }
 
     public static Theme getTheme(){
         Log.d("Values ",""+themeId);

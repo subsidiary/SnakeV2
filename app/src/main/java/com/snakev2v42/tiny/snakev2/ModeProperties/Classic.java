@@ -2,7 +2,6 @@ package com.snakev2v42.tiny.snakev2.ModeProperties;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 
 import com.snakev2v42.tiny.snakev2.GoogleServices.AdMob;
 import com.snakev2v42.tiny.snakev2.GameActivity;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by yuriy on 5/16/2015.
  */
-public abstract class Classic {
+public class Classic extends CurrentMode {
     public static boolean savedGame=false;
     public static int[] records ={0,0,0,0,0};
     public static int score;

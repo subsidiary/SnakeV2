@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -38,6 +39,8 @@ public class GameActivity extends Activity {
     public static Random random;
     static GameView view;
     public static Context game;
+    private static Bitmap picture;
+    public static Canvas canvas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,8 @@ public class GameActivity extends Activity {
         Values.snakeSpeed=10-Values.lvl;
         random = new Random();
         random.setSeed(System.currentTimeMillis());
+        picture = Bitmap.createBitmap(Values.Width, Values.Height, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(picture);
         Logic.start();
     }
 
@@ -157,6 +162,7 @@ public class GameActivity extends Activity {
         }
         canvas.restore();
         //Draw snakes
+        canvas.drawBitmap(picture, 0, 0, null);
         for (Snake snake : GameActivity.snakes) {
             snake.draw(canvas, k);
         }
